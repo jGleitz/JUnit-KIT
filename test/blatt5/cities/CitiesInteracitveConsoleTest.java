@@ -39,12 +39,12 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
    */
   @Test
   public void testConsoleQuit() {
-    easyTest("quit\n", "", "traverse=pre-order");
+    oneLineTest("quit\n", "", "traverse=pre-order");
   }
 
   @Test
   public void testNoArgs() {
-    easyTest("quit\n", "");
+    oneLineTest("quit\n", "");
   }
 
   @Test
@@ -71,7 +71,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
    */
   @Test
   public void simpleInsertTest() {
-    easyTest("insert Hintertupfingen:3\nquit\n", "", "traverse=pre-order");
+    oneLineTest("insert Hintertupfingen:3\nquit\n", "", "traverse=pre-order");
   }
 
   /**
@@ -80,7 +80,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
    */
   @Test
   public void simpleInsertTest2() {
-    easyTest("insert Hintertupfingen:3\ninsert Hamburg:5\nquit\n", "", "traverse=pre-order");
+    oneLineTest("insert Hintertupfingen:3\ninsert Hamburg:5\nquit\n", "", "traverse=pre-order");
   }
 
   /**
@@ -89,157 +89,157 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
    */
   @Test
   public void simpleInsertTest3() {
-    easyTest("insert Hintertupfingen:3\ninsert Hamburg:5\ninsert M�nchen:6\nquit\n", "",
+    oneLineTest("insert Hintertupfingen:3\ninsert Hamburg:5\ninsert M�nchen:6\nquit\n", "",
         "traverse=pre-order");
   }
 
   @Test
   public void insertSearchTest() {
-    easyTest("insert Hintertupfingen:3\nsearch Hintertupfingen\nquit\n", "Hintertupfingen:3"
+    oneLineTest("insert Hintertupfingen:3\nsearch Hintertupfingen\nquit\n", "Hintertupfingen:3"
         + System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void insertSearchTest2() {
-    easyTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch Hintertupfingen\nquit\n",
+    oneLineTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch Hintertupfingen\nquit\n",
         "Hintertupfingen:3" + System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void insertSearchTest3() {
-    easyTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch Pfaffenhofen\nquit\n",
+    oneLineTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch Pfaffenhofen\nquit\n",
         "Pfaffenhofen:1" + System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void insertSearchTest4() {
-    easyTest("insert Pfaffenhofen:1\ninsert Waldstadt:3\nsearch Waldstadt\nquit\n", "Waldstadt:3"
+    oneLineTest("insert Pfaffenhofen:1\ninsert Waldstadt:3\nsearch Waldstadt\nquit\n", "Waldstadt:3"
         + System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void searchNull() {
-    easyTest("insert Pfaffenhofen:1\ninsert Waldstadt:3\nsearch Freudenstadt\nquit\n",
+    oneLineTest("insert Pfaffenhofen:1\ninsert Waldstadt:3\nsearch Freudenstadt\nquit\n",
         "Freudenstadt:null" + System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void searchOnEmptyTree() {
-    easyTest("search Freudenstadt\nquit\n", "Freudenstadt:null" + System.lineSeparator(),
+    oneLineTest("search Freudenstadt\nquit\n", "Freudenstadt:null" + System.lineSeparator(),
         "traverse=pre-order");
   }
 
   @Test
   public void emptyPreOrderTest() {
-    easyTest("info\nquit\n", System.lineSeparator(), "traverse=pre-order");
+    oneLineTest("info\nquit\n", System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void emptyLevelOrderTest() {
-    easyTest("info\nquit\n", System.lineSeparator(), "traverse=level-order");
+    oneLineTest("info\nquit\n", System.lineSeparator(), "traverse=level-order");
   }
 
   @Test
   public void emptyInOrderTest() {
-    easyTest("info\nquit\n", System.lineSeparator(), "traverse=in-order");
+    oneLineTest("info\nquit\n", System.lineSeparator(), "traverse=in-order");
   }
 
   @Test
   public void preOrderTest() {
-    easyTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator(),
+    oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator(),
         "traverse=pre-order");
   }
 
   @Test
   public void preOrderTest2() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
         + System.lineSeparator(),
         "traverse=pre-order");
   }
 
   @Test
   public void preOrderTest3() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
         "Hamburg:10,Aachen:9,Muenchen:30" + System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void preOrderTest4() {
-    easyTest(
+    oneLineTest(
         "insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
         "Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3" + System.lineSeparator(), "traverse=pre-order");
   }
 
   @Test
   public void inOrderTest() {
-    easyTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator(),
+    oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator(),
         "traverse=in-order");
   }
 
   @Test
   public void inOrderTest2() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
         + System.lineSeparator(), "traverse=in-order");
   }
 
   @Test
   public void inOrderTest3() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
         "Aachen:9,Hamburg:10,Muenchen:30" + System.lineSeparator(), "traverse=in-order");
   }
 
   @Test
   public void inOrderTest4() {
-    easyTest(
+    oneLineTest(
         "insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
         "Aachen:9,Hamburg:10,Muenchen:30,Zuerich:3" + System.lineSeparator(), "traverse=in-order");
   }
   
   @Test
   public void inOrderTestWithoutParameter() {
-    easyTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator());
+    oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator());
   }
 
   @Test
   public void inOrderTestWithoutParameter2() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
         + System.lineSeparator());
   }
 
   @Test
   public void inOrderTestWithoutParameter3() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
         "Aachen:9,Hamburg:10,Muenchen:30" + System.lineSeparator());
   }
 
   @Test
   public void inOrderTestWithoutParameter4() {
-    easyTest(
+    oneLineTest(
         "insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
         "Aachen:9,Hamburg:10,Muenchen:30,Zuerich:3" + System.lineSeparator());
   }
 
   @Test
   public void levelOrderTest() {
-    easyTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator(),
+    oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10" + System.lineSeparator(),
         "traverse=level-order");
   }
 
   @Test
   public void levelOrderTest2() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30"
         + System.lineSeparator(), "traverse=level-order");
   }
 
   @Test
   public void levelOrderTest3() {
-    easyTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
+    oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
         "Hamburg:10,Aachen:9,Muenchen:30" + System.lineSeparator(), "traverse=level-order");
   }
 
   @Test
   public void levelOrderTest4() {
-    easyTest(
+    oneLineTest(
         "insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
         "Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3" + System.lineSeparator(),
         "traverse=level-order");
@@ -247,7 +247,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 
   @Test
   public void levelOrderTest5() {
-    easyTest(
+    oneLineTest(
         "insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninsert Aaachen:3\ninfo\nquit\n",
         "Hamburg:10,Aachen:9,Muenchen:30,Aaachen:3,Zuerich:3" + System.lineSeparator(),
         "traverse=level-order");
@@ -255,7 +255,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 
   @Test
   public void preOrderTest5() {
-    easyTest(
+    oneLineTest(
         "insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninsert Aaachen:3\ninfo\nquit\n",
         "Hamburg:10,Aachen:9,Aaachen:3,Muenchen:30,Zuerich:3" + System.lineSeparator(),
         "traverse=pre-order");

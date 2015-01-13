@@ -105,7 +105,7 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
 
   @Test
   public void testSimpleFileAndQuit() {
-    easyTest("quit\n", "", BOOK_1.getAbsolutePath(), "traverse=pre-order");
+    oneLineTest("quit\n", "", BOOK_1.getAbsolutePath(), "traverse=pre-order");
   }
 
   @Test
@@ -117,7 +117,7 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
 
   @Test
   public void testOnlyOneArg() {
-    easyTest("quit\n", "", BOOK_1.getAbsolutePath());
+    oneLineTest("quit\n", "", BOOK_1.getAbsolutePath());
   }
 
   @Test
@@ -152,39 +152,39 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
   
   @Test
   public void search1() {
-    easyTest("search ipsum\nquit\n", "ipsum:1"+System.lineSeparator(), BOOK_1.getAbsolutePath(), "traverse=pre-order");
+    oneLineTest("search ipsum\nquit\n", "ipsum:1"+System.lineSeparator(), BOOK_1.getAbsolutePath(), "traverse=pre-order");
   }
 
   @Test
   public void search2() {
-    easyTest("search Lorem\nquit\n", "Lorem:1,2" + System.lineSeparator(),
+    oneLineTest("search Lorem\nquit\n", "Lorem:1,2" + System.lineSeparator(),
         BOOK_1.getAbsolutePath(), "traverse=pre-order");
   }
 
   @Test
   public void searchNull() {
-    easyTest("search muellll\nquit\n", "muellll:null" + System.lineSeparator(),
+    oneLineTest("search muellll\nquit\n", "muellll:null" + System.lineSeparator(),
         BOOK_1.getAbsolutePath(), "traverse=pre-order");
   }
 
   @Test
   public void emptyPage() {
-    easyTest("quit\n", "", BOOK_4.getAbsolutePath(), "traverse=pre-order");
+    oneLineTest("quit\n", "", BOOK_4.getAbsolutePath(), "traverse=pre-order");
   }
 
   @Test
   public void emptyFile() {
-    easyTest("quit\n", "", EMPTY_BOOK.getAbsolutePath(), "traverse=pre-order");
+    oneLineTest("quit\n", "", EMPTY_BOOK.getAbsolutePath(), "traverse=pre-order");
   }
 
   @Test
   public void emptyLine() {
-    easyTest("quit\n", "", BOOK_5.getAbsolutePath(), "traverse=pre-order");
+    oneLineTest("quit\n", "", BOOK_5.getAbsolutePath(), "traverse=pre-order");
   }
 
   @Test
   public void searchOnEmptyBook() {
-    easyTest("search hiergiebtsnichtszufinden\nquit\n",
+    oneLineTest("search hiergiebtsnichtszufinden\nquit\n",
         "hiergiebtsnichtszufinden:null" + System.lineSeparator(),
  EMPTY_BOOK.getAbsolutePath(),
         "traverse=pre-order");
@@ -192,80 +192,80 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
 
   @Test
   public void searchOnEmptyLine() {
-    easyTest("search amet\nquit\n", "amet:2" + System.lineSeparator(), BOOK_4.getAbsolutePath(),
+    oneLineTest("search amet\nquit\n", "amet:2" + System.lineSeparator(), BOOK_4.getAbsolutePath(),
         "traverse=pre-order");
   }
 
   @Test
   public void infoOnEmptyBookPreOrder() {
-    easyTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(),
+    oneLineTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(),
         "traverse=pre-order");
   }
 
   @Test
   public void infoOnEmptyBookInOrder() {
-    easyTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(),
+    oneLineTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(),
         "traverse=in-order");
   }
 
   @Test
   public void infoOnEmptyBookLevelOrder() {
-    easyTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(),
+    oneLineTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(),
         "traverse=level-order");
   }
 
   @Test
   public void infoWithPreOrder1() {
-    easyTest("info\nquit\n", "word1:1" + System.lineSeparator(), BOOK_6_1.getAbsolutePath(),
+    oneLineTest("info\nquit\n", "word1:1" + System.lineSeparator(), BOOK_6_1.getAbsolutePath(),
         "traverse=pre-order");
   }
 
   @Test
   public void infoWithInOrder1() {
-    easyTest("info\nquit\n", "word1:1" + System.lineSeparator(), BOOK_6_1.getAbsolutePath(),
+    oneLineTest("info\nquit\n", "word1:1" + System.lineSeparator(), BOOK_6_1.getAbsolutePath(),
         "traverse=in-order");
   }
 
   @Test
   public void infoWithLevelOrder1() {
-    easyTest("info\nquit\n", "word1:1" + System.lineSeparator(), BOOK_6_1.getAbsolutePath(),
+    oneLineTest("info\nquit\n", "word1:1" + System.lineSeparator(), BOOK_6_1.getAbsolutePath(),
         "traverse=level-order");
   }
 
   @Test
   public void infoWithPreOrder2() {
-    easyTest("info\nquit\n", "word1:1,2" + System.lineSeparator(), BOOK_6_2.getAbsolutePath(),
+    oneLineTest("info\nquit\n", "word1:1,2" + System.lineSeparator(), BOOK_6_2.getAbsolutePath(),
         "traverse=pre-order");
   }
 
   @Test
   public void infoWithInOrder2() {
-    easyTest("info\nquit\n", "word1:1,2" + System.lineSeparator(), BOOK_6_2.getAbsolutePath(),
+    oneLineTest("info\nquit\n", "word1:1,2" + System.lineSeparator(), BOOK_6_2.getAbsolutePath(),
         "traverse=in-order");
   }
 
   @Test
   public void infoWithLevelOrder2() {
-    easyTest("info\nquit\n", "word1:1,2" + System.lineSeparator(), BOOK_6_2.getAbsolutePath(),
+    oneLineTest("info\nquit\n", "word1:1,2" + System.lineSeparator(), BOOK_6_2.getAbsolutePath(),
         "traverse=level-order");
   }
 
   @Test
   public void infoWithPreOrder3() {
-    easyTest("info\nquit\n", "b:1,2,a:1,3,aa:3,c:1,d:2,ca:3,e:3" + System.lineSeparator(),
+    oneLineTest("info\nquit\n", "b:1,2,a:1,3,aa:3,c:1,d:2,ca:3,e:3" + System.lineSeparator(),
         BOOK_7.getAbsolutePath(),
         "traverse=pre-order");
   }
 
   @Test
   public void infoWithInOrder3() {
-    easyTest("info\nquit\n", "a:1,3,aa:3,b:1,2,c:1,ca:3,d:2,e:3" + System.lineSeparator(),
+    oneLineTest("info\nquit\n", "a:1,3,aa:3,b:1,2,c:1,ca:3,d:2,e:3" + System.lineSeparator(),
         BOOK_7.getAbsolutePath(), "traverse=in-order");
   }
 
   @Test
   public void infoWithLevelOrder3() {
-    easyTest("info\nquit\n", "b:1,2,a:1,3,c:1,aa:3,d:2,ca:3,e:3" + System.lineSeparator(),
+    oneLineTest("info\nquit\n", "b:1,2,a:1,3,c:1,aa:3,d:2,ca:3,e:3" + System.lineSeparator(),
         BOOK_7.getAbsolutePath(), "traverse=level-order");
   }
 

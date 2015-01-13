@@ -23,6 +23,8 @@ import java.security.Permission;
 import java.util.Arrays;
 import java.util.Stack;
 
+import org.junit.Assert;
+
 /**
  * This class gives you the ability to test a class you don't know the implementation of (which will from now on be
  * referenced as the "tested class"). <br>
@@ -79,7 +81,7 @@ public class TestObject {
      *            The argument to be passed to the constructor of the tested class.
      */
     public TestObject(Object argument) {
-        this(new Object[] {argument});
+        this(new Object[] { argument });
     }
 
     /**
@@ -91,7 +93,7 @@ public class TestObject {
      * @param argumentType
      */
     public TestObject(Object argument, Class<?> argumentType) {
-        this(new Object[] {argument}, new Class<?>[] {argumentType});
+        this(new Object[] { argument }, new Class<?>[] { argumentType });
     }
 
     /**
@@ -263,7 +265,7 @@ public class TestObject {
      * @return True if such a method is present in the tested class.
      */
     public static boolean hasMethod(String methodName, Class<?> argumentType) {
-        return hasMethod(methodName, new Class<?>[] {argumentType});
+        return hasMethod(methodName, new Class<?>[] { argumentType });
     }
 
     /**
@@ -465,7 +467,7 @@ public class TestObject {
      * @return What the method returns. {@code null} if it was a void method.
      */
     public static Object runStatic(String methodName, Object argument) {
-        return runStatic(methodName, new Object[] {argument});
+        return runStatic(methodName, new Object[] { argument });
     }
 
     /**
@@ -485,7 +487,7 @@ public class TestObject {
      * @return What the method returns. {@code null} if it was a void method.
      */
     public static Object runStatic(String methodName, Object argument, Class<?> argumentType) {
-        return runStatic(methodName, new Object[] {argument}, new Class<?>[] {argumentType});
+        return runStatic(methodName, new Object[] { argument }, new Class<?>[] { argumentType });
     }
 
     /**
@@ -536,7 +538,9 @@ public class TestObject {
      * the Terminal class. <br>
      * <br>
      * NOTE: While this whole class is independent, the functionality provided by this very method relies on the
-     * Terminal class introduced for the programming lecture at the KIT!
+     * Terminal class introduced for the programming lecture at the KIT!<br>
+     * {@link Assert#fail} will be called to output an error if this method is used by a test but the implementation
+     * lacks the Terminal class.
      * 
      * @param input
      */
@@ -655,7 +659,7 @@ public class TestObject {
      * @return What the method returns. {@code null} if it was a void method.
      */
     public Object run(String methodName, Object argument) {
-        return this.run(methodName, new Object[] {argument});
+        return this.run(methodName, new Object[] { argument });
     }
 
     /**
@@ -675,7 +679,7 @@ public class TestObject {
      * @return What the method returns. {@code null} if it was a void method.
      */
     public Object run(String methodName, Object argument, Class<?> argumentType) {
-        return this.run(methodName, new Object[] {argument}, new Class<?>[] {argumentType});
+        return this.run(methodName, new Object[] { argument }, new Class<?>[] { argumentType });
     }
 
     /**
