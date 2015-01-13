@@ -1,0 +1,527 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language ngerman
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "JUnit Tests der Lerngruppe in Eclipse verwenden"
+\pdf_author "Joshua Gleitze"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language german
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+JUnit Tests der Lerngruppe in Eclipse verwenden
+\end_layout
+
+\begin_layout Author
+Joshua Gleitze
+\end_layout
+
+\begin_layout Standard
+Die JUnit Tests der Lerngruppe prüfen Lösungen der Programmieren-Übungsblätter.
+ Jeder darf sie benutzen, um seine Lösung zu testen.
+ Dabei sind sie so ausgelegt, dass jeder den selben Test verwenden kann
+ und die Tests unabhängig von der Implementierung sind.
+ Es folgt eine kleine Anleitung zur Verwendung.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+JUnit Tests zum Projekt hinzufügen
+\end_layout
+
+\begin_layout Standard
+Wenn ihr einen JUnit Test für eine Aufgabe verwenden wollt, müsst ihr den
+ Ordner JUnitTests und die Bibliothek JUnit zu eurem Projekt hinzufügen:
+\end_layout
+
+\begin_layout Itemize
+Rechtsklick auf euer Projekt -> Properties.
+\end_layout
+
+\begin_layout Itemize
+Unter 
+\begin_inset Quotes gld
+\end_inset
+
+Java Build Path
+\begin_inset Quotes grd
+\end_inset
+
+ im ersten Reiter 
+\begin_inset Quotes gld
+\end_inset
+
+Sources
+\begin_inset Quotes grd
+\end_inset
+
+ auf 
+\begin_inset Quotes gld
+\end_inset
+
+Link Source...
+\begin_inset Quotes grd
+\end_inset
+
+ klicken.
+\end_layout
+
+\begin_layout Itemize
+Auf 
+\begin_inset Quotes gld
+\end_inset
+
+Browse
+\begin_inset Quotes grd
+\end_inset
+
+ klicken, den 
+\begin_inset Quotes gld
+\end_inset
+
+JUnit Tests
+\begin_inset Quotes grd
+\end_inset
+
+-Ordner auswählen und bestätigen.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes gld
+\end_inset
+
+Update exclusion filters …
+\begin_inset Quotes grd
+\end_inset
+
+ auswählen und bestätigen.
+\end_layout
+
+\begin_layout Itemize
+Im dritten Reiter von 
+\begin_inset Quotes gld
+\end_inset
+
+Java Build Path
+\begin_inset Quotes grd
+\end_inset
+
+, 
+\begin_inset Quotes gld
+\end_inset
+
+Libraries
+\begin_inset Quotes grd
+\end_inset
+
+, auf 
+\begin_inset Quotes gld
+\end_inset
+
+Add Library…
+\begin_inset Quotes grd
+\end_inset
+
+ klicken.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes gld
+\end_inset
+
+JUnit
+\begin_inset Quotes grd
+\end_inset
+
+ auswählen, auf 
+\begin_inset Quotes gld
+\end_inset
+
+Next
+\begin_inset Quotes grd
+\end_inset
+
+ und dann auf 
+\begin_inset Quotes gld
+\end_inset
+
+Finish
+\begin_inset Quotes grd
+\end_inset
+
+ klicken.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/1.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/2.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/3.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/4.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/5.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/6.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/7.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/8.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/9.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/10.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/11.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/1/12.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Launch configuration für den Test anlegen
+\end_layout
+
+\begin_layout Itemize
+Rechtsklick auf den Test, den du verwenden willst -> Properties
+\end_layout
+
+\begin_layout Itemize
+Im Abschnitt 
+\begin_inset Quotes gld
+\end_inset
+
+Run/Debug Settings
+\begin_inset Quotes grd
+\end_inset
+
+ auf 
+\begin_inset Quotes gld
+\end_inset
+
+New…
+\begin_inset Quotes grd
+\end_inset
+
+ klicken.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes gld
+\end_inset
+
+JUnit
+\begin_inset Quotes grd
+\end_inset
+
+ auswählen und bestätigen.
+\end_layout
+
+\begin_layout Itemize
+Im Reiter 
+\begin_inset Quotes gld
+\end_inset
+
+Arguments
+\begin_inset Quotes grd
+\end_inset
+
+ unter 
+\begin_inset Quotes gld
+\end_inset
+
+VM arguments
+\begin_inset Quotes grd
+\end_inset
+
+ den Namen deiner Klasse angeben.
+ Das geschieht in der Form 
+\begin_inset Quotes gld
+\end_inset
+
+-DclassName=
+\emph on
+dein.package.DeinKlassenName
+\emph default
+
+\begin_inset Quotes grd
+\end_inset
+
+.
+ Das Klassenname muss den gesamten Package-Pfad enthalten!
+\end_layout
+
+\begin_layout Itemize
+Beide Fenster bestätigen.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Anleitung_Bilder/2/1.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/2/2.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/2/3.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/2/4.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Test ausführen
+\end_layout
+
+\begin_layout Standard
+Der Test kann jetzt über den Play-Button ausgeführt werden.
+ Ggf.
+ muss die angelegte Run-Configuration im DropDown-Menü ausgewählt werden.
+ Die Ergebnisse des Tests poppen automatisch im JUnit-View von Eclipse auf.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Anleitung_Bilder/3/1.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Anleitung_Bilder/3/2.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Viel Spaß damit!
+\end_layout
+
+\end_body
+\end_document
