@@ -20,7 +20,7 @@
 \font_sf_scale 100
 \font_tt_scale 100
 \graphics default
-\default_output_format default
+\default_output_format pdf2
 \output_sync 0
 \bibtex_command default
 \index_command default
@@ -103,6 +103,42 @@ LatexCommand tableofcontents
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 3cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+Bei unscharfen Bildern bitte versuchen zu zoomen und kurz warten.
+ Ansonsten finden sich die Bilder auch im Ordner 
+\noun on
+Anleitung_Bilder/.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
 
@@ -492,7 +528,29 @@ Test ausführen
 \end_layout
 
 \begin_layout Standard
-Der Test kann jetzt über den Play-Button ausgeführt werden.
+Beim ersten Mal muss im DropDown-Menü neben dem Play-Button 
+\begin_inset Quotes gld
+\end_inset
+
+Run Configurations
+\begin_inset Quotes grd
+\end_inset
+
+ ausgewählt werden.
+ In dem sich öffnenden Fenster wählt ihr die neue Run-Configuration aus
+ und drückt auf 
+\begin_inset Quotes gld
+\end_inset
+
+Run
+\begin_inset Quotes grd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Der Test kann ab jetzt über den Play-Button ausgeführt werden.
  Ggf.
  muss die angelegte Run-Configuration im DropDown-Menü ausgewählt werden.
  Die Ergebnisse des Tests poppen automatisch im JUnit-View von Eclipse auf.
@@ -521,6 +579,83 @@ Der Test kann jetzt über den Play-Button ausgeführt werden.
 
 \begin_layout Section*
 Viel Spaß damit!
+\end_layout
+
+\begin_layout Section
+Checkstyle für die Tests deaktivieren
+\end_layout
+
+\begin_layout Standard
+Die Tests werden nicht Checkstyle-konform geschrieben.
+ Um die Fehler-Icons im Projektbaum verschwinden zu lassen, müssen folgende
+ Schritte befolgt werden:
+\end_layout
+
+\begin_layout Itemize
+In den Projekteinstellung (Projekt -> Properties) den Reiter 
+\begin_inset Quotes gld
+\end_inset
+
+Checkstyle
+\begin_inset Quotes grd
+\end_inset
+
+ auswählen.
+\end_layout
+
+\begin_layout Itemize
+Im 
+\begin_inset Quotes gld
+\end_inset
+
+Exclude from checking…
+\begin_inset Quotes grd
+\end_inset
+
+-Feld den Eintrag 
+\begin_inset Quotes gld
+\end_inset
+
+files from packages
+\begin_inset Quotes grd
+\end_inset
+
+ anwählen.
+ 
+\end_layout
+
+\begin_layout Itemize
+Klick auf 
+\begin_inset Quotes gld
+\end_inset
+
+Change...
+\begin_inset Quotes grd
+\end_inset
+
+ und den Ordner mit den JUnit-Tests auswählen.
+ 
+\begin_inset Quotes gld
+\end_inset
+
+OK
+\begin_inset Quotes grd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Sicherstellen, dass der Haken bei 
+\begin_inset Quotes gld
+\end_inset
+
+files from packages
+\begin_inset Quotes grd
+\end_inset
+
+ gesetzt ist.
+ Fertig.
 \end_layout
 
 \end_body
