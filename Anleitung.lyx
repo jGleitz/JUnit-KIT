@@ -128,9 +128,7 @@ status open
 
 \begin_layout Plain Layout
 Bei unscharfen Bildern bitte versuchen zu zoomen und kurz warten.
- Ansonsten finden sich die Bilder auch im Ordner 
-\noun on
-Anleitung_Bilder/.
+ Ansonsten finden sich die Bilder auch im Ordner .bilder_anleitung/.
 \end_layout
 
 \end_inset
@@ -274,7 +272,7 @@ Finish
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/1.png
+	filename .bilder_anleitung/1/1.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -283,29 +281,7 @@ Finish
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/2.png
-	lyxscale 30
-	width 7cm
-	groupId Screenshots
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Graphics
-	filename Anleitung_Bilder/1/3.png
-	lyxscale 30
-	width 7cm
-	groupId Screenshots
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename Anleitung_Bilder/1/4.png
+	filename .bilder_anleitung/1/2.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -318,7 +294,7 @@ Finish
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/5.png
+	filename .bilder_anleitung/1/3.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -327,29 +303,7 @@ Finish
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/6.png
-	lyxscale 30
-	width 7cm
-	groupId Screenshots
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Graphics
-	filename Anleitung_Bilder/1/7.png
-	lyxscale 30
-	width 7cm
-	groupId Screenshots
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename Anleitung_Bilder/1/8.png
+	filename .bilder_anleitung/1/4.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -362,7 +316,7 @@ Finish
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/9.png
+	filename .bilder_anleitung/1/5.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -371,7 +325,7 @@ Finish
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/10.png
+	filename .bilder_anleitung/1/6.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -384,7 +338,7 @@ Finish
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/11.png
+	filename .bilder_anleitung/1/7.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -393,7 +347,51 @@ Finish
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/1/12.png
+	filename .bilder_anleitung/1/8.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename .bilder_anleitung/1/9.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename .bilder_anleitung/1/10.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename .bilder_anleitung/1/11.png
+	lyxscale 30
+	width 7cm
+	groupId Screenshots
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename .bilder_anleitung/1/12.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -482,7 +480,7 @@ Beide Fenster bestätigen.
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename Anleitung_Bilder/2/1.png
+	filename .bilder_anleitung/2/1.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -491,7 +489,7 @@ Beide Fenster bestätigen.
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/2/2.png
+	filename .bilder_anleitung/2/2.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -504,7 +502,7 @@ Beide Fenster bestätigen.
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/2/3.png
+	filename .bilder_anleitung/2/3.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -513,7 +511,7 @@ Beide Fenster bestätigen.
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/2/4.png
+	filename .bilder_anleitung/2/4.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -558,7 +556,7 @@ Der Test kann ab jetzt über den Play-Button ausgeführt werden.
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename Anleitung_Bilder/3/1.png
+	filename .bilder_anleitung/3/1.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots
@@ -567,7 +565,7 @@ Der Test kann ab jetzt über den Play-Button ausgeführt werden.
 
 
 \begin_inset Graphics
-	filename Anleitung_Bilder/3/2.png
+	filename .bilder_anleitung/3/2.png
 	lyxscale 30
 	width 7cm
 	groupId Screenshots

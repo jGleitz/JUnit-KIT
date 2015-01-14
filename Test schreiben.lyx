@@ -323,11 +323,11 @@ test ggf.
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename Schreiben_Bilder/NewJUnitTestCase1.png
+	filename .bilder_schreiben/NewJUnitTestCase1.png
 	lyxscale 50
 	width 7cm
 	groupId New JUnit Test Case
@@ -336,7 +336,7 @@ status collapsed
 
 
 \begin_inset Graphics
-	filename Schreiben_Bilder/NewJUnitTestCase2.png
+	filename .bilder_schreiben/NewJUnitTestCase2.png
 	lyxscale 50
 	width 7cm
 	groupId New JUnit Test Case
