@@ -14,8 +14,8 @@ import org.junit.Assert;
  * Say we expect some lines to be three times {@code "Success!"}, an empty line afterwards, and then a line starting
  * with {@code "Error,"}. We would construct this Array: <br>
  * 
- * <pre>
  * {@code
+ * <pre>
  * ExpectedResult[] expectedResults = new ExpectedResult[] {
  *      new ExpectedResult("Success!", TestType.SAME),
  *      new ExpectedResult("Success!", TestType.SAME),
@@ -24,6 +24,7 @@ import org.junit.Assert;
  *      new ExpectedResult("Error,", TestType.STARTS_WITH)
  * }
  * </pre>
+ * }
  * 
  * @author Joshua Gleitze
  * @version 1.0

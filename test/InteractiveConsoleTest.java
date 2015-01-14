@@ -47,7 +47,7 @@ public class InteractiveConsoleTest {
     }
 
     /**
-     * Test interactive console programs that output one line. Calls the main method with optional {@code args0} on the
+     * Tests interactive console programs that output one line. Calls the main method with optional {@code args0} on the
      * test object and runs all {@code commands} on it. Asserts that the output matches the
      * {@code expectedOutputMatcher}.
      * 
@@ -70,7 +70,7 @@ public class InteractiveConsoleTest {
     }
 
     /**
-     * Test interactive console programs that output multiple lines. Calls the main method with optional {@code args0}
+     * Tests interactive console programs that output multiple lines. Calls the main method with optional {@code args0}
      * on the test object and runs all {@code commands} on it. Asserts that each output line matches the
      * {@code expectedResults}. Make sure to provide exactly one {@link ExpectedResult} for each output line you expect.<br>
      * <br>
@@ -86,6 +86,7 @@ public class InteractiveConsoleTest {
      *      new ExpectedResult("Success!", TestType.SAME),
      *      new ExpectedResult(System.lineSeparator(), TestType.SAME),
      *      new ExpectedResult("Error,", TestType.STARTS_WITH)
+     * }
      * }
      * multiLineTest(commands, expectedResults, args0);
      * </pre>
@@ -130,10 +131,11 @@ public class InteractiveConsoleTest {
     }
 
     /**
-     * Does the same as {@link #oneLineTest(String, String, String...)}, but it it only checks weather the output begins
-     * with "Error," or not. <br>
-     * This method does NOT allow to call System.exit(1). If you expect the TestObject to do so, call
-     * {@code TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);} before.
+     * Tests interactive console programs that oshould output a error message. Calls the main method with optional
+     * {@code args0} on the test object and runs all {@code commands} on it. Asserts that the output started with
+     * {@code "Error,"}. <br>
+     * NOTE: This method does <b>not</b> allow to call {@code System.exit(1)}. If you expect the implemented class to do
+     * so, call {@code TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);} before.
      */
     protected void crashTest(String commands, String... args0) {
         String expectedOutputStart = "Error,";
@@ -144,7 +146,7 @@ public class InteractiveConsoleTest {
     }
 
     @Before
-    public void allowSystemExit0() {
+    protected void allowSystemExit0() {
         TestObject.allowSystemExit(SystemExitStatus.WITH_0);
     }
 

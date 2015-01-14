@@ -26,17 +26,17 @@ import java.util.Stack;
 import org.junit.Assert;
 
 /**
- * This class gives you the ability to test a class you don't know the implementation of (which will from now on be
- * referenced as the "tested class"). <br>
- * This class encapsulates the tested class. Use the constructors of TestObject to get instances of the tested class.
- * You can use the {@code run} and {@code runStatic} methods to run methods on the instance or the class. You can access
- * the "real" instance and the "real" tested class via {@link #getImplementedClass()} and {@link #getImplementedClass()}
- * , respectively. But it is strongly discouraged to work with the "real" class!<br>
- * To set the name of the tested class, set a JVM variable "className" to the name of the tested class via the "-D"
- * command. Example: "-DclassName=joshuagleitze.tuple.NaturalNumberTuple"
+ * Gives you the ability to test a class you don't know the implementation of. We will from now on be referencing this
+ * class as the "tested class". <br>
+ * This class encapsulates the tested class. Use the constructors of {@code TestObject} to get instances of the tested
+ * class. You can use the {@link #run} and {@link #runStatic} methods to run methods on the instance or the class. You
+ * can access the "real" instance and the "real" tested class via {@link #getImplementedClass()} and
+ * {@link #getImplementedClass()} , respectively. But it is strongly discouraged to work with the "real" class!<br>
+ * To set the name of the tested class, set a JVM variable {@code className} to the name of the tested class via the
+ * {@code -D} command. Example: {@code "-DclassName=de.joshuagleitze.tuple.NaturalNumberTuple"}
  * 
  * @author Joshua Gleitze
- *
+ * @version 1.3
  */
 public class TestObject {
     private static boolean allowSystemExit0 = false;
@@ -47,8 +47,8 @@ public class TestObject {
     private final Object instance;
 
     /**
-     * Gets the tested class by the System property "className". To set the name of the tested class, set a JVM variable
-     * via the "-D" command. Example: "-DclassName=joshuagleitze.tuple.NaturalNumberTuple"
+     * Gets the tested class by the System property {@code className}. To set the name of the tested class, set a JVM variable
+     * via the {@code -D} command. Example: {@code "-DclassName=de.joshuagleitze.tuple.NaturalNumberTuple"}.
      */
     static {
         String className = System.getProperty("className");
