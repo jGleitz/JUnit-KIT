@@ -1,4 +1,4 @@
-package test.blatt5.cities;
+package test.task5.cities;
 
 import org.junit.Test;
 

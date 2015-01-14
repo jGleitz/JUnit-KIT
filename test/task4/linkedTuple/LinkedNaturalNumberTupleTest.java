@@ -1,4 +1,4 @@
-package test.blatt4.linkedTuple;
+package test.task4.linkedTuple;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;

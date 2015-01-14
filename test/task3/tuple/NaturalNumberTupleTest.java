@@ -1,4 +1,4 @@
-package test.blatt3.tuple;
+package test.task3.tuple;
 
 import static org.junit.Assert.*;
 

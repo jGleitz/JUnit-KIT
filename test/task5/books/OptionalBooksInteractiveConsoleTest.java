@@ -1,4 +1,4 @@
-package test.blatt5.books;
+package test.task5.books;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

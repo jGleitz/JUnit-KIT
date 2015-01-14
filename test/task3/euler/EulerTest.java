@@ -1,4 +1,4 @@
-package test.blatt3.euler;
+package test.task3.euler;
 
 import static org.junit.Assert.*;
 

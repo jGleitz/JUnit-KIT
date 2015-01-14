@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test.blatt4.waiting;
+package test.task4.waiting;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
