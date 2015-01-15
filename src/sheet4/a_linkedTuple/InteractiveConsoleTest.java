@@ -63,7 +63,7 @@ public class InteractiveConsoleTest {
         commands += "quit\n";
         expectedOutput = "";
         TestObject.setNextMethodCallInput(commands);
-        TestObject.runStatic("main", (Object) new String[] {});
+        TestObject.runStaticVoid("main", (Object) new String[]{});
         result = TestObject.getLastMethodOutput();
         assertThat(consoleMessage(commands), result, is(expectedOutput));
     }
@@ -75,7 +75,7 @@ public class InteractiveConsoleTest {
         commands += "quit\n";
         expectedStart = "Error,";
         TestObject.setNextMethodCallInput(commands);
-        TestObject.runStatic("main", (Object) new String[] {});
+        TestObject.runStaticVoid("main", (Object) new String[]{});
         result = TestObject.getLastMethodOutput();
         assertThat(consoleMessage(commands), result, startsWith(expectedStart));
     }

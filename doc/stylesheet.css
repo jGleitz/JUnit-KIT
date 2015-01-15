@@ -6,7 +6,7 @@ body {
     background-color:#ffffff;
     color:#353833;
     font-family:Arial, Helvetica, sans-serif;
-    font-size:76%;
+    font-size:12px;
     margin:0;
 }
 a:link, a:visited {
@@ -53,13 +53,13 @@ ul {
     list-style-type:disc;
 }
 code, tt {
-    font-size:1.2em;
+    font-size:0.9em;
 }
 dt code {
-    font-size:1.2em;
+    font-size:0.9em;
 }
 table tr td dt code {
-    font-size:1.2em;
+    font-size:0.9em;
     vertical-align:top;
 }
 sup {

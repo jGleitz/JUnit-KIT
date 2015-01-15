@@ -64,7 +64,7 @@ public class InteractiveConsoleTest {
      */
     protected void oneLineTest(String commands, Matcher<String> expectedOutputMatcher, String... args0) {
         TestObject.setNextMethodCallInput(commands);
-        TestObject.runStatic("main", (Object) args0);
+        TestObject.runStaticVoid("main", (Object) args0);
         String result = TestObject.getLastMethodOutput();
         assertThat(consoleMessage(commands, args0), result, expectedOutputMatcher);
     }
@@ -101,7 +101,7 @@ public class InteractiveConsoleTest {
      */
     protected void multiLineTest(String commands, ExpectedResult[] expectedResults, String... args0) {
         TestObject.setNextMethodCallInput(commands);
-        TestObject.runStatic("main", (Object) args0);
+        TestObject.runStaticVoid("main", (Object) args0);
         String result = TestObject.getLastMethodOutput();
         String resultArray[] = result.split("\n");
         String message = "";
@@ -140,7 +140,7 @@ public class InteractiveConsoleTest {
     protected void crashTest(String commands, String... args0) {
         String expectedOutputStart = "Error,";
         TestObject.setNextMethodCallInput(commands);
-        TestObject.runStatic("main", (Object) args0);
+        TestObject.runStaticVoid("main", (Object) args0);
         String result = TestObject.getLastMethodOutput();
         assertThat(consoleMessage(commands, args0), result, startsWith(expectedOutputStart));
     }

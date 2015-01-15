@@ -105,14 +105,14 @@ public class WaitingTest {
         TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
         String testFileName;
         testFileName = writeFile(taskSheetExampleJobList);
-        TestObject.runStatic("main", (Object) new String[] {testFileName, "asdfasdfasf"});
+        TestObject.runStaticVoid("main", testFileName, "asdfasdfasf");
         new File(testFileName).delete();
         result = TestObject.getLastMethodOutput();
         message = "We called your program with a valid file as first parameter, but bullshit"
                 + " as second parameter. Therefore, your program should print an error message!";
         assertThat(message, result, startsWith("Error,"));
         testFileName = writeFile(taskSheetExampleJobList);
-        TestObject.runStatic("main", (Object) new String[] {testFileName, "waitingarea=asdfasdfasf"});
+        TestObject.runStaticVoid("main", testFileName, "waitingarea=asdfasdfasf");
         new File(testFileName).delete();
         result = TestObject.getLastMethodOutput();
         message = "We called your program with a valid file as first parameter and a second parameter "
@@ -120,7 +120,7 @@ public class WaitingTest {
                 + " print an error message!";
         assertThat(message, result, startsWith("Error,"));
         testFileName = writeFile(taskSheetExampleJobList);
-        TestObject.runStatic("main", (Object) new String[] {testFileName, "waitingarea==lifo"});
+        TestObject.runStaticVoid("main", testFileName, "waitingarea==lifo");
         new File(testFileName).delete();
         result = TestObject.getLastMethodOutput();
         message = "We called your program with a valid file as first parameter and the second parameter 'waitingarea==lifo'."
@@ -139,12 +139,12 @@ public class WaitingTest {
         String result;
         String message;
         TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-        TestObject.runStatic("main", (Object) new String[] {"I_do_no_exists.adsf"});
+        TestObject.runStaticVoid("main","I_do_no_exists.adsf");
         result = TestObject.getLastMethodOutput();
         message = "We called your program with a path leading nowhere as a first parameter. Therefore, your program should"
                 + " print an error message!";
         assertThat(message, result, startsWith("Error,"));
-        TestObject.runStatic("main", (Object) new String[] {"I_do_no_exists.adsf", FIFO});
+        TestObject.runStaticVoid("main", "I_do_no_exists.adsf", FIFO);
         result = TestObject.getLastMethodOutput();
         message = "We called your program with a path leading nowhere as a first parameter. Therefore, your program should"
                 + " print an error message!";
@@ -306,7 +306,7 @@ public class WaitingTest {
     private void runTest(String inputFile, String expectedResult, String mode) {
         String actualResult;
         String[] resultArray;
-        Object arguments;
+        Object[] arguments;
         ExpectedResult[] expectedResultArray = ExpectedResult.getArray(expectedResult.split("" + nl), TestType.SAME);
         String testFileName = writeFile(inputFile);
         TestObject.allowSystemExit(SystemExitStatus.WITH_0);
@@ -315,7 +315,7 @@ public class WaitingTest {
         } else {
             arguments = new String[] {testFileName, mode};
         }
-        TestObject.runStatic("main", arguments);
+        TestObject.runStaticVoid("main", arguments);
         new File(testFileName).delete();
         actualResult = TestObject.getLastMethodOutput();
         resultArray = actualResult.split(nl);

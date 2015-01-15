@@ -11,16 +11,16 @@ public class WithStaticTest {
 
     @Test
     public void testTryIt() {
-        Object result;
-        result = TestObject.runStatic("tryIt");
+        int result;
+        result = TestObject.runStatic(int.class, "tryIt");
+        assertThat(result, is(1));
+        result = TestObject.runStatic(int.class, "tryIt");
         assertThat((int) result, is(1));
-        result = TestObject.runStatic("tryIt");
+        result = TestObject.runStatic(int.class, "tryIt");
         assertThat((int) result, is(1));
-        result = TestObject.runStatic("tryIt");
+        result = TestObject.runStatic(int.class, "tryIt");
         assertThat((int) result, is(1));
-        result = TestObject.runStatic("tryIt");
-        assertThat((int) result, is(1));
-        result = TestObject.runStatic("tryIt");
+        result = TestObject.runStatic(int.class, "tryIt");
         assertThat((int) result, is(1));
     }
 

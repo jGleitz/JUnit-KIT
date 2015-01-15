@@ -21,6 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.Permission;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 import org.junit.Assert;
@@ -29,14 +31,90 @@ import org.junit.Assert;
  * Gives you the ability to test a class you don't know the implementation of. We will from now on be referencing this
  * class as the "tested class". <br>
  * This class encapsulates the tested class. Use the constructors of {@code TestObject} to get instances of the tested
- * class. You can use the {@link #run} and {@link #runStatic} methods to run methods on the instance or the class. You
- * can access the "real" instance and the "real" tested class via {@link #getImplementedClass()} and
- * {@link #getImplementedClass()} , respectively. But it is strongly discouraged to work with the "real" class!<br>
- * To set the name of the tested class, set a JVM variable {@code className} to the name of the tested class via the
- * {@code -D} command. Example: {@code "-DclassName=de.joshuagleitze.tuple.NaturalNumberTuple"}
+ * class. You can use the {@link #run run} and {@link #runStatic runStatic} methods to run methods on the instance.<br>
+ * To point a test to the implementation it should test, set a JVM variable {@code className} to the name of the tested
+ * class via the {@code -D} command. Example: {@code "-DclassName=de.joshuagleitze.tuple.NaturalNumberTuple"}<br>
+ * <br>
+ * <h4>Calling the constructors and {@code run}...-methods</h4> In the following, we will talk about "run methods". By
+ * this term, the {@link #TestObject(Object...) constructors}, {@link #runStatic(Class, String, Object...) runStatic},
+ * {@link #runStaticVoid(String, Object...) runStatic}, {@link #run(Class, String, Object...) run},
+ * {@link #runVoid(String, Object...) runVoid} are meant. <h5>formal arguments</h5> Which method of the implemented
+ * class to run will be decided based on the {@code formalArguments} parameter. But most of the time, you don't have
+ * explicitly specify the type of the arguments. If you call a run method without the {@code formalArguments} parameter,
+ * the formal parameters of the method will be guessed based on the classes of the {@code arguments} parameter. If there
+ * is no method whose formal arguments match {@code formalArguments} or the guessed argument types,
+ * {@link Assert#fail()} will be called to output an error message.
+ * <p>
+ * 90% of the time, you don't have to specify argument types. There are some special cases though:
+ * <p>
+ * <span class="strong">Primitive wrapper classes</span> <br>
+ * Instances of primitive wrapper classes will be guessed as primitive types! For example, to call <br>
+ * <code>public static void foo(Integer x)</code>,<br>
+ * you'll have to specify the argument types, e.g. like this:<br>
+ * <code>TestObject.runStaticVoid("foo", new Class<?>[]{Integer.getClass()}, new Integer(3))</code>
+ * <p>
+ * <span class="strong">Instances of {@code TestObject}</span><br>
+ * will always be converted into the instance of the tested class. This applies even if they are nested in an array.
+ * <p>
+ * <span class="strong">Inheritance</span><br>
+ * If you want to call a method in the tested class but specify an argument that is a subclass of the method's formal
+ * argument, the subclass will be guessed an most likely an error message will occur, as the there is no such method in
+ * the implemented class. For example, to call <br>
+ * {@code public static void foo(Number x)} with {@code 3},<br>
+ * you'll have to specify the argument types, e.g. like this:<br>
+ * <code>TestObject.runStaticVoid("foo", new Class<?>[]{ Number.getClass()}, 3)</code>.
+ * <p>
+ * <span class="strong">Passing an array</span><br>
+ * Because of the run method's signatures, you have to convert an array to {@code Object} if you pass it as as the only
+ * argument. For example, calling a main method may look like this:<br>
+ * <code>TestObject.runStaticVoid("main", (Object) new String[]{"arg1", "arg2"})</code>
+ * <h5>return type</h5>
+ * Run methods ending with "Void" can only be used to call void methods. If there is a method in the test class that
+ * matches the arguments you provided, but it is not a void method, {@link Assert#fail()} will be called to output an
+ * error message.
+ * <p>
+ * For the other run methods, you specify the expected return type through {@code expectedReturnType}. If a method of
+ * the tested class matches the arguments provided but does not return an instance of {@code expectedReturnType},
+ * {@link Assert#fail()} will be called to output an error message.
+ * <p>
+ * <span class="strong">Conversion</span><br>
+ * A returned object that is an instance of the tested class will be converted to an instance of {@code TestObject} that
+ * represent it. This applies even if it is nested in an array.
+ * <h5>error messages</h5>
+ * The run methods will output error messages via {@link Assert#fail()} in the following cases:
+ * <ul>
+ * <li>There is no method matching the formal parameters defined in {@code formalArguments} or implied by
+ * {@code arguments}, respectively.
+ * <li>Such a method exits, but it's not accessible for {@code TestObject} (<=> not {@code public}).
+ * <li>An exception that was not set to be rethrown with {@link #rethrowExceptions(Class...)} is thrown while running
+ * the method.
+ * <li>The method is not a {@code void} method or does not return an instance of the class specified in
+ * {@code expectedReturnType}, respectively.
+ * <li>Some other strange cases that should not occur.
+ * </ul>
+ * <h5>exception handling</h5>
+ * As mentioned above, normally {@link Assert#fail()} is called to output an error message if an exception is thrown
+ * while running a method. You can change that behaviour by calling {@link #rethrowExceptions(Class...)}. If the
+ * exception thrown in the tested class is an instance of the specified classes, it is wrapped in a
+ * {@link TestMethodException} which is then thrown. For example, if we would like to test that a method throws a
+ * {@code FooException}, we would do the following:
+ * 
+ * <pre>
+ * <code>
+ * TestObject.rethrowException(FooException);
+ * try {
+ *      TestObject.runStaticVoid("theMethod");
+ *      fail("You are expected to throw a FooException!");
+ * } catch (TestMethodException e) {
+ *      if (e.getCause() instanceof FooException) {
+ *          // everything went well
+ *      }
+ * }
+ * </code>
+ * </pre>
  * 
  * @author Joshua Gleitze
- * @version 1.3
+ * @version 2.0
  */
 public class TestObject {
     private static boolean allowSystemExit0 = false;
@@ -44,15 +122,17 @@ public class TestObject {
     private static final Class<?> clazz;
     private static String nextCallInput;
     private static Stack<String> programOutput;
+    private static List<Class<? extends Exception>> rethrowExceptions = new LinkedList<Class<? extends Exception>>();
     private final Object instance;
 
     /**
-     * Gets the tested class by the System property {@code className}. To set the name of the tested class, set a JVM variable
-     * via the {@code -D} command. Example: {@code "-DclassName=de.joshuagleitze.tuple.NaturalNumberTuple"}.
+     * Gets the tested class by the System property {@code className}. To set the name of the tested class, set a JVM
+     * variable via the {@code -D} command. Example: {@code "-DclassName=de.joshuagleitze.tuple.NaturalNumberTuple"}.
      */
     static {
         String className = System.getProperty("className");
         Class<?> c = null;
+
         try {
             c = Class.forName(className);
         } catch (ClassNotFoundException e) {
@@ -66,79 +146,49 @@ public class TestObject {
     }
 
     /**
-     * This uses the default constructor of the tested class.
-     */
-    public TestObject() {
-        this(new Object[] {});
-    }
-
-    /**
-     * This uses the constructor in the tested class that takes only one argument. If no such constructor can be found
-     * or another exception occurs during instantiation, {@link org.junit.Assert#fail(String)} will be called and output
-     * a detailed error message.
+     * Constructs an {@code TestObject} that represents an instance of the tested class. The constructor of the tested
+     * class whose formal arguments match {@code argumentTypes} will be selected to construct this instance.
      * 
-     * @param argument
-     *            The argument to be passed to the constructor of the tested class.
-     */
-    public TestObject(Object argument) {
-        this(new Object[] { argument });
-    }
-
-    /**
-     * This uses the constructor in the tested class that has only one formal argument {@code argument} of the type
-     * {@code argumentType}. If no such constructor can be found or another exception occurs during instantiation,
-     * {@link org.junit.Assert#fail(String)} will be called and output a detailed error message.
-     * 
-     * @param argument
-     * @param argumentType
-     */
-    public TestObject(Object argument, Class<?> argumentType) {
-        this(new Object[] { argument }, new Class<?>[] { argumentType });
-    }
-
-    /**
-     * This is for a constructor in the tested class that takes more than one argument. Each Object in {@code argument}
-     * is used as one parameter for the constructor of the tested class. This constructor will try to automatically
-     * select the right constructor of the tested class by the classes of the passed {@code arguments}. If no such
-     * constructor can be found or another exception occurs during instantiation, {@link org.junit.Assert#fail(String)}
-     * will be called and output a detailed error message.<br >
-     * This constructor will assume for any Object that is an instance of a elementary data type class, that an
-     * elementary data type was meant. <br>
-     * If this constructor fails to find (or select the right) constructor of the tested class, use
-     * {@link #TestObject(Object[], Class[])}!
-     * 
-     * @param arguments
-     *            The arguments to be passed to the constructor of the tested class in the correct order.
-     */
-    public TestObject(Object[] arguments) {
-        this(arguments, getTypeArray(arguments));
-    }
-
-    /**
-     * This is the most generic constructor. If any other constructor fails to instantiate the tested class, use this
-     * one. It will find the constructor of the tested class with the formal arguments you provide in
-     * {@code argumentTypes} and call it with the arguments you provide in {@code arguments}. If no such constructor can
-     * be found or another exception occurs during instantiation, {@link org.junit.Assert#fail(String)} will be called
-     * and output a detailed error message. <br>
-     * In most cases, it is not necessary to use this one. {@link #TestObject(Object[])} will do the job most of the
-     * time.
-     * 
-     * @param arguments
-     *            The arguments to be passed to the constructor.
-     * @param argumentTypes
+     * @param formalArguments
      *            The classes of the test class' constructor's formal arguments. The constructor will be selected based
      *            on the classes you provide.
+     * @param arguments
+     *            The arguments to be passed to the constructor.
      */
-    public TestObject(Object[] arguments, Class<?>[] argumentTypes) {
-        this.instance = run("", arguments, argumentTypes, null, true);
+    public TestObject(Class<?>[] formalArguments, Object... arguments) {
+        this.instance = run(clazz, "", formalArguments, arguments, null, true);
     }
 
     /**
-     * Calling this method sets the policy for the implemented class to call {@link System#exit(int)}. Setting this will
-     * apply throughout the test, unless you call this method again. The default is that the implemented class is not
-     * allowed to call {@link System#exit} in any way (this status can be achieved by calling
-     * {@code allowSystemExit(SystemExitStatus.NONE)}. {@link org.junit.Assert#fail} will be called if the implemented
-     * class tries to call {@code System.exit} with a status it is not allowed to.
+     * Constructs an {@code TestObject} that represents an instance of the tested class. The constructor of the tested
+     * class whose formal arguments match the classes of {@code arguments} will be selected to construct this instance.
+     * 
+     * @param arguments
+     *            The arguments to be passed to the constructor of the tested class in the correct order. The
+     *            constructor will be selected based on their types.
+     */
+    public TestObject(Object... arguments) {
+        this(getTypeArray(arguments), arguments);
+    }
+
+    /**
+     * Constructs a {@code TestObject} to represent {@code injectedInstance}.
+     * 
+     * @param injectInstance
+     *            set this to whatever you want. Only used to distinguish from other constructors.
+     * @param injectedInstance
+     *            The instance the constructed {@code TestObject} will represent.
+     */
+    private TestObject(boolean injectInstance, Object injectedInstance) {
+        this.instance = injectedInstance;
+    }
+
+    /**
+     * Calling this method sets the policy for the tested class to call {@link System#exit(int)}. Setting this will
+     * apply throughout the test, unless you call this method again. The default is that the tested class is not allowed
+     * to call {@link System#exit} in any way (this status can be achieved by calling
+     * {@code allowSystemExit(SystemExitStatus.NONE)} . {@link org.junit.Assert#fail} will be called if the tested class
+     * tries to call {@code System.exit} with a status it is not allowed to.
      * 
      * @param status
      *            The status you want to allow calling {@link System#exit} with.
@@ -167,22 +217,12 @@ public class TestObject {
     }
 
     /**
-     * Get the name of the implemented class.
+     * Returns the simple name of the tested class.
      * 
-     * @return What object.class.getSimpleName() returns if object is an instance of the implemented class.
+     * @return What {@code object.class.getSimpleName()} returns if {@code object} is an instance of the tested class.
      */
-    public static String getClassSimpleName() {
+    public static String getSimpleName() {
         return clazz.getSimpleName();
-    }
-
-    /**
-     * You can use this to get a reference of the "real" implemented class. Most of the time, you won't want to this!
-     * It's only meant for things like class comparison.
-     * 
-     * @return the tested class
-     */
-    public static final Class<?> getImplementedClass() {
-        return clazz;
     }
 
     /**
@@ -195,10 +235,10 @@ public class TestObject {
     }
 
     /**
-     * Gets the package the class is in.
+     * Gets the package the tested class is in.
      * 
-     * @return The name of the package the class is in. If the class has no package (= is in the default packagem
-     *         {@code null} is returned.
+     * @return The name of the package the tested class is in. If the tested class has no package (= is in the default
+     *         package {@code null} is returned.
      */
     public static String getPackageName() {
         if (clazz.getPackage() == null) {
@@ -208,9 +248,221 @@ public class TestObject {
     }
 
     /**
-     * Returns an Array containing the classes of the given Objects. For instances of elementary data type classes, the
-     * class of the elementary data type will be returned, not the class of its class representative. (E.g. for 3,
-     * int.class will be returned instead of Integer.class).
+     * Returns whether the tested class implements a method called {@code methodName} that takes multiple arguments of
+     * the types specified in {@code argumentTypes}.
+     * 
+     * @param methodName
+     *            The name of the method you want to check for.
+     * @param formalArguments
+     *            The types of the formal arguments.
+     * @return True if such a method is present in the tested class.
+     */
+    public static boolean hasMethod(String methodName, Class<?>... formalArguments) {
+        Method m;
+        try {
+            m = clazz.getDeclaredMethod(methodName, formalArguments);
+        } catch (NoSuchMethodException | SecurityException e) {
+            return false;
+        }
+        return (m != null);
+    }
+
+    /**
+     * Returns a String that represents a call of a method.
+     * 
+     * @param methodName
+     *            The method's name
+     * @param parameters
+     *            parameters that were used to call the method.
+     * @param isConstructor
+     *            Whether the method call was a call to the constructor. If set to {@code true}, {@code methodName} will
+     *            be ignored and the tested class' name will be used to render the method call.
+     * @return A String of the form "method(object1, object2, ...)"
+     */
+    public static String renderMethodCall(String methodName, Object[] parameters, boolean isConstructor) {
+        String result = "";
+        if (isConstructor) {
+            result += clazz.getSimpleName();
+        } else {
+            result += methodName;
+        }
+        result += "(";
+        for (int i = 0; i < parameters.length; i++) {
+            if (parameters[i].getClass().isArray()) {
+                result += Arrays.deepToString((Object[]) parameters[i]);
+            } else {
+                result += parameters[i].toString();
+            }
+            result += (i < parameters.length - 1) ? ", " : "";
+        }
+        result += ")";
+        return result;
+    }
+
+    /**
+     * Returns a String that represents the formal declaration of a method.
+     * 
+     * @param methodName
+     *            The method's name
+     * @param formalArguments
+     *            the classes of the method's formal parameters.
+     * @param isStatic
+     *            Whether the method called was static.
+     * @param isConstructor
+     *            Whether the method call was a call to the constructor. If set to {@code true}, {@code methodName} and
+     *            {@code isStatic} will be ignored and the class name will be used to render the method call.
+     * @return A String of the form "constructor/method/static method method(class1, class2, ...)"
+     */
+    public static String renderMethodFormal(String methodName, Class<?>[] formalArguments, boolean isStatic,
+            boolean isConstructor) {
+        String result = "";
+        if (isConstructor) {
+            result += "constructor " + clazz.getSimpleName();
+        } else {
+            result += (isStatic) ? "static method " : "method ";
+            result += methodName;
+        }
+        result += "(";
+        if (formalArguments == null) {
+            result += "null";
+        } else {
+            for (int i = 0; i < formalArguments.length; i++) {
+                result += formalArguments[i].getSimpleName();
+                result += (i < formalArguments.length - 1) ? ", " : "";
+            }
+        }
+        result += ")";
+        return result;
+    }
+
+    /**
+     * Runs a static method on the tested class. The method named {@code methodName} taking the formal arguments
+     * {@code formalArguments} will be selected.
+     * 
+     * @param <T>
+     *            The return type. (Set trough {@code expectedReturnType}).
+     * @param expectedReturnType
+     *            {@code Class<T>} what you expect the method to return.
+     * @param methodName
+     *            The name of the static method you want to call.
+     * @param formalArguments
+     *            The method's formal argument's classes. By them, the method will be selected.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     * @return What the method returns.
+     */
+    public static <T> T runStatic(Class<T> expectedReturnType, String methodName, Class<?>[] formalArguments,
+            Object... arguments) {
+        return run(expectedReturnType, methodName, formalArguments, arguments, null, false);
+    }
+
+    /**
+     * Runs a static method on the tested class. The method named {@code methodName} taking the classes of
+     * {@code arguments} as formal arguments will be selected.
+     * 
+     * @param <T>
+     *            The return type. (Set trough {@code expectedReturnType}).
+     * @param expectedReturnType
+     *            {@code Class<T>} what you expect the method to return.
+     * @param methodName
+     *            The name of the static method you want to call.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     * @return What the method returns.
+     */
+    public static <T> T runStatic(Class<T> expectedReturnType, String methodName, Object... arguments) {
+        return runStatic(expectedReturnType, methodName, getTypeArray(arguments), arguments);
+    }
+
+    /**
+     * Runs a static void method on the tested class. The method named {@code methodName} taking the formal arguments
+     * {@code formalArguments} will be selected.
+     * 
+     * @param methodName
+     *            The name of the static void method you want to call.
+     * @param formalArguments
+     *            The method's formal argument's classes. By them, the method will be selected.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     */
+    public static void runStaticVoid(String methodName, Class<?>[] formalArguments, Object... arguments) {
+        run(null, methodName, formalArguments, arguments, null, false);
+    }
+
+    /**
+     * Runs a static void method on the tested class. The method named {@code methodName} taking the classes of
+     * {@code arguments} as formal arguments will be selected.
+     * 
+     * @param methodName
+     *            The name of the static void method you want to call.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     */
+    public static void runStaticVoid(String methodName, Object... arguments) {
+        runStaticVoid(methodName, getTypeArray(arguments), arguments);
+    }
+
+    /**
+     * Provides input for the next method call. The String you provide will be accessible for the tested program through
+     * the {@code Terminal} class. <br>
+     * <br>
+     * NOTE: While {@code TestObject} is independent, the functionality provided by this very method relies on the
+     * Terminal class introduced for the programming lecture at the KIT!<br>
+     * {@link Assert#fail} will be called to output an error if this method is used by a test but the implementation of
+     * the tested class lacks the {@code Terminal} class.
+     * 
+     * @param input
+     *            the input that should be provided through the {@code Terminal} class on the next method call.
+     */
+    public static void setNextMethodCallInput(String input) {
+        nextCallInput = input;
+    }
+
+    /**
+     * Calls {@link #translateToTestObject(Object)} on an Array of objects.
+     * 
+     * @param objects
+     *            the objects to convert
+     * @return A copy of {@code objects} where any occurrence of an instance of the tested class has been converted to
+     *         an instance of {@code TestObject} that represents it.
+     */
+    public static Object[] translateAllToTestObject(Object[] objects) {
+        if (objects == null) {
+            return objects;
+        }
+        Object[] args = objects.clone();
+        for (int i = 0; i < args.length; i++) {
+            args[i] = translateToTestObject(args[i]);
+        }
+        return args;
+    }
+
+    /**
+     * Converts an instance of the tested class into an instance of {@code TestObject} that represents it.
+     * 
+     * @param object
+     *            an object to convert
+     * @return If {@code object}'s class is the tested class, an instance of {@code TestObject} that represents is.
+     *         {@code object} is returned without modification otherwise.
+     */
+    public static Object translateToTestObject(Object object) {
+        if (object == null) {
+            return object;
+        }
+        if (object.getClass().isArray()) {
+            return translateAllToTestObject((Object[]) object);
+        }
+        if (object.getClass() == clazz) {
+            return new TestObject(true, object);
+        }
+        return object;
+    }
+
+    /**
+     * Returns an Array containing the classes of the given Objects. For instances of primitive wrapper classes, the
+     * class of the primitive type will be used, not the primitive wrapper class. (E.g. for both {@code 3} and
+     * {@code new Integer(3)}, {@code int.class} will be used instead of {@code Integer.class}). For instances of
+     * {@code TestObject}, the tested class will be used.
      * 
      * @param arguments
      *            The Objects you want to get the classes of.
@@ -236,7 +488,7 @@ public class TestObject {
                 } else if (clazz == Double.class) {
                     parameterTypes[i] = double.class;
                 } else {
-                    parameterTypes[i] = clazz;
+                    parameterTypes[i] = translateClassToImplemented(clazz);
                 }
             }
         }
@@ -244,123 +496,27 @@ public class TestObject {
     }
 
     /**
-     * Returns whether the tested class implements a method called {@code methodName} that takes no arguments.
+     * Runs a method on the instance.
      * 
-     * @param methodName
-     *            The name of the method you want to check for.
-     * @return True if such a method is present in the tested class.
-     */
-    public static boolean hasMethod(String methodName) {
-        return hasMethod(methodName, new Class<?>[] {});
-    }
-
-    /**
-     * Returns whether the tested class implements a method called {@code methodName} that takes only one argument of
-     * the type {@code argumentType}.
-     * 
-     * @param methodName
-     *            The name of the method you want to check for.
-     * @param argumentType
-     *            The type of the (only) formal argument.
-     * @return True if such a method is present in the tested class.
-     */
-    public static boolean hasMethod(String methodName, Class<?> argumentType) {
-        return hasMethod(methodName, new Class<?>[] { argumentType });
-    }
-
-    /**
-     * Returns whether the tested class implements a method called {@code methodName} that takes multiple arguments of
-     * the types specified in {@code argumentTypes}.
-     * 
-     * @param methodName
-     *            The name of the method you want to check for.
-     * @param argumentTypes
-     *            The types of the formal arguments.
-     * @return True if such a method is present in the tested class.
-     */
-    public static boolean hasMethod(String methodName, Class<?>[] argumentTypes) {
-        Method m;
-        try {
-            m = clazz.getDeclaredMethod(methodName, argumentTypes);
-        } catch (NoSuchMethodException | SecurityException e) {
-            return false;
-        }
-        return (m != null);
-    }
-
-    /**
-     * Returns a String that represents a call of a method.
-     * 
-     * @param methodName
-     *            The method's name
-     * @param parameters
-     *            parameters that were used to call the method.
-     * @return A String of the form "method(object1, object2, ...)"
-     */
-    public static String renderMethodCall(String methodName, Object[] parameters, boolean constructorCalled) {
-        String result = "";
-        if (constructorCalled) {
-            result += clazz.getSimpleName();
-        } else {
-            result += methodName;
-        }
-        result += "(";
-        for (int i = 0; i < parameters.length; i++) {
-            if (parameters[i].getClass().isArray()) {
-                result += Arrays.deepToString((Object[]) parameters[i]);
-            } else {
-                result += parameters[i].toString();
-            }
-            result += (i < parameters.length - 1) ? ", " : "";
-        }
-        result += ")";
-        return result;
-    }
-
-    /**
-     * Returns a String that represents the formal declaration of a method.
-     * 
-     * @param methodName
-     *            The method's name
-     * @param formalParameters
-     *            the classes of the method's formal parameters.
-     * @return A String of the form "method(class1, class2, ...)"
-     */
-    public static String renderMethodFormal(String methodName, Class<?>[] formalParameters) {
-        String result = methodName + "(";
-        if (formalParameters == null) {
-            result += "null";
-        } else {
-            for (int i = 0; i < formalParameters.length; i++) {
-                result += formalParameters[i].getName();
-                result += (i < formalParameters.length - 1) ? ", " : "";
-            }
-        }
-        result += ")";
-        return result;
-    }
-
-    /**
-     * This is the actual run method that is used for {@link #run} and {@link #runStatic} and {@link #TestObject}. It is
-     * not meant to be used from the outside. For documentation see {@link TestObject#run(String, Object[], Class[])} or
-     * {@link #runStatic(String, Object[], Class[])}. This method only differs by {@code inst}. If {@code inst} is null,
-     * a static method is searched in the class, if an instance is given, a instance method is used.
-     * 
+     * @param expectedReturnType
+     *            The class of the return type you expect. {@link Assert#fail()} will be called if the method returns
+     *            something that is not an instance of {@code expectedReturnType}
      * @param methodName
      *            The name of the method you want to call.
+     * @param formalArguments
+     *            The method's formal argument's classes. By them, the method will be selected.
      * @param arguments
      *            The arguments you want to pass to the method in the correct order.
-     * @param argumentTypes
-     *            The method's formal argument's classes. By them, the method will be selected.
      * @param inst
      *            The instance you want the method to run on. {@code null} if you want to call a static method.
      * @return What the method returns. {@code null} if it was a void method.
      */
-    private static Object run(String methodName, Object[] arguments, Class<?>[] argumentTypes, Object inst,
-            boolean callConstructor) {
+    @SuppressWarnings(value = "unchecked")
+    private static <T> T run(Class<T> expectedReturnType, String methodName, Class<?>[] formalArguments,
+            Object[] arguments, Object inst, boolean callConstructor) {
         Object result = null;
-        Object[] args = translateObjectsToImplemented(arguments);
-        Class<?>[] types = translateClassesToImplemented(argumentTypes);
+        Object[] args = translateAllToImplemented(arguments);
+        Class<?>[] types = translateAllClassesToImplemented(formalArguments);
         NoExitSecurityManager.setup(); // prevent System.exit()
         if (nextCallInput != null) {
             Console.setTerminalInput(nextCallInput); // provide input in the Terminal class
@@ -375,14 +531,15 @@ public class TestObject {
                 result = method.invoke(inst, args);
             }
         } catch (NoSuchMethodException e) {
-            String message = "There obviously is no " + ((inst == null) ? "static" : "") + " method "
-                    + renderMethodFormal(methodName, argumentTypes) + ", while there should be one.";
+            String message = "There obviously is no "
+                    + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                    + ", in your class while there should be one.\n";
             fail(message);
         } catch (SecurityException e) {
             fail("SecurityException: '" + e.getMessage() + "'\n\n" + e.getStackTrace());
         } catch (IllegalAccessException e) {
-            String message = "The " + ((inst == null) ? "static" : "") + " method "
-                    + renderMethodFormal(methodName, argumentTypes) + " is not accessible! Correct its visibility!";
+            String message = "The " + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                    + " is not accessible! Correct its visibility!";
             fail(message);
         } catch (IllegalArgumentException e) {
             String message = "The passed arguments, '";
@@ -392,33 +549,35 @@ public class TestObject {
                 message += arguments[i];
                 message += (i < arguments.length - 1) ? ", " : "";
             }
-            message += "' don't match the formal arguments of the " + ((inst == null) ? "static" : "") + " method "
-                    + renderMethodFormal(methodName, argumentTypes)
+            message += "' don't match the formal arguments of the "
+                    + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
                     + ". Most likely, this test contains an error which causes this. "
                     + "You wouldn't try to find and fix it, would you?";
             fail(message);
         } catch (InvocationTargetException e) {
             StringWriter stackTraceStringWriter = new StringWriter(); // will hold the printed stack trace of the actual
-            // error.
+                                                                      // error.
             if (e.getCause() instanceof ExitException) {
                 ExitException exitException = (ExitException) e.getCause();
                 exitException.printStackTrace(new PrintWriter(stackTraceStringWriter));
-                if (allowSystemExit0 && exitException.status == 0) {
-                    return result;
+                if (!((allowSystemExit0 && exitException.status == 0) || (allowSystemExitGreater0 && exitException.status > 0))) {
+                    String message = "While calling " + renderMethodCall(methodName, arguments, callConstructor)
+                            + ", your code called System.exit(" + exitException.status
+                            + "). This was not expected and is an error: \n\n" + stackTraceStringWriter.toString();
+                    fail(message);
                 }
-                if (allowSystemExitGreater0 && exitException.status > 0) {
-                    return result;
+            } else {
+                for (Class<?> exceptionClass : rethrowExceptions) {
+                    if (exceptionClass.isInstance(e.getCause())) {
+                        throw new TestMethodException(e.getCause());
+                    }
                 }
-                String message = "While calling " + renderMethodCall(methodName, arguments, callConstructor)
-                        + ", your code called System.exit(" + exitException.status
-                        + "). This was not expected and is an error: \n\n" + stackTraceStringWriter.toString();
+                e.getCause().printStackTrace(new PrintWriter(stackTraceStringWriter));
+                String message = "An Exception occurred while running "
+                        + renderMethodCall(methodName, arguments, callConstructor) + ": \n\n"
+                        + stackTraceStringWriter.toString();
                 fail(message);
             }
-            e.getCause().printStackTrace(new PrintWriter(stackTraceStringWriter));
-            String message = "An Exception occurred while running "
-                    + renderMethodCall(methodName, arguments, callConstructor) + ": \n\n"
-                    + stackTraceStringWriter.toString();
-            fail(message);
         } catch (InstantiationException e) {
             String message = clazz.getName() + " could not be instantiated. This are the exception details: \n\n"
                     + e.getMessage() + "\n\n" + e.getStackTrace();
@@ -431,132 +590,32 @@ public class TestObject {
                 Console.resetTerminalInput();
                 nextCallInput = null;
             }
-
         }
-        return result;
-    }
 
-    /**
-     * Runs a static method of the test class that takes no arguments. If there is no such static method named
-     * {@code methodName}, {@link org.junit.Assert#fail(String)} will be called to output a detailed error message.
-     * 
-     * @param methodName
-     *            The name of the static method you want to call.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public static Object runStatic(String methodName) {
-        return runStatic(methodName, new Object[] {});
-    }
-
-    /**
-     * Runs a static method of the tested class that takes only one argument. If there is no static method named
-     * {@code methodName} that has {@code object.class} as only formal argument or any exception occurs while trying to
-     * run it, {@link org.junit.Assert#fail(String)} will be called to output a detailed error message.<br>
-     * Any passed Object that is an instance of a elementary data type class will be interpreted as an elementary data
-     * type. So you can't for example call a method that is declared as {@code foo(Integer i)} with this version of
-     * {@code runStatic}. Because if you call {@code runStatic("foo", new Integer(3))}, it will search for a static
-     * method foo(int) in your tested class. <br>
-     * If this version of {@code runStatic} fails to find (or select the right} method, use
-     * {@link #runStatic(String, Object, Class)}.
-     * 
-     * @param methodName
-     *            The name of the static method you want to call.
-     * @param argument
-     *            The argument ({@code Object}) you want to pass to the method. The method will be selected based on the
-     *            class of this.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public static Object runStatic(String methodName, Object argument) {
-        return runStatic(methodName, new Object[] { argument });
-    }
-
-    /**
-     *
-     * Runs a static method of the tested class that takes only one argument. If there is no static method named
-     * {@code methodName} that has {@code argumentType} as only formal argument or any exception occurs while trying to
-     * run it, {@link org.junit.Assert#fail(String)} will be called to output a detailed error message.<br>
-     * Most of the time, you don't need to use this version of {@code runStatic}, as {@link #runStatic(String, Object)}
-     * does the job in 98% of all cases.
-     * 
-     * @param methodName
-     *            The name of the static method you want to call.
-     * @param argument
-     *            The argument you want to pass to the method.
-     * @param argumentType
-     *            The type of {@code argument}. The method will be selected based on this.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public static Object runStatic(String methodName, Object argument, Class<?> argumentType) {
-        return runStatic(methodName, new Object[] { argument }, new Class<?>[] { argumentType });
-    }
-
-    /**
-     * Runs a static method of the tested class that takes multiple arguments. It will select the method based the
-     * classes of the {@code arguments}. If there is no static method that is named {@code methodName} and takes the
-     * classes of {@code arguments} as formal arguments, {@link org.junit.Assert#fail(String)} will be called to output
-     * a detailed error message. <br>
-     * 
-     * Any passed Object that is an instance of a elementary data type class will be interpreted as an elementary data
-     * type. So you can't for example call a method that is declared as {@code foo(Integer i, Long l)} with this version
-     * of {@code runStatic}. Because if you call <code>runStatic("foo", new Object[]{new Integer(3), new
-     * Long(2L)})</code>, it will search for a static method {@code foo(int, long)} in your tested class. <br>
-     * If this method fails to find the right method in the tested class, use
-     * {@link #runStatic(String, Object[], Class[])}!
-     * 
-     * @param methodName
-     *            The name of the static method you want to call.
-     * @param arguments
-     *            The arguments you want to pass to the method in the correct order.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public static Object runStatic(String methodName, Object[] arguments) {
-        return runStatic(methodName, arguments, getTypeArray(arguments));
-    }
-
-    /**
-     * The most generic way to call a static method of the tested class. Runs a static method that takes multiple
-     * arguments. It will search a method with the formal parameters provided in {@code argumentTypes} named
-     * {@code methodName}. If there is no such method, {@link org.junit.Assert#fail(String)} will be called to output a
-     * detailed error message. <br>
-     * Usually, it should not be necessary to use this method. {@link #runStatic(String, Object[])} will do the job most
-     * of the time!
-     * 
-     * @param methodName
-     *            The name of the static method you want to call.
-     * @param arguments
-     *            The arguments you want to pass to the method in the correct order.
-     * @param argumentTypes
-     *            The method's formal argument's classes. By them, the method will be selected.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public static Object runStatic(String methodName, Object[] arguments, Class<?>[] argumentTypes) {
-        return run(methodName, arguments, argumentTypes, null, false);
-    }
-
-    /**
-     * Provides input for the next method call. The String you provide will be accessible for the tested program through
-     * the Terminal class. <br>
-     * <br>
-     * NOTE: While this whole class is independent, the functionality provided by this very method relies on the
-     * Terminal class introduced for the programming lecture at the KIT!<br>
-     * {@link Assert#fail} will be called to output an error if this method is used by a test but the implementation
-     * lacks the Terminal class.
-     * 
-     * @param input
-     */
-    public static void setNextMethodCallInput(String input) {
-        nextCallInput = input;
+        if (expectedReturnType == null) {
+            if (result != null) {
+                fail("The " + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                        + " is expected to be a void method!");
+            }
+            return null;
+        }
+        if (result != null && !expectedReturnType.isInstance(result) && !isWrapperOf(result, expectedReturnType)) {
+            fail("The " + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                    + " is expected to return a " + expectedReturnType.getSimpleName() + " but instead returned a "
+                    + result.getClass().getSimpleName() + ".\n");
+        }
+        return (T) result;
     }
 
     /**
      * Calls {@link #translateClassToImplemented(Class)} on an Array of classes.
      * 
      * @param classes
-     *            The classes you want to have translated.
-     * @return A new array containing the result of {@link #translateClassToImplemented(Class)} for every element of
-     *         {@code classes}
+     *            the classes to convert
+     * @return A copy of {@code classes} where all occurrences of {@code TestObject.class} have been converted into the
+     *         tested class.
      */
-    private static Class<?>[] translateClassesToImplemented(Class<?>[] classes) {
+    private static Class<?>[] translateAllClassesToImplemented(Class<?>[] classes) {
         if (classes == null) {
             return null;
         }
@@ -568,12 +627,31 @@ public class TestObject {
     }
 
     /**
-     * Used for getting the implemented class were needed.
+     * Calls {@link #translateToImplemented(Object)} on an Array of objects.
+     * 
+     * @param objects
+     *            the objects to convert
+     * @return A copy of {@code objects} where any occurrence of an instance of {@code TestObject} has been converted
+     *         into the instance of the tested class that was represented by it.
+     */
+    private static Object[] translateAllToImplemented(Object[] objects) {
+        if (objects == null) {
+            return null;
+        }
+        Object[] args = objects.clone();
+        for (int i = 0; i < args.length; i++) {
+            args[i] = translateToImplemented(args[i]);
+        }
+        return args;
+    }
+
+    /**
+     * Converts {@code TestObject.class} into the tested class.
      * 
      * @param c
-     *            A class to check.
-     * @return If {@code clazz} is {@code TestObject.class}, the tested class will be returned. Otherwise, {@code clazz}
-     *         is returned without modification.
+     *            a class to convert
+     * @return If {@code c} is {@code TestObject.class}, the tested class will be returned. Otherwise, {@code clazz} is
+     *         returned without modification.
      */
     private static Class<?> translateClassToImplemented(Class<?> c) {
         if (c == TestObject.class) {
@@ -584,147 +662,173 @@ public class TestObject {
     }
 
     /**
-     * Calls {@link #translateObjectToImplemented(Object)} on an Array of objects.
-     * 
-     * @param objects
-     *            The objects you want to have translated.
-     * @return A new array containing the result of {@link #translateObjectToImplemented(Object)} for every element of
-     *         {@code objects}
-     */
-    private static Object[] translateObjectsToImplemented(Object[] objects) {
-        if (objects == null) {
-            return null;
-        }
-        Object[] args = objects.clone();
-        for (int i = 0; i < args.length; i++) {
-            args[i] = translateObjectToImplemented(args[i]);
-        }
-        return args;
-    }
-
-    /**
-     * Used for getting the instance of the tested class were needed.
+     * Converts an instance of {@code TestObject} to the instance of the tested class represented by it.
      * 
      * @param object
-     *            An object to check.
+     *            An object to convert.
      * @return If {@code object}'s class is {@code TestObject.class}, the instance of the tested class {@code object}
-     *         contains will be returned. Otherwise, {@code object} is returned without modification.
+     *         represents will be returned. Otherwise, {@code object} is returned without modification.
      */
-    private static Object translateObjectToImplemented(Object object) {
-        if (object != null && object.getClass() == TestObject.class) {
-            return ((TestObject) object).getImplementedInstance();
+    private static Object translateToImplemented(Object object) {
+        if (object == null) {
+            return object;
+        }
+        if (object instanceof Object[]) {
+            return translateAllToImplemented((Object[]) object);
+        } else if (object.getClass() == TestObject.class) {
+            return ((TestObject) object).instance;
         } else {
             return object;
         }
     }
 
     /**
-     * You can use this to get a reference to the actual instance of the tested class. Most of the times, you won't want
-     * to do this! It is only meant for comparison of instances and such things.
+     * Compares if the instances of the tested class represented by {@code this} and {@code otherTestObject} are equal.
      * 
-     * @return the "real" instance of the tested class.
+     * @param otherTestObject
+     *            an instance of {@code TestObject} you want to check.
+     * @return if the instance of the tested class represented by {@code this} and the instance of the tested class
+     *         represented by {@code otherTestObject} are equal in terms of their {@code equals} method.
      */
-    public final Object getImplementedInstance() {
-        return this.instance;
+    @Override
+    public boolean equals(Object otherTestObject) {
+        if (!(otherTestObject instanceof TestObject)) {
+            return false;
+        }
+        return (this.instance.equals(((TestObject) otherTestObject).instance));
     }
 
     /**
-     * Runs a method that takes no arguments. If there is no such method that is named {@code methodName},
-     * {@link org.junit.Assert#fail(String)} will be called to output a detailed error message.
+     * Returns the hashCode of the instance of the tested class represented by {@code this}.
      * 
-     * @param methodName
-     *            The name of the method you want to call.
-     * @return What the method returns. {@code null} if it was a void method.
+     * @return What {@code hashCode} of the instance of the tested class represented by {@code this} returns.
      */
-    public Object run(String methodName) {
-        return this.run(methodName, new Object[] {});
+    @Override
+    public int hashCode() {
+        return this.instance.hashCode();
     }
 
     /**
-     * Runs a method that takes only one argument. If there is no method named {@code methodName} that has
-     * {@code object.class} as only formal argument or any exception occurs while trying to run it,
-     * {@link org.junit.Assert#fail(String)} will be called to output a detailed error message.<br>
-     * Any passed Object that is an instance of a elementary data type class will be interpreted as an elementary data
-     * type. So you can't for example call a method that is declared as {@code foo(Integer i)} with this version of
-     * {@code run}. Because if you call {@code run("foo", new Integer(3))}, it will search for a Method foo(int) in your
-     * tested class. <br>
-     * If this version of {@code run} fails to find (or select the right} method, use
-     * {@link #run(String, Object, Class)}.
+     * Runs a method on the instance of tested class represented by {@code this}. The method named {@code methodName}
+     * taking the formal arguments {@code formalArguments} will be selected.
      * 
+     * @param <T>
+     *            The return type. (Set trough {@code expectedReturnType}).
+     * @param expectedReturnType
+     *            {@code Class<T>} what you expect the method to return.
      * @param methodName
      *            The name of the method you want to call.
-     * @param argument
-     *            The argument ({@code Object}) you want to pass to the method. The method will be selected based on the
-     *            class of this.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public Object run(String methodName, Object argument) {
-        return this.run(methodName, new Object[] { argument });
-    }
-
-    /**
-     *
-     * Runs a method that takes only one argument. If there is no method named {@code methodName} that has
-     * {@code argumentType} as only formal argument or any exception occurs while trying to run it,
-     * {@link org.junit.Assert#fail(String)} will be called to output a detailed error message.<br>
-     * Most of the time, you don't need to use this version of {@code run}, as {@link #run(String, Object)} does the job
-     * in 98% of all cases.
-     * 
-     * @param methodName
-     *            The name of the method you want to call.
-     * @param argument
-     *            The argument you want to pass to the method.
-     * @param argumentType
-     *            The type of {@code argument}. The method will be selected based on this.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public Object run(String methodName, Object argument, Class<?> argumentType) {
-        return this.run(methodName, new Object[] { argument }, new Class<?>[] { argumentType });
-    }
-
-    /**
-     * Runs a method that takes multiple arguments. It will select the method based the classes of the {@code arguments}
-     * . If there is no method that is named {@code methodName} and takes the classes of {@code arguments} as formal
-     * arguments, {@link org.junit.Assert#fail(String)} will be called to output a detailed error message. <br>
-     * 
-     * Any passed Object that is an instance of a elementary data type class will be interpreted as an elementary data
-     * type. So you can't for example call a method that is declared as {@code foo(Integer i, Long l)} with this version
-     * of {@code run}. Because if you call <code>run("foo", new Object[]{new Integer(3), new
-     * Long(2L)})</code>, it will search for a Method {@code foo(int, long)} in your tested class. <br>
-     * If this method fails to find the right method in the tested class, use {@link #run(String, Object[], Class[])}!
-     * 
-     * @param methodName
-     *            The name of the method you want to call.
-     * @param arguments
-     *            The arguments you want to pass to the method in the correct order.
-     * @return What the method returns. {@code null} if it was a void method.
-     */
-    public Object run(String methodName, Object[] arguments) {
-        return this.run(methodName, arguments, getTypeArray(arguments));
-    }
-
-    /**
-     * The most generic way to call a method. Runs a method that takes multiple arguments. It will search a method with
-     * the formal parameters provided in {@code argumentTypes} named {@code methodName}. If there is no such method,
-     * {@link org.junit.Assert#fail(String)} will be called to output a detailed error message. <br>
-     * Usually, it should not be necessary to use this method. {@link #run(String, Object[])} will do the job most of
-     * the time!
-     * 
-     * @param methodName
-     *            The name of the method you want to call.
-     * @param arguments
-     *            The arguments you want to pass to the method in the correct order.
-     * @param argumentTypes
+     * @param formalArguments
      *            The method's formal argument's classes. By them, the method will be selected.
-     * @return What the method returns. {@code null} if it was a void method.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     * @return What the method returns.
      */
-    public Object run(String methodName, Object[] arguments, Class<?>[] argumentTypes) {
-        return run(methodName, arguments, argumentTypes, this.instance, false);
+    public <T> T run(Class<T> expectedReturnType, String methodName, Class<?>[] formalArguments, Object... arguments) {
+        return run(expectedReturnType, methodName, formalArguments, arguments, this.instance, false);
+    }
+
+    /**
+     * Runs a method on the instance of tested class represented by {@code this}. The method named {@code methodName}
+     * taking the classes of {@code arguments} as formal arguments will be selected.
+     * 
+     * @param <T>
+     *            The return type. (Set trough {@code expectedReturnType}).
+     * @param expectedReturnType
+     *            {@code Class<T>} what you expect the method to return.
+     * @param methodName
+     *            The name of the static method you want to call.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     * @return What the method returns.
+     */
+    public <T> T run(Class<T> expectedReturnType, String methodName, Object... arguments) {
+        return this.run(expectedReturnType, methodName, getTypeArray(arguments), arguments);
+    }
+
+    /**
+     * Runs a void method on the instance of tested class represented by {@code this}. The method named
+     * {@code methodName} taking the formal arguments {@code formalArguments} will be selected.
+     * 
+     * @param methodName
+     *            The name of the static void method you want to call.
+     * @param formalArguments
+     *            The method's formal argument's classes. By them, the method will be selected.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     */
+    public void runVoid(String methodName, Class<?>[] formalArguments, Object... arguments) {
+        run(null, methodName, formalArguments, arguments, this, instance, false);
+    }
+
+    /**
+     * Runs a void method on the instance of tested class represented by {@code this}. The method named
+     * {@code methodName} taking the classes of {@code arguments} as formal arguments will be selected.
+     * 
+     * @param methodName
+     *            The name of the static void method you want to call.
+     * @param arguments
+     *            The arguments you want to pass to the method.
+     */
+    public void runVoid(String methodName, Object... arguments) {
+        this.runVoid(methodName, getTypeArray(arguments), arguments);
+    }
+
+    /**
+     * Sets which Exceptions will be rethrown (wrapped in a {@link TestMethodException}) instead of outputting an error
+     * message. If an exception occurs while running a run method, {@code Assert#fail()} is normally called to output an
+     * error message. But if you expect the test class to throw an exception, it can instead be rethrown. If an
+     * exception that is an instance of a class in {@code exceptionClasses} occurres while running a tested method, it
+     * will be wrapped in a {@link TestMethodException} which will then be thrown. The setting applies until
+     * {@code rethrowExceptions} is called again. To rethrow all exceptions, call
+     * {@code rethrowExceptions(Exception.class)}. To always output an error message (which is the default), run
+     * {@code rethrowExceptions()} or {@code rethrowExceptions(null)}.
+     * 
+     * @param exceptionClasses
+     *            If an exception occurs that is an instance of an exception class in {@code exceptionClasses}, it will
+     *            be rethrown.
+     */
+    @SafeVarargs
+    // We don't rely on exceptionClasses really just consisting of classes that extend Exception. We just want to make
+    // clear that anything different than a class extending Exception would not make sense (but will not lead to an
+    // ClassCastException)
+    public static void rethrowExceptions(Class<? extends Exception>... exceptionClasses) {
+        rethrowExceptions = new LinkedList<Class<? extends Exception>>();
+        for (Class<? extends Exception> exceptionClass : exceptionClasses) {
+            if (exceptionClass != null) {
+                rethrowExceptions.add(exceptionClass);
+            }
+        }
+    }
+
+    /**
+     * Represents a status {@link System#exit} can be called with.
+     * 
+     * @author Joshua Gleitze
+     *
+     */
+    public enum SystemExitStatus {
+        /**
+         * The tested class may call {@code System.exit(x)} with any argument {@code x}.
+         */
+        ALL,
+        /**
+         * The tested class may not call {@code System.exit(x)} at all.
+         */
+        NONE,
+        /**
+         * The tested class may only call {@code System.exit(0)}.
+         */
+        WITH_0,
+        /**
+         * The tested class may only call {@code System.exit(x)} if x>0.
+         */
+        WITH_GREATER_THAN_0
     }
 
     /**
      * Provides methods to handle System.in and System.out. I decided to put this class into {@code TestObject} to have
-     * everything at one spot. I know that there are some arguments that wouold strongly speak in favor of putting this
+     * everything at one spot. I know that there are some arguments that would strongly speak in favor of putting this
      * in ań own class. Nevertheless, {@code TestObject} is made to make testing as easy as possible, and I'm convinced
      * that having {@code Console} nested in {@code TestObject} is easier to handle.
      * 
@@ -736,6 +840,16 @@ public class TestObject {
         private static Class<?> terminalClass = null;
         private static Object terminalIn;
         private static boolean triedInformatikPackage = false;
+
+        /**
+         * Gets everything that what was written to the Sysout since observing was started in one String.
+         * 
+         * @return A String containing everything that was printed to Sysout since Observing via
+         *         {@link #observeSystemOut()} was called.
+         */
+        private static String getAll() {
+            return outContent.toString();
+        }
 
         private static Class<?> loadTerminalClass() {
             return loadTerminalClass(getPackageName());
@@ -765,16 +879,6 @@ public class TestObject {
                 }
             }
             return c;
-        }
-
-        /**
-         * Gets everything that what was written to the Sysout since observing was started in one String.
-         * 
-         * @return A String containing everything that was printed to Sysout since Observing via
-         *         {@link #observeSystemOut()} was called.
-         */
-        private static String getAll() {
-            return outContent.toString();
         }
 
         /**
@@ -851,6 +955,39 @@ public class TestObject {
         }
     }
 
+    private static boolean isWrapperOf(Object wrapper, Class<?> primitiveClass) {
+        if (primitiveClass == byte.class) {
+            return (wrapper instanceof Byte);
+        } else if (primitiveClass == short.class) {
+            return (wrapper instanceof Short);
+        } else if (primitiveClass == int.class) {
+            return (wrapper instanceof Integer);
+        } else if (primitiveClass == long.class) {
+            return (wrapper instanceof Long);
+        } else if (primitiveClass == float.class) {
+            return (wrapper instanceof Float);
+        } else if (primitiveClass == double.class) {
+            return (wrapper instanceof Double);
+        } else if (primitiveClass == boolean.class) {
+            return (wrapper instanceof Boolean);
+        } else if (primitiveClass == char.class) {
+            return (wrapper instanceof Character);
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a class is a primitive type wrapper class.
+     * 
+     * @param c
+     *            the class to check
+     * @return {@code true} if {@code c} is a primitive wrapper class.
+     */
+    private static boolean isPrimitiveWrapper(Class<?> c) {
+        return (c == Byte.class || c == Short.class || c == Integer.class || c == Long.class || c == Float.class
+                || c == Double.class || c == Boolean.class || c == Character.class);
+    }
+
     /**
      * This {@link SecurityManager} is used to catch when the code is trying to call {@link System#exit}. This would
      * leave the test in a hanging state. Therefore, we handle it.
@@ -890,17 +1027,6 @@ public class TestObject {
         public void checkPermission(Permission perm, Object context) {
             // allow anything.
         }
-    }
-
-    /**
-     * Represents a status {@link System#exit} can be called with. ALL stands for anything, WITH_0 stands for
-     * {@code System.exit(0)} and WITH_GREATER_THAN_0 stands for System.exit(x) where x>0.
-     * 
-     * @author Joshua Gleitze
-     *
-     */
-    public enum SystemExitStatus {
-        ALL, WITH_0, WITH_GREATER_THAN_0, NONE
     }
 
 }
