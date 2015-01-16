@@ -114,7 +114,7 @@ import org.junit.Assert;
  * </pre>
  * 
  * @author Joshua Gleitze
- * @version 2.0
+ * @version 2.0.1
  */
 public class TestObject {
     private static boolean allowSystemExit0 = false;
@@ -529,17 +529,20 @@ public class TestObject {
             } else {
                 Method method = clazz.getDeclaredMethod(methodName, types);
                 result = method.invoke(inst, args);
+                result = translateToTestObject(result);
             }
         } catch (NoSuchMethodException e) {
-            String message = "There obviously is no "
-                    + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
-                    + ", in your class while there should be one.\n";
+            String message =
+                "There obviously is no "
+                        + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                        + ", in your class while there should be one.\n";
             fail(message);
         } catch (SecurityException e) {
             fail("SecurityException: '" + e.getMessage() + "'\n\n" + e.getStackTrace());
         } catch (IllegalAccessException e) {
-            String message = "The " + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
-                    + " is not accessible! Correct its visibility!";
+            String message =
+                "The " + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                        + " is not accessible! Correct its visibility!";
             fail(message);
         } catch (IllegalArgumentException e) {
             String message = "The passed arguments, '";
@@ -549,10 +552,11 @@ public class TestObject {
                 message += arguments[i];
                 message += (i < arguments.length - 1) ? ", " : "";
             }
-            message += "' don't match the formal arguments of the "
-                    + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
-                    + ". Most likely, this test contains an error which causes this. "
-                    + "You wouldn't try to find and fix it, would you?";
+            message +=
+                "' don't match the formal arguments of the "
+                        + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                        + ". Most likely, this test contains an error which causes this. "
+                        + "You wouldn't try to find and fix it, would you?";
             fail(message);
         } catch (InvocationTargetException e) {
             StringWriter stackTraceStringWriter = new StringWriter(); // will hold the printed stack trace of the actual
@@ -561,9 +565,10 @@ public class TestObject {
                 ExitException exitException = (ExitException) e.getCause();
                 exitException.printStackTrace(new PrintWriter(stackTraceStringWriter));
                 if (!((allowSystemExit0 && exitException.status == 0) || (allowSystemExitGreater0 && exitException.status > 0))) {
-                    String message = "While calling " + renderMethodCall(methodName, arguments, callConstructor)
-                            + ", your code called System.exit(" + exitException.status
-                            + "). This was not expected and is an error: \n\n" + stackTraceStringWriter.toString();
+                    String message =
+                        "While calling " + renderMethodCall(methodName, arguments, callConstructor)
+                                + ", your code called System.exit(" + exitException.status
+                                + "). This was not expected and is an error: \n\n" + stackTraceStringWriter.toString();
                     fail(message);
                 }
             } else {
@@ -573,14 +578,15 @@ public class TestObject {
                     }
                 }
                 e.getCause().printStackTrace(new PrintWriter(stackTraceStringWriter));
-                String message = "An Exception occurred while running "
-                        + renderMethodCall(methodName, arguments, callConstructor) + ": \n\n"
-                        + stackTraceStringWriter.toString();
+                String message =
+                    "An Exception occurred while running " + renderMethodCall(methodName, arguments, callConstructor)
+                            + ": \n\n" + stackTraceStringWriter.toString();
                 fail(message);
             }
         } catch (InstantiationException e) {
-            String message = clazz.getName() + " could not be instantiated. This are the exception details: \n\n"
-                    + e.getMessage() + "\n\n" + e.getStackTrace();
+            String message =
+                clazz.getName() + " could not be instantiated. This are the exception details: \n\n" + e.getMessage()
+                        + "\n\n" + e.getStackTrace();
             fail(message);
         } finally {
             NoExitSecurityManager.reset();
@@ -758,7 +764,7 @@ public class TestObject {
      *            The arguments you want to pass to the method.
      */
     public void runVoid(String methodName, Class<?>[] formalArguments, Object... arguments) {
-        run(null, methodName, formalArguments, arguments, this, instance, false);
+        run(null, methodName, formalArguments, arguments, this.instance, false);
     }
 
     /**
@@ -867,14 +873,16 @@ public class TestObject {
             } catch (ClassNotFoundException e) {
                 if (packagePath != "") {
                     String newPackagePath;
-                    newPackagePath = (clearPackagePath.lastIndexOf(".") > 0) ? clearPackagePath.substring(0,
-                            clearPackagePath.lastIndexOf(".")) : "";
+                    newPackagePath =
+                        (clearPackagePath.lastIndexOf(".") > 0) ? clearPackagePath.substring(0,
+                                clearPackagePath.lastIndexOf(".")) : "";
                     c = loadTerminalClass(newPackagePath);
                 } else if (!triedInformatikPackage) {
                     c = loadTerminalClass("edu.kit.informatik");
                 } else {
                     String message = "";
-                    message += "This test expects you to use the Terminal class. Nevertheless, we could not find it in the package path of the class you provided.";
+                    message +=
+                        "This test expects you to use the Terminal class. Nevertheless, we could not find it in the package path of the class you provided.";
                     fail(message);
                 }
             }
@@ -918,8 +926,9 @@ public class TestObject {
                 in.setAccessible(wasAccessible);
             } catch (NoSuchFieldException e) {
                 String message = "";
-                message += "The implementation you have of the Terminal class does not have a field 'in'."
-                        + " Please use the Terminal class that was provided for the programming lecture at the KIT!.";
+                message +=
+                    "The implementation you have of the Terminal class does not have a field 'in'."
+                            + " Please use the Terminal class that was provided for the programming lecture at the KIT!.";
                 fail(message);
             } catch (SecurityException e) {
                 fail("SecurityException while trying to access Terminal.in");
@@ -955,6 +964,15 @@ public class TestObject {
         }
     }
 
+    /**
+     * Check if a class is a primitve type wrapper of a primitive type.
+     * 
+     * @param wrapper
+     *            the wrapper class to check
+     * @param primitiveClass
+     *            the primitive type class to check against
+     * @return {@code true} if {@code wrapper} is an instance of the wrapper class of {@code primitiveClass}
+     */
     private static boolean isWrapperOf(Object wrapper, Class<?> primitiveClass) {
         if (primitiveClass == byte.class) {
             return (wrapper instanceof Byte);
@@ -974,18 +992,6 @@ public class TestObject {
             return (wrapper instanceof Character);
         }
         return false;
-    }
-
-    /**
-     * Checks if a class is a primitive type wrapper class.
-     * 
-     * @param c
-     *            the class to check
-     * @return {@code true} if {@code c} is a primitive wrapper class.
-     */
-    private static boolean isPrimitiveWrapper(Class<?> c) {
-        return (c == Byte.class || c == Short.class || c == Integer.class || c == Long.class || c == Float.class
-                || c == Double.class || c == Boolean.class || c == Character.class);
     }
 
     /**

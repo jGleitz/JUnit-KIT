@@ -60,7 +60,7 @@ public class EulerTest {
         }
 
         // run the test file
-        TestObject.runStatic("main", (Object) new String[]{testFileName});
+        TestObject.runStaticVoid("main", (Object) new String[]{testFileName});
         output = TestObject.getLastMethodOutput();
 
         // split lines into array
