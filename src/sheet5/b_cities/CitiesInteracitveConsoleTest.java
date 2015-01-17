@@ -39,7 +39,8 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 	 */
 	@Test
 	public void testConsoleQuit() {
-		oneLineTest("quit\n", "", "traverse=pre-order");
+		command = "quit";
+		oneLineTest(command, "", "traverse=pre-order");
 	}
 
 	/**
@@ -52,7 +53,9 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 	 */
 	@Test
 	public void testNoArgs() {
-		oneLineTest("quit\n", "");
+		command = "quit";
+		oneLineTest(command, "");
+		oneLineTest(command, "");
 	}
 
 	/**
@@ -65,10 +68,11 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 	 */
 	@Test
 	public void testWrongArgs() {
+		command = "quit";
 		TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-		errorTest("quit", "blablabla");
-		errorTest("quit", "traverse=blablabla");
-		errorTest("quit", "traverse=pre-order=blabla");
+		errorTest(command, "blablabla");
+		errorTest(command, "traverse=blablabla");
+		errorTest(command, "traverse=pre-order=blabla");
 	}
 
 	/**
@@ -80,8 +84,6 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 	 */
 	@Test
 	public void simpleInsertTest() {
-		String[] commands;
-
 		commands = new String[] {
 				"insert Hintertupfingen:3",
 				"quit"
@@ -133,10 +135,6 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 	 */
 	@Test
 	public void insertSearchTest() {
-		String[] commands;
-		String expectedResult;
-		String[] expectedResults;
-
 		commands = new String[] {
 				"insert Hintertupfingen:3",
 				"search Hintertupfingen",
@@ -220,10 +218,6 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 	 */
 	@Test
 	public void searchNull() {
-		String[] commands;
-		String expectedResult;
-		String[] expectedResults;
-
 		commands = new String[] {
 				"insert Pfaffenhofen:1",
 				"insert Waldstadt:3",
@@ -252,138 +246,208 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 	 * Tests the {@code search} command on an empty tree. Asserts that:
 	 * <ul>
 	 * <li>{@code search}'s output format is correct for the non existent element on an empty tree.
+	 * <li>the above is true for all valid traverse type arguments.
 	 * </ul>
 	 */
 	@Test
 	public void searchOnEmptyTree() {
-		String[] commands;
-		String expectedResult;
-
 		commands = new String[] {
 				"search Freudenstadt",
 				"quit"
 		};
 		expectedResult = "Freudenstadt:null";
 		oneLineTest(commands, expectedResult, "traverse=pre-order");
+		oneLineTest(commands, expectedResult, "traverse=in-order");
+		oneLineTest(commands, expectedResult, "traverse=level-order");
+		oneLineTest(commands, expectedResult);
 	}
 
+	/**
+	 * Runs the {@code info} command on an empty tree. Asserts that:
+	 * <ul>
+	 * <li>there is no output
+	 * <li>the above is true for all valid traverse type arguments.
+	 * </ul>
+	 */
 	@Test
-	public void emptyPreOrderTest() {
-		oneLineTest("info\nquit\n", "", "traverse=pre-order");
+	public void emptyInfoTest() {
+		commands = new String[] {
+				"info",
+				"quit"
+		};
+		oneLineTest(commands, "");
+		oneLineTest(commands, "", "traverse=pre-order");
+		oneLineTest(commands, "", "traverse=level-order");
+		oneLineTest(commands, "", "traverse=in-order");
 	}
 
-	@Test
-	public void emptyLevelOrderTest() {
-		oneLineTest("info\nquit\n", "", "traverse=level-order");
-	}
-
-	@Test
-	public void emptyInOrderTest() {
-		oneLineTest("info\nquit\n", "", "traverse=in-order");
-	}
-
+	/**
+	 * Runs the {@code info} command on different filled trees initialised with pre-order traversal. Asserts that:
+	 * <ul>
+	 * <li>elements are printed in the correct syntax and order.
+	 * </ul>
+	 */
 	@Test
 	public void preOrderTest() {
-		oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10", "traverse=pre-order");
+		commands = new String[] {
+				"insert Hamburg:10",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
+
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Muenchen:30";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
+
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
+
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"insert Zuerich:3",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
+		
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"insert Zuerich:3",
+				"insert Aaachen:3",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Aachen:9,Aaachen:3,Muenchen:30,Zuerich:3";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
 	}
 
-	@Test
-	public void preOrderTest2() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30",
-				"traverse=pre-order");
-	}
-
-	@Test
-	public void preOrderTest3() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
-				"Hamburg:10,Aachen:9,Muenchen:30", "traverse=pre-order");
-	}
-
-	@Test
-	public void preOrderTest4() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
-				"Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3", "traverse=pre-order");
-	}
-
+	/**
+	 * Runs the {@code info} command on different filled trees initialised with in-order traversal. Asserts that:
+	 * <ul>
+	 * <li>elements are printed in the correct syntax and order.
+	 * <li>the above is as well true if the program hast been started without a command line argument.
+	 * </ul>
+	 */
 	@Test
 	public void inOrderTest() {
-		oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10", "traverse=in-order");
+		commands = new String[] {
+				"insert Hamburg:10",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10";
+		oneLineTest(commands, expectedResult, "traverse=in-order");
+		oneLineTest(commands, expectedResult);
+
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Muenchen:30";
+		oneLineTest(commands, expectedResult, "traverse=in-order");
+		oneLineTest(commands, expectedResult);
+
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"info",
+				"quit"
+		};
+		expectedResult = "Aachen:9,Hamburg:10,Muenchen:30";
+		oneLineTest(commands, expectedResult, "traverse=in-order");
+		oneLineTest(commands, expectedResult);
+
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"insert Zuerich:3",
+				"info",
+				"quit"
+		};
+		expectedResult = "Aachen:9,Hamburg:10,Muenchen:30,Zuerich:3";
+		oneLineTest(commands, expectedResult, "traverse=in-order");
+		oneLineTest(commands, expectedResult);
 	}
 
-	@Test
-	public void inOrderTest2() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30",
-				"traverse=in-order");
-	}
-
-	@Test
-	public void inOrderTest3() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
-				"Aachen:9,Hamburg:10,Muenchen:30", "traverse=in-order");
-	}
-
-	@Test
-	public void inOrderTest4() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
-				"Aachen:9,Hamburg:10,Muenchen:30,Zuerich:3", "traverse=in-order");
-	}
-
-	@Test
-	public void inOrderTestWithoutParameter() {
-		oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10");
-	}
-
-	@Test
-	public void inOrderTestWithoutParameter2() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30");
-	}
-
-	@Test
-	public void inOrderTestWithoutParameter3() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
-				"Aachen:9,Hamburg:10,Muenchen:30");
-	}
-
-	@Test
-	public void inOrderTestWithoutParameter4() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
-				"Aachen:9,Hamburg:10,Muenchen:30,Zuerich:3");
-	}
-
+	/**
+	 * Runs the {@code info} command on different filled trees initialised with level-order traversal. Asserts that:
+	 * <ul>
+	 * <li>elements are printed in the correct syntax and order.
+	 * </ul>
+	 */
 	@Test
 	public void levelOrderTest() {
-		oneLineTest("insert Hamburg:10\ninfo\nquit\n", "Hamburg:10", "traverse=level-order");
-	}
+		commands = new String[] {
+				"insert Hamburg:10",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10";
+		oneLineTest(commands, expectedResult, "traverse=level-order");
 
-	@Test
-	public void levelOrderTest2() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninfo\nquit\n", "Hamburg:10,Muenchen:30",
-				"traverse=level-order");
-	}
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Muenchen:30";
+		oneLineTest(commands, expectedResult, "traverse=level-order");
 
-	@Test
-	public void levelOrderTest3() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninfo\nquit\n",
-				"Hamburg:10,Aachen:9,Muenchen:30", "traverse=level-order");
-	}
-
-	@Test
-	public void levelOrderTest4() {
-		oneLineTest("insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninfo\nquit\n",
-				"Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3", "traverse=level-order");
-	}
-
-	@Test
-	public void levelOrderTest5() {
-		oneLineTest(
-				"insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninsert Aaachen:3\ninfo\nquit\n",
-				"Hamburg:10,Aachen:9,Muenchen:30,Aaachen:3,Zuerich:3", "traverse=level-order");
-	}
-
-	@Test
-	public void preOrderTest5() {
-		oneLineTest(
-				"insert Hamburg:10\ninsert Muenchen:30\ninsert Aachen:9\ninsert Zuerich:3\ninsert Aaachen:3\ninfo\nquit\n",
-				"Hamburg:10,Aachen:9,Aaachen:3,Muenchen:30,Zuerich:3", "traverse=pre-order");
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30";
+		oneLineTest(commands, expectedResult, "traverse=level-order");
+		
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"insert Zuerich:3",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3";
+		oneLineTest(commands, expectedResult, "traverse=level-order");
+		
+		commands = new String[] {
+				"insert Hamburg:10",
+				"insert Muenchen:30",
+				"insert Aachen:9",
+				"insert Zuerich:3",
+				"insert Aaachen:3",
+				"info",
+				"quit"
+		};
+		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30,Aaachen:3,Zuerich:3";
+		oneLineTest(commands, expectedResult, "traverse=level-order");
 	}
 }

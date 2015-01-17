@@ -14,13 +14,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
-import test.ExpectedResult;
-import test.ExpectedResult.TestType;
 import test.TestObject;
 import test.TestObject.SystemExitStatus;
 
@@ -307,7 +309,10 @@ public class WaitingTest {
         String actualResult;
         String[] resultArray;
         Object[] arguments;
-        ExpectedResult[] expectedResultArray = ExpectedResult.getArray(expectedResult.split("" + nl), TestType.SAME);
+        List<Matcher<String>> expectedResultList = new LinkedList<Matcher<String>>();
+        for (String res : expectedResult.split("" + nl)) {
+        	expectedResultList.add(is(res));
+        }
         String testFileName = writeFile(inputFile);
         TestObject.allowSystemExit(SystemExitStatus.WITH_0);
         if (mode == null) {
@@ -322,9 +327,10 @@ public class WaitingTest {
         String wholeFileMessage = wholeFileMessage(inputFile, actualResult, expectedResult, mode);
         assertThat(wholeFileMessage + nl
                 + " The number of lines of your program's output mismatched the expected ones.", resultArray.length,
-                is(expectedResultArray.length));
+                is(expectedResultList.size()));
+        Iterator<Matcher<String>> iterator = expectedResultList.iterator();
         for (int i = 0; i < resultArray.length; i++) {
-            expectedResultArray[i].assertResult(wholeFileMessage + nl + "Line " + i + " was bad:", resultArray[i]);
+            assertThat(wholeFileMessage + nl + "Line " + i + " was bad:", resultArray[i], iterator.next());
         }
     }
 

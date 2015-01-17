@@ -1,10 +1,7 @@
 package sheet5.c_books;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-import test.InteractiveConsoleTest;
+import org.junit.Test;
 
 /**
  * 
@@ -26,27 +23,17 @@ import test.InteractiveConsoleTest;
  * @version 1.0
  *
  */
-public class OptionalBooksInteractiveConsoleTest extends InteractiveConsoleTest {
-
-  @BeforeClass
-  public static void createFiles() {
-    BooksInteractiveConsoleTest.createFiles();
-  }
-
-  @AfterClass
-  public static void deleteFiles() {
-    BooksInteractiveConsoleTest.deleteFiles();
-  }
+public class OptionalBooksInteractiveConsoleTest extends BooksInteractiveConsoleTest {
 
   @Test
   public void wrongCommand() {
-    errorTest("bla\nquit\n", BooksInteractiveConsoleTest.BOOK_1.getAbsolutePath(),
+    errorTest("bla\nquit\n", BOOK_1.getAbsolutePath(),
         "traverse=pre-order");
   }
 
   @Test
   public void wrongCommand2() {
-    errorTest("bla bla\nquit\n", BooksInteractiveConsoleTest.BOOK_1.getAbsolutePath(),
+    errorTest("bla bla\nquit\n", BOOK_1.getAbsolutePath(),
         "traverse=pre-order");
   }
 }
