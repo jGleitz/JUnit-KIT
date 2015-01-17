@@ -28,7 +28,7 @@ import test.TestObject.SystemExitStatus;
  * 
  * @author Roman Langrehr
  * @since 05.01.2015
- * @version 1.0
+ * @version 1.1
  *
  */
 public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
@@ -193,17 +193,17 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
 
     @Test
     public void infoOnEmptyBookPreOrder() {
-        oneLineTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(), "traverse=pre-order");
+        oneLineTest("info\nquit\n", "", EMPTY_BOOK.getAbsolutePath(), "traverse=pre-order");
     }
 
     @Test
     public void infoOnEmptyBookInOrder() {
-        oneLineTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(), "traverse=in-order");
+        oneLineTest("info\nquit\n", "", EMPTY_BOOK.getAbsolutePath(), "traverse=in-order");
     }
 
     @Test
     public void infoOnEmptyBookLevelOrder() {
-        oneLineTest("info\nquit\n", System.lineSeparator(), EMPTY_BOOK.getAbsolutePath(), "traverse=level-order");
+        oneLineTest("info\nquit\n", "", EMPTY_BOOK.getAbsolutePath(), "traverse=level-order");
     }
 
     @Test
