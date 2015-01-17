@@ -10,5 +10,4 @@ This repository lives from contributions! You don't even have to write actual co
 
 Contribution shall all happen here on GitHub. Please no emails about the tests! File a bug ("Issues" in the navigation bar on the right) or commit a pull request!
 ## How to use
-To use the tests, you first need to get them on your PC. Download the repository from GitHub (if you don't know how to use git, you can just use the "Download ZIP"-Button on your right). Make sure you stay updated for changes! You can have access to my ownCloud that is synced with this repository, contact me if you're interested.
-In the root directory there is a PDF (German) "Anleitung.pdf". It details how to set up everything in Eclipse. In other IDEs, it should work similar.
+You can find step by step instructions for setting up the tests in Eclipse (in our wiki page) [https://github.com/jGleitz/JUnit-KIT/wiki/Using-the-tests-in-Eclipse]. It should work similar in other IDEs
