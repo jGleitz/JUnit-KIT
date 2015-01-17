@@ -27,58 +27,58 @@ public class OptionalCitiesInteractiveConsoleTest extends InteractiveConsoleTest
 
   @Test
   public void searchNoArg() {
-    crashTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch\nquit\n",
+    errorTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch\nquit\n",
         "traverse=pre-order");
   }
 
   @Test
   public void insertNoArg() {
-    crashTest("insert\nquit\n", "traverse=pre-order");
+    errorTest("insert\nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void searchNoArg2() {
-    crashTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch \nquit\n",
+    errorTest("insert Pfaffenhofen:1\ninsert Hintertupfingen:3\nsearch \nquit\n",
         "traverse=pre-order");
   }
 
   @Test
   public void insertNoArg2() {
-    crashTest("insert \nquit\n", "traverse=pre-order");
+    errorTest("insert \nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void insertWrongArg() {
-    crashTest("insert blablabla\nquit\n", "traverse=pre-order");
+    errorTest("insert blablabla\nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void insertWrongArg2() {
-    crashTest("insert bla:bla:bla\nquit\n", "traverse=pre-order");
+    errorTest("insert bla:bla:bla\nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void insertWrongArg3() {
-    crashTest("insert :\nquit\n", "traverse=pre-order");
+    errorTest("insert :\nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void insertWrongArg4() {
-    crashTest("insert bla:\nquit\n", "traverse=pre-order");
+    errorTest("insert bla:\nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void insertWrongArg6() {
-    crashTest("insert bla bla:5\nquit\n", "traverse=pre-order");
+    errorTest("insert bla bla:5\nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void wrongCommand() {
-    crashTest("bla\nquit\n", "traverse=pre-order");
+    errorTest("bla\nquit\n", "traverse=pre-order");
   }
 
   @Test
   public void wrongCommand2() {
-    crashTest("bla bla\nquit\n", "traverse=pre-order");
+    errorTest("bla bla\nquit\n", "traverse=pre-order");
   }
 }

@@ -32,15 +32,15 @@ import test.TestObject.SystemExitStatus;
  *
  */
 public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
-  public static final String BASE_FILE_PATH = "";
-  public static final File BOOK_1 = new File(BASE_FILE_PATH + "book1.txt");
-  public static final File BOOK_2 = new File(BASE_FILE_PATH + "book2.txt");
-  public static final File EMPTY_BOOK = new File(BASE_FILE_PATH + "empty_book.txt");
-  public static final File BOOK_4 = new File(BASE_FILE_PATH + "book4.txt");
-  public static final File BOOK_5 = new File(BASE_FILE_PATH + "book5.txt");
-  public static final File BOOK_6_1 = new File(BASE_FILE_PATH + "book6_1.txt");
-  public static final File BOOK_6_2 = new File(BASE_FILE_PATH + "book6_2.txt");
-  public static final File BOOK_7 = new File(BASE_FILE_PATH + "book7.txt");
+  protected static final String BASE_FILE_PATH = "";
+  protected static final File BOOK_1 = new File(BASE_FILE_PATH + "book1.txt");
+  protected static final File BOOK_2 = new File(BASE_FILE_PATH + "book2.txt");
+  protected static final File EMPTY_BOOK = new File(BASE_FILE_PATH + "empty_book.txt");
+  protected static final File BOOK_4 = new File(BASE_FILE_PATH + "book4.txt");
+  protected static final File BOOK_5 = new File(BASE_FILE_PATH + "book5.txt");
+  protected static final File BOOK_6_1 = new File(BASE_FILE_PATH + "book6_1.txt");
+  protected static final File BOOK_6_2 = new File(BASE_FILE_PATH + "book6_2.txt");
+  protected static final File BOOK_7 = new File(BASE_FILE_PATH + "book7.txt");
 
   @BeforeClass
   public static void createFiles() {
@@ -112,7 +112,7 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
   public void testNoArgs() {
     TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);// TODO will this setting be
                                                                      // reseted after test end?!
-    crashTest("quit\n");
+    errorTest("quit\n");
   }
 
   @Test
@@ -123,31 +123,31 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
   @Test
   public void testOnlyOneArg2() {
     TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-    crashTest("quit\n", "", "traverse=pre-order");
+    errorTest("quit\n", "", "traverse=pre-order");
   }
 
   @Test
   public void testWrongArgs() {
     TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-    crashTest("quit\n", BOOK_1.getAbsolutePath(), "blablabla");
+    errorTest("quit\n", BOOK_1.getAbsolutePath(), "blablabla");
   }
 
   @Test
   public void testWrongArgs2() {
     TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-    crashTest("quit\n", BOOK_1.getAbsolutePath(), "traverse=blablabla");
+    errorTest("quit\n", BOOK_1.getAbsolutePath(), "traverse=blablabla");
   }
 
   @Test
   public void testWrongArgs3() {
     TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-    crashTest("quit\n", BOOK_1.getAbsolutePath(), "traverse=pre-order=blabla");
+    errorTest("quit\n", BOOK_1.getAbsolutePath(), "traverse=pre-order=blabla");
   }
   
   @Test
   public void testFileDoesNotExist() {
     TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-    crashTest("quit\n", "C:/DieseDateiHatHoffentlichNiemand.txt", "traverse=pre-order");
+    errorTest("quit\n", "C:/DieseDateiHatHoffentlichNiemand.txt", "traverse=pre-order");
   }
   
   @Test
@@ -271,6 +271,6 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
 
   @Test
   public void searchNoArg() {
-    crashTest("search\nquit\n", BOOK_1.getAbsolutePath(), "traverse=level-order");
+    errorTest("search\nquit\n", BOOK_1.getAbsolutePath(), "traverse=level-order");
   }
 }

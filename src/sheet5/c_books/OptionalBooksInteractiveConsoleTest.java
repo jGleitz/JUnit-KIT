@@ -40,13 +40,13 @@ public class OptionalBooksInteractiveConsoleTest extends InteractiveConsoleTest 
 
   @Test
   public void wrongCommand() {
-    crashTest("bla\nquit\n", BooksInteractiveConsoleTest.BOOK_1.getAbsolutePath(),
+    errorTest("bla\nquit\n", BooksInteractiveConsoleTest.BOOK_1.getAbsolutePath(),
         "traverse=pre-order");
   }
 
   @Test
   public void wrongCommand2() {
-    crashTest("bla bla\nquit\n", BooksInteractiveConsoleTest.BOOK_1.getAbsolutePath(),
+    errorTest("bla bla\nquit\n", BooksInteractiveConsoleTest.BOOK_1.getAbsolutePath(),
         "traverse=pre-order");
   }
 }
