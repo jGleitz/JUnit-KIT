@@ -114,38 +114,6 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 	}
 
 	/**
-	 * Calls the {@code search} command with no arguments. Asserts that:
-	 * <ul>
-	 * <li>An error message is printed.
-	 * </ul>
-	 */
-	@Test
-	public void searchNoArg2() {
-		commands = new String[] {
-				"insert Pfaffenhofen:1",
-				"insert Hintertupfingen:3",
-				"search ",
-				"quit"
-		};
-		errorTest(commands, "traverse=pre-order");
-	}
-
-	/**
-	 * Calls the {@code insert} command with no arguments. Asserts that:
-	 * <ul>
-	 * <li>An error message is printed.
-	 * </ul>
-	 */
-	@Test
-	public void insertNoArg2() {
-		commands = new String[] {
-				"insert ",
-				"quit"
-		};
-		errorTest(commands, "traverse=pre-order");
-	}
-
-	/**
 	 * Calls the {@code search} command with a bad argument. Asserts that:
 	 * <ul>
 	 * <li>An error message is printed.
@@ -255,8 +223,8 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 				"doof x:c",
 				"doof",
 				"search",
-				"insert ",
-				"search ",
+				"insert a:b:c:d:e",
+				"insert :",
 				"search Hintertupfingen",
 				"quit"
 		};
