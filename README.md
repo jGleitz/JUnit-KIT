@@ -10,4 +10,4 @@ This repository lives from contributions! You don't even have to write actual co
 
 Contribution shall all happen here on GitHub. Please no emails about the tests! File a bug ("Issues" in the navigation bar on the right) or commit a pull request!
 ## How to use
-You can find step by step instructions for setting up the tests in Eclipse [in our wiki page] (https://github.com/jGleitz/JUnit-KIT/wiki/Using-the-tests-in-Eclipse). It should work similar in other IDEs
+You can find step by step instructions for setting up the tests in Eclipse [on our wiki page] (https://github.com/jGleitz/JUnit-KIT/wiki/Using-the-tests-in-Eclipse). It should work similar in other IDEs.
