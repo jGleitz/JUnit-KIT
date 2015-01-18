@@ -156,7 +156,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
 		String result = TestObject.getLastMethodOutput();
-		String resultArray[] = result.split("\n");
+		String resultArray[] = result.split(System.lineSeparator());
 		String message = "";
 		if (resultArray.length != expectedResults.size()) {
 			message += consoleMessage(commands, args0);
