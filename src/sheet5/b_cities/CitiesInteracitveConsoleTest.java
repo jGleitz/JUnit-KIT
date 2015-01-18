@@ -250,6 +250,14 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		expectedResult = "Sonderzeichen üäö#*§$%&/()=?:3";
 		oneLineTest(commands, expectedResult, "traverse=pre-order");
+		
+		commands = new String[] {
+				"insert  :5",
+				"search  ",
+				"quit"
+		};
+		expectedResult = " :5";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
 	}
 
 	/**
