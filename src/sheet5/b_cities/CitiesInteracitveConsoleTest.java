@@ -209,36 +209,48 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		multiLineTest(commands, expectedResults, "traverse=pre-order");
 	}
-	
+
 	/**
-     * Uses the {@code insert} command to insert "complex" (City names can have spaces) values and {@code search} to retrieve them afterwards. Asserts
-     * that:
-     * <ul>
-     * <li>{@code search} outputs {@code insert}ed elements consistently
-     * </ul>
-     */
-    @Test
-    public void insertSearchTestComplexNames() {
-        String[] commands;
-        String expectedResult;
+	 * Uses the {@code insert} command to insert "complex" (City names can have spaces) values and {@code search} to
+	 * retrieve them afterwards. Asserts that:
+	 * <ul>
+	 * <li>{@code search} outputs {@code insert}ed elements consistently
+	 * </ul>
+	 */
+	@Test
+	public void insertSearchTestComplexNames() {
+		commands = new String[] {
+				"insert New York:75",
+				"search New York",
+				"quit"
+		};
+		expectedResult = "New York:75";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
 
-        commands = new String[] {
-                "insert New York:75",
-                "search New York",
-                "quit"
-        };
-        expectedResult = "New York:75";
-        oneLineTest(commands, expectedResult, "traverse=pre-order");
-        
-        commands = new String[] {
-                "insert Bad Sooden-Allendorf:3",
-                "search Bad Sooden-Allendorf",
-                "quit"
-        };
-        expectedResult = "Bad Sooden-Allendorf:3";
-        oneLineTest(commands, expectedResult, "traverse=pre-order");
-
-    }
+		commands = new String[] {
+				"insert Bad Sooden-Allendorf:3",
+				"search Bad Sooden-Allendorf",
+				"quit"
+		};
+		expectedResult = "Bad Sooden-Allendorf:3";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
+		
+		commands = new String[] {
+				"insert Ein langer Stadtname mit vielen    Leerzeichen:3",
+				"search Ein langer Stadtname mit vielen    Leerzeichen",
+				"quit"
+		};
+		expectedResult = "Ein langer Stadtname mit vielen    Leerzeichen:3";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
+		
+		commands = new String[] {
+				"insert Sonderzeichen üäö#*§$%&/()=?:3",
+				"search Sonderzeichen üäö#*§$%&/()=?",
+				"quit"
+		};
+		expectedResult = "Sonderzeichen üäö#*§$%&/()=?:3";
+		oneLineTest(commands, expectedResult, "traverse=pre-order");
+	}
 
 	/**
 	 * Tests the {@code search} command for non existent elements. Asserts that:
@@ -356,7 +368,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3";
 		oneLineTest(commands, expectedResult, "traverse=pre-order");
-		
+
 		commands = new String[] {
 				"insert Hamburg:10",
 				"insert Muenchen:30",
@@ -456,7 +468,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30";
 		oneLineTest(commands, expectedResult, "traverse=level-order");
-		
+
 		commands = new String[] {
 				"insert Hamburg:10",
 				"insert Muenchen:30",
@@ -467,7 +479,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		expectedResult = "Hamburg:10,Aachen:9,Muenchen:30,Zuerich:3";
 		oneLineTest(commands, expectedResult, "traverse=level-order");
-		
+
 		commands = new String[] {
 				"insert Hamburg:10",
 				"insert Muenchen:30",
