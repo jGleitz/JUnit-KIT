@@ -23,6 +23,7 @@ import test.TestObject.SystemExitStatus;
  * 
  * @author Roman Langrehr
  * @author Joshua Gleitze
+ * @author childen
  * @since 05.01.2015
  * @version 1.0
  *

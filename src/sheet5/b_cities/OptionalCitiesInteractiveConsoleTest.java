@@ -10,6 +10,7 @@ import static org.hamcrest.CoreMatchers.startsWith;
  * People that checked this test for being correct and complete:
  * <ul>
  * <li>Roman Langrehr</li>
+ * <li>Joshua Gleitze
  * </ul>
  * <br>
  * <br>
@@ -19,6 +20,7 @@ import static org.hamcrest.CoreMatchers.startsWith;
  * </ul>
  * 
  * @author Roman Langrehr
+ * @author Joshua Gleitze
  * @since 13.01.2015
  * @version 1.0
  *
