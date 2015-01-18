@@ -211,6 +211,36 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		multiLineTest(commands, expectedResults, "traverse=pre-order");
 	}
+	
+	/**
+     * Uses the {@code insert} command to insert "complex" (City names can have spaces) values and {@code search} to retrieve them afterwards. Asserts
+     * that:
+     * <ul>
+     * <li>{@code search} outputs {@code insert}ed elements consistently
+     * </ul>
+     */
+    @Test
+    public void insertSearchTestComplexNames() {
+        String[] commands;
+        String expectedResult;
+
+        commands = new String[] {
+                "insert New York:75",
+                "search New York",
+                "quit"
+        };
+        expectedResult = "New York:75";
+        oneLineTest(commands, expectedResult, "traverse=pre-order");
+        
+        commands = new String[] {
+                "insert Bad Sooden-Allendorf:3",
+                "search Bad Sooden-Allendorf",
+                "quit"
+        };
+        expectedResult = "Bad Sooden-Allendorf:3";
+        oneLineTest(commands, expectedResult, "traverse=pre-order");
+
+    }
 
 	/**
 	 * Tests the {@code search} command for non existent elements. Asserts that:
