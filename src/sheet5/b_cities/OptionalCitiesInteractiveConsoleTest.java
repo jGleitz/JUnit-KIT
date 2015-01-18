@@ -206,15 +206,6 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 	}
 
 	@Test
-	public void insertWrongArg6() {
-		commands = new String[] {
-				"insert bla bla:5",
-				"quit"
-		};
-		errorTest(commands, "traverse=pre-order");
-	}
-
-	@Test
 	public void wrongCommand() {
 		commands = new String[] {
 				"bla",
