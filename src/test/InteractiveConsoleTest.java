@@ -17,8 +17,8 @@ import org.junit.Before;
 import test.TestObject.SystemExitStatus;
 
 /**
- * This class contains some useful methods for testing with the interactive console. Extend this class to write
- * interactive console tests.
+ * Contains some useful methods for testing with the interactive console. Extend this class to write interactive console
+ * tests.
  * 
  * @author Roman Langrehr
  * @author Joshua Gleitze
@@ -126,8 +126,8 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * Tests an interactive console program with one command that output multiple lines. Calls the main method with
 	 * optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that each output line
-	 * matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output line
-	 * you expect.<br>
+	 * matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output line you
+	 * expect.<br>
 	 * <br>
 	 * Example:<br>
 	 * Say we expect the main method to output three times {@code "Success!"} and then a line starting with
@@ -189,8 +189,8 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * Tests an interactive console program with multiple commands that should output multiple lines. Calls the main
 	 * method with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that each
-	 * output line matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each
-	 * output line you expect.<br>
+	 * output line matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output
+	 * line you expect.<br>
 	 * <br>
 	 * Example:<br>
 	 * Say we expect the main method to output three times {@code "Success!"}, an empty line afterwards, and then a line
@@ -222,8 +222,8 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * Tests an interactive console program with multiple commands that should output multiple lines. Calls the main
 	 * method with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that each
-	 * output line matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each
-	 * output line you expect.
+	 * output line matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output
+	 * line you expect.
 	 * 
 	 * @param commands
 	 *            The commands to run on the console.
@@ -240,8 +240,8 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * Tests an interactive console program with one command that should output multiple lines. Calls the main method
 	 * with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that each output line
-	 * matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output line
-	 * you expect.
+	 * matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output line you
+	 * expect.
 	 * 
 	 * @param command
 	 *            The command to run on the console.
