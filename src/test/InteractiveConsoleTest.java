@@ -117,6 +117,7 @@ public abstract class InteractiveConsoleTest {
 	 *            The arguments for the {@code main}-method
 	 */
 	protected void oneLineTest(String command, Matcher<String> expectedOutputMatcher, String... args0) {
+		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(command);
 		TestObject.runStaticVoid("main", (Object) args0);
 		String result = TestObject.getLastMethodOutput();
@@ -153,6 +154,7 @@ public abstract class InteractiveConsoleTest {
 	 *            The arguments for the {@code main}-method
 	 */
 	protected void multiLineTest(String commands, List<Matcher<String>> expectedResults, String... args0) {
+		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
 		String result = TestObject.getLastMethodOutput();
@@ -269,6 +271,7 @@ public abstract class InteractiveConsoleTest {
 	 */
 	protected void errorTest(String command, String... args0) {
 		String expectedOutputStart = "Error,";
+		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(command);
 		TestObject.runStaticVoid("main", (Object) args0);
 		String result = TestObject.getLastMethodOutput();

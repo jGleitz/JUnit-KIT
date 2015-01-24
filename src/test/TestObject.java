@@ -917,7 +917,8 @@ public class TestObject {
                     c = loadTerminalClass("edu.kit.informatik");
                 } else {
                     String message = "";
-                    message += "This test expects you to use the Terminal class. Nevertheless, we could not find it in the package path of the class you provided.";
+                    message += "This test expects you to use the Terminal class. Nevertheless, we could not find it in "
+                            + "the package path of the class you provided.";
                     fail(message);
                 }
             }
@@ -1125,9 +1126,8 @@ public class TestObject {
          * @return The tested class
          */
         private Class<?> loadClass() {
+            definePackage(className.substring(0, className.lastIndexOf(".")), "", "", "", "", "", "", null);
             return defineClass(className, classData, 0, classData.length);
         }
-
     }
-
 }
