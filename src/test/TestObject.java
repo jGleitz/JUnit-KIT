@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -19,6 +21,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.Permission;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -113,37 +118,31 @@ import org.junit.Assert;
  * </code>
  * </pre>
  * 
+ * <h5>static fields</h5>
+ * If you test methods, it might happen that the implementation you test uses static fields. Especially when you test a
+ * {@code main} method, you usually want to the test the class in the state it is when the program is started.
+ * Otherwise, consecutive calls of {@code main} may result in different results! So whenever you test a {@code main}
+ * method or something that shall only be called once per program run, make sure to use {@link #resetClass()}:
+ * 
+ * <pre>
+ * <code>
+ * TestObject.resetClass(); // Always reset the class before running main!
+ * TestObject.runStaticVoid("main");
+ * </pre>
+ * </code>
+ * 
  * @author Joshua Gleitze
- * @version 2.0.1
+ * @version 2.1
  */
 public class TestObject {
 	private static boolean allowSystemExit0 = false;
 	private static boolean allowSystemExitGreater0 = false;
-	private static final Class<?> clazz;
+	private static final String className = System.getProperty("className");
+	private static Class<?> clazz = new TestClassLoader().loadClass();
 	private static String nextCallInput;
-	private static Stack<String> programOutput;
+	private static Stack<String> programOutput = new Stack<String>();
 	private static List<Class<? extends Exception>> rethrowExceptions = new LinkedList<Class<? extends Exception>>();
 	private final Object instance;
-
-	/**
-	 * Gets the tested class by the System property {@code className}. To set the name of the tested class, set a JVM
-	 * variable via the {@code -D} command. Example: {@code "-DclassName=de.joshuagleitze.tuple.NaturalNumberTuple"}.
-	 */
-	static {
-		String className = System.getProperty("className");
-		Class<?> c = null;
-
-		try {
-			c = Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			fail("There obviously is no class '" + className + "'! So what should we test on?\n"
-					+ "Please specify a class in the JVM-parameter via -DclassName=.\n"
-					+ "Do not forget to state the correct package!\n"
-					+ "Example: '-DclassName=joshuagleitze.tuple.NaturalNumberTuple'");
-		}
-		clazz = c;
-		programOutput = new Stack<String>();
-	}
 
 	/**
 	 * Constructs an {@code TestObject} that represents an instance of the tested class. The constructor of the tested
@@ -217,15 +216,6 @@ public class TestObject {
 	}
 
 	/**
-	 * Returns the simple name of the tested class.
-	 * 
-	 * @return What {@code object.class.getSimpleName()} returns if {@code object} is an instance of the tested class.
-	 */
-	public static String getSimpleName() {
-		return clazz.getSimpleName();
-	}
-
-	/**
 	 * Gets the output to System.out of the last run method.
 	 * 
 	 * @return What the method that was last run using {@code TestObject} printed to System.out
@@ -245,6 +235,15 @@ public class TestObject {
 			return null;
 		}
 		return clazz.getPackage().getName();
+	}
+
+	/**
+	 * Returns the simple name of the tested class.
+	 * 
+	 * @return What {@code object.class.getSimpleName()} returns if {@code object} is an instance of the tested class.
+	 */
+	public static String getSimpleName() {
+		return clazz.getSimpleName();
 	}
 
 	/**
@@ -333,6 +332,41 @@ public class TestObject {
 		}
 		result += ")";
 		return result;
+	}
+
+	/**
+	 * Resets the tested class. Resetting the tested class means that it will be in the state it was when the program
+	 * was started. Especially all static fields will be reset to their initial values.
+	 */
+	public static void resetClass() {
+		clazz = new TestClassLoader().loadClass();
+	}
+
+	/**
+	 * Sets which Exceptions will be rethrown (wrapped in a {@link TestMethodException}) instead of outputting an error
+	 * message. If an exception occurs while running a run method, {@code Assert#fail()} is normally called to output an
+	 * error message. But if you expect the test class to throw an exception, it can instead be rethrown. If an
+	 * exception that is an instance of a class in {@code exceptionClasses} occurs while running a tested method, it
+	 * will be wrapped in a {@link TestMethodException} which will then be thrown. The setting applies until
+	 * {@code rethrowExceptions} is called again. To rethrow all exceptions, call
+	 * {@code rethrowExceptions(Exception.class)}. To always output an error message (which is the default), run
+	 * {@code rethrowExceptions()} or {@code rethrowExceptions(null)}.
+	 * 
+	 * @param exceptionClasses
+	 *            If an exception occurs that is an instance of an exception class in {@code exceptionClasses}, it will
+	 *            be rethrown.
+	 */
+	@SafeVarargs
+	// We don't rely on exceptionClasses really just consisting of classes that extend Exception. We just want to make
+	// clear that anything different than a class extending Exception would not make sense (but will not lead to an
+	// ClassCastException)
+	public static void rethrowExceptions(Class<? extends Exception>... exceptionClasses) {
+		rethrowExceptions = new LinkedList<Class<? extends Exception>>();
+		for (Class<? extends Exception> exceptionClass : exceptionClasses) {
+			if (exceptionClass != null) {
+				rethrowExceptions.add(exceptionClass);
+			}
+		}
 	}
 
 	/**
@@ -493,6 +527,36 @@ public class TestObject {
 			}
 		}
 		return parameterTypes;
+	}
+
+	/**
+	 * Check if a class is a primitve type wrapper of a primitive type.
+	 * 
+	 * @param wrapper
+	 *            the wrapper class to check
+	 * @param primitiveClass
+	 *            the primitive type class to check against
+	 * @return {@code true} if {@code wrapper} is an instance of the wrapper class of {@code primitiveClass}
+	 */
+	private static boolean isWrapperOf(Object wrapper, Class<?> primitiveClass) {
+		if (primitiveClass == byte.class) {
+			return (wrapper instanceof Byte);
+		} else if (primitiveClass == short.class) {
+			return (wrapper instanceof Short);
+		} else if (primitiveClass == int.class) {
+			return (wrapper instanceof Integer);
+		} else if (primitiveClass == long.class) {
+			return (wrapper instanceof Long);
+		} else if (primitiveClass == float.class) {
+			return (wrapper instanceof Float);
+		} else if (primitiveClass == double.class) {
+			return (wrapper instanceof Double);
+		} else if (primitiveClass == boolean.class) {
+			return (wrapper instanceof Boolean);
+		} else if (primitiveClass == char.class) {
+			return (wrapper instanceof Character);
+		}
+		return false;
 	}
 
 	/**
@@ -780,33 +844,6 @@ public class TestObject {
 	}
 
 	/**
-	 * Sets which Exceptions will be rethrown (wrapped in a {@link TestMethodException}) instead of outputting an error
-	 * message. If an exception occurs while running a run method, {@code Assert#fail()} is normally called to output an
-	 * error message. But if you expect the test class to throw an exception, it can instead be rethrown. If an
-	 * exception that is an instance of a class in {@code exceptionClasses} occurres while running a tested method, it
-	 * will be wrapped in a {@link TestMethodException} which will then be thrown. The setting applies until
-	 * {@code rethrowExceptions} is called again. To rethrow all exceptions, call
-	 * {@code rethrowExceptions(Exception.class)}. To always output an error message (which is the default), run
-	 * {@code rethrowExceptions()} or {@code rethrowExceptions(null)}.
-	 * 
-	 * @param exceptionClasses
-	 *            If an exception occurs that is an instance of an exception class in {@code exceptionClasses}, it will
-	 *            be rethrown.
-	 */
-	@SafeVarargs
-	// We don't rely on exceptionClasses really just consisting of classes that extend Exception. We just want to make
-	// clear that anything different than a class extending Exception would not make sense (but will not lead to an
-	// ClassCastException)
-	public static void rethrowExceptions(Class<? extends Exception>... exceptionClasses) {
-		rethrowExceptions = new LinkedList<Class<? extends Exception>>();
-		for (Class<? extends Exception> exceptionClass : exceptionClasses) {
-			if (exceptionClass != null) {
-				rethrowExceptions.add(exceptionClass);
-			}
-		}
-	}
-
-	/**
 	 * Represents a status {@link System#exit} can be called with.
 	 * 
 	 * @author Joshua Gleitze
@@ -961,36 +998,6 @@ public class TestObject {
 	}
 
 	/**
-	 * Check if a class is a primitve type wrapper of a primitive type.
-	 * 
-	 * @param wrapper
-	 *            the wrapper class to check
-	 * @param primitiveClass
-	 *            the primitive type class to check against
-	 * @return {@code true} if {@code wrapper} is an instance of the wrapper class of {@code primitiveClass}
-	 */
-	private static boolean isWrapperOf(Object wrapper, Class<?> primitiveClass) {
-		if (primitiveClass == byte.class) {
-			return (wrapper instanceof Byte);
-		} else if (primitiveClass == short.class) {
-			return (wrapper instanceof Short);
-		} else if (primitiveClass == int.class) {
-			return (wrapper instanceof Integer);
-		} else if (primitiveClass == long.class) {
-			return (wrapper instanceof Long);
-		} else if (primitiveClass == float.class) {
-			return (wrapper instanceof Float);
-		} else if (primitiveClass == double.class) {
-			return (wrapper instanceof Double);
-		} else if (primitiveClass == boolean.class) {
-			return (wrapper instanceof Boolean);
-		} else if (primitiveClass == char.class) {
-			return (wrapper instanceof Character);
-		}
-		return false;
-	}
-
-	/**
 	 * This {@link SecurityManager} is used to catch when the code is trying to call {@link System#exit}. This would
 	 * leave the test in a hanging state. Therefore, we handle it.
 	 * 
@@ -1022,13 +1029,93 @@ public class TestObject {
 
 		@Override
 		public void checkPermission(Permission perm) {
-
+			// allow anything.
 		}
 
 		@Override
 		public void checkPermission(Permission perm, Object context) {
 			// allow anything.
 		}
+	}
+
+	/**
+	 * Loads the tested class. A new {@code TestClassLoader} will always return a fresh class. Therefore, a class can be
+	 * reset by constructing a new {@code TestClassLoader} and running {@link TestClassLoader#loadClass()}.
+	 * 
+	 * @author Joshua Gleitze
+	 * @version 1.0
+	 * @since 24.01.2015
+	 *
+	 */
+	private static class TestClassLoader extends ClassLoader {
+		private final static byte[] classData = getClassData();
+
+		private TestClassLoader() {
+			super();
+		}
+
+		/**
+		 * Reads in the class file.
+		 * 
+		 * @return The tested class' file contents.
+		 */
+		private static byte[] getClassData() {
+			byte[] result = null;
+			// get this class loader to get the resource path from it.
+			ClassLoader loader = TestObject.class.getClassLoader();
+			String classFileName = className.replaceAll("\\.", System.getProperty("file.separator")) + ".class";
+			// get the path of the tested class
+			URL url = loader.getResource(classFileName);
+
+			if (url == null) {
+				fail("There obviously is no class '" + className + "'! So what should we test on?\n"
+						+ "Please specify a class in the JVM-parameter via -DclassName=.\n"
+						+ "Do not forget to state the correct package!\n"
+						+ "Example: '-DclassName=joshuagleitze.tuple.NaturalNumberTuple'\n");
+			}
+
+			// read in the tested class
+			InputStream input = null;
+			try {
+				URLConnection connection = url.openConnection();
+				input = connection.getInputStream();
+			} catch (MalformedURLException e) {
+				fail("We are unable to correctly locate your class file. This is a fatal error. Please contact the team!");
+			} catch (IOException e) {
+				fail("An input/output error occurred while trying to read in your class file. This is a fatal error! "
+						+ "Please contact the team!");
+			}
+			try {
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				int data = input.read();
+				while (data != -1) {
+					buffer.write(data);
+					data = input.read();
+				}
+				result = buffer.toByteArray();
+			} catch (IOException e) {
+				fail("An input/output error occurred while trying to read in your class file. This is a fatal error! "
+						+ "Please contact the team!");
+			} finally {
+				try {
+					input.close();
+				} catch (IOException e) {
+					fail("An input/error exception occurred while trying to close the reader that read in your class file. Honestly, "
+							+ "I have no idea how this might have happened. Please contact the team!");
+				}
+			}
+			return result;
+		}
+
+		/**
+		 * Returns the tested class. A new {@code TestClassLoader} will always return a "fresh" class!
+		 * 
+		 * @return The tested class
+		 */
+		private Class<?> loadClass() {
+			return defineClass(className, classData, 0, classData.length);
+		}
+
 	}
 
 }
