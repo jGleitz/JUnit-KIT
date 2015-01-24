@@ -1063,7 +1063,7 @@ public class TestObject {
 			byte[] result = null;
 			// get this class loader to get the resource path from it.
 			ClassLoader loader = TestObject.class.getClassLoader();
-			String classFileName = className.replaceAll("\\.", System.getProperty("file.separator")) + ".class";
+			String classFileName = className.replace(".", System.getProperty("file.separator")) + ".class";
 			// get the path of the tested class
 			URL url = loader.getResource(classFileName);
 
