@@ -162,12 +162,10 @@ public abstract class InteractiveConsoleTest {
         String result = TestObject.getLastMethodOutput();
         String resultArray[] = result.split(System.lineSeparator());
         String message = "";
-        if (resultArray.length != expectedResults.size()) {
+        if (resultArray.length < expectedResults.size()) {
             message += consoleMessage(commands, args0);
-            message += "Your program's output had ";
-            message += (resultArray.length > expectedResults.size()) ? "too much" : "not enough";
-            message += " lines. Your output had " + resultArray.length + " lines, expected was "
-                    + expectedResults.size();
+            message += "Your program's output had not enough lines. Your output had ";
+            message += resultArray.length + " lines, expected were " + expectedResults.size();
             message += ".\n" + expectedAndActual(expectedResults, result);
             fail(message);
         }
