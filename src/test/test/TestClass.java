@@ -1,9 +1,9 @@
 package test.test;
 
-public class WithStatic {
+public class TestClass {
 	private static int x = 0;
 
-	public static int tryIt() {
+	public static int staticAddition() {
 		return ++x;
 	}
 }
