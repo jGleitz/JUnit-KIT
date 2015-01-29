@@ -1,4 +1,4 @@
-package sheet6.c_bookdatabase;
+package sheet6.c_bookDatabase;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +23,7 @@ import org.hamcrest.Matcher;
  * <br>
  * People that checked this test for being correct and complete:
  * <ul>
- * <li>Martin Löper</li>
+ * <li>Martin Lï¿½per</li>
  * </ul>
  * <br>
  * <br>
@@ -35,7 +35,7 @@ import org.hamcrest.Matcher;
  *                             malformed searchqueries (e.g. AD(title=a,creator=b))</li>
  * </ul>
  * 
- * @author Martin Löper
+ * @author Martin Lï¿½per
  * @since 29.01.2015
  * @version 1.0
  *

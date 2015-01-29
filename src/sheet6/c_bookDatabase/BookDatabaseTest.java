@@ -1,5 +1,7 @@
 package sheet6.c_bookDatabase;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.*;
 
 import java.io.BufferedWriter;
@@ -15,6 +17,8 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 import test.InteractiveConsoleTest;
+import test.TestObject;
+import test.TestObject.SystemExitStatus;
 
 /**
  * /** A test for the Interactive Console (Task C) <br>
@@ -27,13 +31,32 @@ import test.InteractiveConsoleTest;
 public class BookDatabaseTest extends InteractiveConsoleTest {
     private static HashMap<String, String[]> filesMap = new HashMap<>();
     private static HashMap<String[], String> reverseFileMap = new HashMap<>();
+    private String[] file;
+    private String line;
+
+    /*
+     * PREDEFINED BOOK INPUT FILES
+     */
+    /**
+     * The input file that was given as valid on the task sheet.
+     */
     private static final String[] taskSheetInputFile = {
             "title=Java_ist_auch_eine_Insel,creator=GalileoComputing",
             "tITle=Grundkurs_Programmieren_iN_JAVA,year=2007",
             "Creator=Ralf_Reussner,year=2006"
     };
-    private String[] file;
-    private String line;
+
+    /**
+     * A very simple input file, intended not to produce a parsing error (to focus on other things). Therefore it only
+     * contains lower case characters between a and z and all attributes.
+     */
+    private static final String[] simpleValidFile = {
+        "title=musterbuch,creator=mustermann,year=2000"
+    };
+
+    /*
+     * ERROR TESTS
+     */
 
     /**
      * Fails the test as this test is incomplete an therefore does not grant anything. Remove this method as soon as the
@@ -55,10 +78,18 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
      */
     @Test
     public void testWrongTolerance() {
-        errorTest("quit", "", getFile(taskSheetInputFile));
-        errorTest("quit", "xyz", getFile(taskSheetInputFile));
-        errorTest("quit", "3", getFile(taskSheetInputFile));
-        errorTest("quit", "-1", getFile(taskSheetInputFile));
+        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+
+        // no tolerance
+        errorTest("quit", "", getFile(simpleValidFile));
+        // not a number
+        errorTest("quit", "xyz", getFile(simpleValidFile));
+        // not in range
+        errorTest("quit", "3", getFile(simpleValidFile));
+        // not in range
+        errorTest("quit", "-1", getFile(simpleValidFile));
+        // not a correct number
+        errorTest("quit", "0.5fd", getFile(simpleValidFile));
     }
 
     /**
@@ -69,8 +100,31 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
      */
     @Test
     public void testBadFilePath() {
+        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+
+        // no path
         errorTest("quit", "0.3", "");
+        // wrong path
         errorTest("quit", "0.3", "I sure as hell don't exist!");
+    }
+
+    /**
+     * Tests the program's behaviour for a wrong number of command line arguments. Asserts that the program prints an
+     * error message for:
+     * <ul>
+     * <li>a wrong amount of command line arguments.
+     * </ul>
+     */
+    @Test
+    public void testWrongCommandLineArgumentNumber() {
+        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+
+        // no argument
+        errorTest("quit");
+        // one empty argument
+        errorTest("quit", "");
+        // one valid argument
+        errorTest("quit", "0.5");
     }
 
     /**
@@ -83,6 +137,8 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
      */
     @Test
     public void testBadFile() {
+        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+
         // empty file
         line = "";
         errorTest("quit", "0.3", getFile(line));
@@ -106,6 +162,14 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
         // space in between
         line = "creator=Max_Mustermann, title=Musterbuch";
         errorTest("quit", "0.3", getFile(line));
+
+        // dublicate attribute keyword
+        line = "title=java,creator=reussner,title=java,year=2005";
+        errorTest("quit", "0.3", getFile(line));
+
+        // maybe a regex will fail here
+        line = "creator=reussner,year=2014,tl=test";
+        errorTest("quit", "0.3", getFile(line));
     }
 
     /**
@@ -116,6 +180,8 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
      * **/
     @Test
     public void testWrongInputFileAttributeValues() {
+        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+
         List<String> correctValues = new LinkedList<>();
         List<String> falseValues = new LinkedList<>();
         correctValues.add("creator=Max_Mustermann");
@@ -138,12 +204,17 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
         falseValues.add(line);
 
         // year is a number, but not in range
-        line = "year=2020";
+        line = "year=2016";
         errorTest("quit", "0.3", getFile(line));
         falseValues.add(line);
 
         // year is a number, but not in range
-        line = "year=-100";
+        line = "year=-1";
+        errorTest("quit", "0.3", getFile(line));
+        falseValues.add(line);
+
+        // year is a number, is in range, but not an Integer.
+        line = "year=2014.2";
         errorTest("quit", "0.3", getFile(line));
         falseValues.add(line);
 
@@ -161,6 +232,82 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
             errorTest("quit", "0.3", getFile(goodOnes.get(0) + "," + bad + "," + goodOnes.get(1)));
         }
     }
+
+    /*
+     * CORRECT ARGUMENTS
+     */
+    /**
+     * Starts program with two valid command line arguments Asserts that:
+     * <ul>
+     * <li>the program terminates
+     * <li>if {@code System.exit(x)} is called, {@code x}=0
+     * <li>no error message is printed
+     * </ul>
+     */
+    @Test
+    public void testCorrectCommandLineArguments() {
+        // lower range for tolerance
+        oneLineTest("quit", "", "0", getFile(simpleValidFile));
+        // upper range for tolerance
+        oneLineTest("quit", "", "1", getFile(simpleValidFile));
+        // longer but valid tolerance
+        oneLineTest("quit", "", "0.22456", getFile(simpleValidFile));
+        // tolerance in float notation
+        oneLineTest("quit", "", "0.5f", getFile(simpleValidFile));
+        // tolerance in double notation
+        oneLineTest("quit", "", "0.5d", getFile(simpleValidFile));
+    }
+
+    /**
+     * Simulates the Praktomat's public test. Asserts that:
+     * <ul>
+     * <li>the program outputs the expected search responses.
+     * <li>an error message is printed for the last search command (key isbn not allowed)
+     * </ul>
+     */
+    @Test
+    public void publicPraktomatTest() {
+        file = new String[] {
+                "creator=galileocomputing,title=java_ist_auch_eine_insel",
+                "title=grundkursprogrammieren_in_java,year=2007",
+                "creator=ralf_reussner,year=2006"
+        };
+        commands = new String[] {
+                "search creator=ralf_reussner",
+                "search year=2006",
+                "search AND(creator=ralf_reussner,year=2006)",
+                "search OR(creator=ralf_reussner,year=2006)",
+                "search isbn=12345",
+                "quit"
+        };
+        // @formatter:off
+        expectedResultMatchers = getMatchers(
+                is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+                is("creator=unknown,title=grundkursprogrammieren_in_java,year=2007,false"),
+                is("creator=ralf_reussner,title=unknown,year=2006,true"),
+                
+                is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+                is("creator=unknown,title=grundkursprogrammieren_in_java,year=2007,true"),
+                is("creator=ralf_reussner,title=unknown,year=2006,true"),
+                
+                is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+                is("creator=unknown,title=grundkursprogrammieren_in_java,year=2007,false"),
+                is("creator=ralf_reussner,title=unknown,year=2006,true"),
+                
+                is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+                is("creator=unknown,title=grundkursprogrammieren_in_java,year=2007,true"),
+                is("creator=ralf_reussner,title=unknown,year=2006,true"),
+                
+                startsWith("Error,")
+         );
+        // @formatter:on
+
+        multiLineTest(commands, expectedResultMatchers, "0.5", getFile(file));
+    }
+
+    /*
+     * HELPER METHODS
+     */
 
     @Override
     protected String consoleMessage(String commands, String[] commandLineArguments) {
