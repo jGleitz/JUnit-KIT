@@ -328,21 +328,39 @@ public abstract class InteractiveConsoleTest {
 		TestObject.allowSystemExit(SystemExitStatus.WITH_0);
 	}
 
-	private static String getArguments(String[] commandLineArguments) {
+	/**
+	 * A representation of command line arguments. Returns {@code that has been called with the command line arguments},
+	 * concatenated with a list representation of {@code commandLineArguments}. Returns an empty String if
+	 * {@code commandLineArguments} is {@code null} or empty.
+	 * 
+	 * @param commandLineArguments
+	 * @return
+	 */
+	protected String getArguments(String[] commandLineArguments) {
 		if (commandLineArguments == null || commandLineArguments.length == 0) {
 			return "";
 		}
 		return "that has been called with the command line arguments " + Arrays.toString(commandLineArguments);
 	}
 
-	private static String consoleMessage(String commands, String[] commandLineArguments) {
+	/**
+	 * The message that should be printed at the start of an error message. Override this method to print your own
+	 * message.
+	 * 
+	 * @param commands
+	 *            the commands that were run on the interactive console
+	 * @param commandLineArguments
+	 *            the command line arguments the console was called with
+	 * @return a String representing the session
+	 */
+	protected String consoleMessage(String commands, String[] commandLineArguments) {
 		String result = "";
 		result += "We ran a session on your interactive console" + getArguments(commandLineArguments)
 				+ ", running the commands \n\n" + commands + "\n\n but got unexpected output:\n";
 		return result;
 	}
 
-	private static String join(String[] strings) {
+	private String join(String[] strings) {
 		String result = "";
 		for (String string : strings) {
 			result += string + System.lineSeparator();
@@ -350,7 +368,7 @@ public abstract class InteractiveConsoleTest {
 		return result;
 	}
 
-	private static List<Matcher<String>> joinAsIsMatchers(String[] strings) {
+	private List<Matcher<String>> joinAsIsMatchers(String[] strings) {
 		List<Matcher<String>> result = new Vector<Matcher<String>>();
 		for (String s : strings) {
 			result.add(is(s));
@@ -358,7 +376,7 @@ public abstract class InteractiveConsoleTest {
 		return result;
 	}
 
-	private static String removeNewLine(String s) {
+	private String removeNewLine(String s) {
 		String result = s;
 		if (s.endsWith(System.lineSeparator())) {
 			result = s.substring(0, s.length() - System.lineSeparator().length());
