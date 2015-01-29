@@ -136,12 +136,14 @@ public abstract class InteractiveConsoleTest {
 	 * 
 	 * <pre>
 	 * <code>
+	 * {@code
 	 * List<Matcher<String>> expectedResults = new Vector<Matcher<String>>();
 	 * expectedResults.add(is("Success!"));
 	 * expectedResults.add(is("Success!"));
 	 * expectedResults.add(is("Success!"));
 	 * expectedResults.add(startsWith("Success!"));
 	 * multiLineTest(commands, expectedResults, args0);
+	 * }
 	 * </code>
 	 * </pre>
 	 * 
@@ -200,12 +202,14 @@ public abstract class InteractiveConsoleTest {
 	 * 
 	 * <pre>
 	 * <code>
+	 * {@code
 	 * List<Matcher<String>> expectedResults = new Vector<Matcher<String>>();
 	 * expectedResults.add(is("Success!"));
 	 * expectedResults.add(is("Success!"));
 	 * expectedResults.add(is("Success!"));
 	 * expectedResults.add(startsWith("Success!"));
 	 * multiLineTest(commands, expectedResults, args0);
+	 * }
 	 * </code>
 	 * </pre>
 	 * 
