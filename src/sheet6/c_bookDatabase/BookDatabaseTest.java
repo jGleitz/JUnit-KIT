@@ -31,17 +31,21 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
             "Creator=Ralf_Reussner,year=2006"
     };
 
+    /**
+     * Fails the test as this test is incomplete an therefore does not grant anything. Remove this method as soon as the
+     * test reaches a certain degree of relevance.
+     */
     @Test
     public void incomplete() {
         fail("\n\nThis test is under development and incomplete!\n\n");
     }
 
     /**
-     * Tests the program's behaviour for a wrong tolerance command line argument. Asserts that:
+     * Tests the program's behaviour for a wrong tolerance command line argument. Asserts that the program prints an
+     * error message for:
      * <ul>
-     * <li>The program prints an error message for a tolerance that can not be parsed as a Double
-     * <li>The program prints an error message for a tolerance that can be parsed as a Double, but is not between 0 and
-     * 1
+     * <li>a tolerance that can not be parsed as a Double
+     * <li>a tolerance that can be parsed as a Double, but is not between 0 and 1
      * </ul>
      * 
      */
@@ -54,15 +58,65 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
     }
 
     /**
-     * Tests the program's behaviour for a bad file path argument. Assert that:
+     * Tests the program's behaviour for a bad file path argument. Asserts that the program prints an error message for:
      * <ul>
-     * <li>The program prints an error message for a file path that does not point to a file
+     * <li>a file path that does not point to a file
      * </ul>
      */
     @Test
     public void testBadFilePath() {
         errorTest("quit", "0.3", "");
         errorTest("quit", "0.3", "I sure as hell don't exist!");
+    }
+
+    /**
+     * Tests the program's behaviour for a bad formed input file. Asserts that the program prints an error message for:
+     * <ul>
+     * <li>an empty file
+     * <li>a file with general bad syntax
+     * <li>a file with a malformed attribute name
+     * <li>a file with a malformed attribute value
+     * </ul>
+     */
+    @Test
+    public void testBadFile() {
+        String[] file;
+
+        // empty file
+        file = new String[] {
+            ""
+        };
+        errorTest("quit", "0.3", getFile(file));
+
+        // random text
+        file = new String[] {
+            "Just some random text"
+        };
+        errorTest("quit", "0.3", getFile(file));
+
+        // no value
+        file = new String[] {
+            "creator="
+        };
+        errorTest("quit", "0.3", getFile(file));
+
+        // false attribute name
+        file = new String[] {
+            "creater=Max_Mustermann"
+        };
+        errorTest("quit", "0.3", getFile(file));
+
+        // comma at the end
+        file = new String[] {
+            "creator=Max_Mustermann,"
+        };
+        errorTest("quit", "0.3", getFile(file));
+
+        // space in between
+        file = new String[] {
+            "creator=Max_Mustermann, title=Musterbuch"
+        };
+        errorTest("quit", "0.3", getFile(file));
     }
 
     @Override
