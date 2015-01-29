@@ -21,8 +21,8 @@ import test.TestObject;
 import test.TestObject.SystemExitStatus;
 
 /**
- * /** A test for the Interactive Console (Task C) <br>
- * NOTE: This test is far from being complete and under development!
+ * A test for the Interactive Console (Task C) <br>
+ * NOTE: This test is far from being complete and under heavy development!
  * 
  * @author Joshua Gleitze
  * @version 1.0
