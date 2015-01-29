@@ -8,6 +8,8 @@ This repository lives from contributions! You don't even have to write actual co
 * **Think** through what's to test and contribute your thoughts!
 * And of course, **write** the tests.
 
-Contribution shall all happen here on GitHub. Please no emails about the tests! File a bug ("Issues" in the navigation bar on the right) or commit a pull request!
+Contribution shall all happen here on GitHub. File a bug ("Issues" in the navigation bar on the right) or commit a pull request!
+
+[Open a new issue](https://github.com/jGleitz/JUnit-KIT/issues/new) if you have an idea for something that should be tested and tag it with the tag _proposal_.
 ## How to use
 You can find step by step instructions for setting up the tests in Eclipse [on our wiki page] (https://github.com/jGleitz/JUnit-KIT/wiki/Using-the-tests-in-Eclipse). It should work similar in other IDEs.
