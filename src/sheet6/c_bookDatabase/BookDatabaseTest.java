@@ -40,7 +40,8 @@ public class BookDatabaseTest extends InteractiveConsoleTest {
     /**
      * The input file that was given as valid on the task sheet.
      */
-    private static final String[] taskSheetInputFile = {
+    @SuppressWarnings("unused")
+	private static final String[] taskSheetInputFile = {
             "title=Java_ist_auch_eine_Insel,creator=GalileoComputing",
             "tITle=Grundkurs_Programmieren_iN_JAVA,year=2007",
             "Creator=Ralf_Reussner,year=2006"
