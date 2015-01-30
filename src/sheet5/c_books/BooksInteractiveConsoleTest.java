@@ -110,8 +110,7 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
 
     @Test
     public void testNoArgs() {
-        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);// TODO will this setting be
-                                                                         // reseted after test end?!
+        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
         errorTest("quit\n");
     }
 
