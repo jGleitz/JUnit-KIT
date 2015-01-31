@@ -77,6 +77,13 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
         };
         errorTest(commands, "0.5", getFile(simpleValidFile));
         
+        // no argument for search
+        commands = new String[] {
+                "search",
+                "quit"
+        };
+        errorTest(commands, "0.5", getFile(simpleValidFile));
+        
         // starts right, ends wrong
         commands = new String[] {
                 "searchi creator=Mustermann",
