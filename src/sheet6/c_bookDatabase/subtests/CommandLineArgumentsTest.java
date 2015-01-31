@@ -2,6 +2,7 @@ package sheet6.c_bookDatabase.subtests;
 
 import org.junit.Test;
 
+import test.Input;
 import test.TestObject;
 import test.TestObject.SystemExitStatus;
 
@@ -30,15 +31,15 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
         TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
 
         // no tolerance
-        errorTest("quit", "", getFile(simpleValidFile));
+        errorTest("quit", "", Input.getFile(simpleValidFile));
         // not a number
-        errorTest("quit", "xyz", getFile(simpleValidFile));
+        errorTest("quit", "xyz", Input.getFile(simpleValidFile));
         // not in range
-        errorTest("quit", "3", getFile(simpleValidFile));
+        errorTest("quit", "3", Input.getFile(simpleValidFile));
         // not in range
-        errorTest("quit", "-1", getFile(simpleValidFile));
+        errorTest("quit", "-1", Input.getFile(simpleValidFile));
         // not a correct number
-        errorTest("quit", "0.5fd", getFile(simpleValidFile));
+        errorTest("quit", "0.5fd", Input.getFile(simpleValidFile));
     }
 
     /**
@@ -87,15 +88,15 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
     @Test
     public void testCorrectCommandLineArguments() {
         // lower range for tolerance
-        oneLineTest("quit", "", "0", getFile(simpleValidFile));
+        oneLineTest("quit", "", "0", Input.getFile(simpleValidFile));
         // upper range for tolerance
-        oneLineTest("quit", "", "1", getFile(simpleValidFile));
+        oneLineTest("quit", "", "1", Input.getFile(simpleValidFile));
         // longer but valid tolerance
-        oneLineTest("quit", "", "0.22456", getFile(simpleValidFile));
+        oneLineTest("quit", "", "0.22456", Input.getFile(simpleValidFile));
         // tolerance in float notation
-        oneLineTest("quit", "", "0.5f", getFile(simpleValidFile));
+        oneLineTest("quit", "", "0.5f", Input.getFile(simpleValidFile));
         // tolerance in double notation
-        oneLineTest("quit", "", "0.5d", getFile(simpleValidFile));
+        oneLineTest("quit", "", "0.5d", Input.getFile(simpleValidFile));
     }
 
 }

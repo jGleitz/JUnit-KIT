@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import test.Input;
 import test.TestObject;
 import test.TestObject.SystemExitStatus;
 
@@ -32,43 +33,43 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 
 		// empty file
 		line = "";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// random text
 		line = "Just some random text";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// no value
 		line = "creator=";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// false attribute name
 		line = "creater=Max_Mustermann";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// comma at the end
 		line = "creator=Max_Mustermann,";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// space in between
 		line = "creator=Max_Mustermann, title=Musterbuch";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// Duplicate attribute keyword title
 		line = "title=java,creator=reussner,title=java,year=2005";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// Duplicate attribute keyword year
 		line = "title=java,year=2010,creator=reussner,year=2005";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// Duplicate attribute keyword creator
 		line = "title=java,creator=reussner,creator=mustermann,year=2005";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// maybe a regex will fail here
 		line = "creator=reussner,year=2014,tl=test";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 	}
 
 	/**
@@ -89,32 +90,32 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 
 		// bad character in creator
 		line = "creator=Max_Mus$termann";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 		falseValues.add(line);
 
 		// bad character in title
 		line = "title=Must&erbuch";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 		falseValues.add(line);
 
 		// year is not a number
 		line = "year=irgendetwas";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 		falseValues.add(line);
 
 		// year is a number, but not in range
 		line = "year=2016";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 		falseValues.add(line);
 
 		// year is a number, but not in range
 		line = "year=-1";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 		falseValues.add(line);
 
 		// year is a number, is in range, but not an Integer.
 		line = "year=2014.2";
-		errorTest("quit", "0.3", getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 		falseValues.add(line);
 
 		// test combinations of good and bad strings
@@ -126,9 +127,9 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 					goodOnes.add(good);
 				}
 			}
-			errorTest("quit", "0.3", getFile(goodOnes.get(0) + "," + bad));
-			errorTest("quit", "0.3", getFile(goodOnes.get(1) + "," + bad));
-			errorTest("quit", "0.3", getFile(goodOnes.get(0) + "," + bad + "," + goodOnes.get(1)));
+			errorTest("quit", "0.3", Input.getFile(goodOnes.get(0) + "," + bad));
+			errorTest("quit", "0.3", Input.getFile(goodOnes.get(1) + "," + bad));
+			errorTest("quit", "0.3", Input.getFile(goodOnes.get(0) + "," + bad + "," + goodOnes.get(1)));
 		}
 	}
 
@@ -145,37 +146,37 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 		// just creator
 		line = "creator=Mustermann";
 		correctLines.add(line);
-		oneLineTest("quit", "", "0.5", getFile(correctLines));
+		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
 
 		// title
 		line = "title=Muster-buch";
 		correctLines.add(line);
-		oneLineTest("quit", "", "0.5", getFile(correctLines));
+		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
 
 		// year
 		line = "year=100";
 		correctLines.add(line);
-		oneLineTest("quit", "", "0.5", getFile(correctLines));
+		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
 
 		// complete line
 		line = "title=a-b-c,year=4";
 		correctLines.add(line);
-		oneLineTest("quit", "", "0.5", getFile(correctLines));
+		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
 		
 		// complete line
 		line = "title=AND,creator=OR";
 		correctLines.add(line);
-		oneLineTest("quit", "", "0.5", getFile(correctLines));
+		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
 
 		// incomplete line
 		line = "title=Java_ist_auch_eine_Insel,creator=GalileoComputing";
 		correctLines.add(line);
-		oneLineTest("quit", "", "0.5", getFile(correctLines));
+		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
 
 		// random case
-		oneLineTest("quit", "", "0.5", getFile(shuffledCase(correctLines)));
-		oneLineTest("quit", "", "0.5", getFile(shuffledCase(correctLines)));
-		oneLineTest("quit", "", "0.5", getFile(shuffledCase(correctLines)));
+		oneLineTest("quit", "", "0.5", Input.getFile(shuffledCase(correctLines)));
+		oneLineTest("quit", "", "0.5", Input.getFile(shuffledCase(correctLines)));
+		oneLineTest("quit", "", "0.5", Input.getFile(shuffledCase(correctLines)));
 	}
 
 	private List<String> shuffledCase(List<String> lines) {
