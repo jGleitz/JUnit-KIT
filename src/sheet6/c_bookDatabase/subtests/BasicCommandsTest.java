@@ -29,7 +29,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
      */
     @Test
     public void testQuit() {
-        // simple quits
+        // simple quit
         command = "quit";
         oneLineTest(command, "", "0.5", getFile(simpleValidFile));
     }
@@ -44,12 +44,12 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
      */
     @Test
     public void testSearch() {
-        // simple quits
+        // simple search
         commands = new String[] {
                 "search creator=Mustermann",
                 "quit"
         };
-        oneLineTest(command, not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(commands, not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
     }
 
     /**
