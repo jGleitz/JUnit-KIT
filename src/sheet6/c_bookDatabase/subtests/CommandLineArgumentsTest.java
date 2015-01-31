@@ -96,8 +96,4 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
         oneLineTest("quit", "", "0.5d", getFile(simpleValidFile));
     }
 
-    public String getName() {
-        return "doof";
-    }
-
 }
