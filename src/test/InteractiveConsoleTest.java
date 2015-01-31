@@ -13,6 +13,8 @@ import java.util.Vector;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.Timeout;
 
 import test.TestObject.SystemExitStatus;
 
@@ -23,7 +25,7 @@ import test.TestObject.SystemExitStatus;
  * @author Roman Langrehr
  * @author Joshua Gleitze
  * @since 05.01.2015
- * @version 1.1
+ * @version 1.1.1
  *
  */
 public abstract class InteractiveConsoleTest {
@@ -51,6 +53,13 @@ public abstract class InteractiveConsoleTest {
 	 * You can use this field to put an expected result Matcher array in it.
 	 */
 	protected List<Matcher<String>> expectedResultMatchers;
+
+	/**
+	 * A test is terminated after 5 seconds. This assures that a test fails if the tested class fails to terminate. Some
+	 * users may mistake a non terminating test as being successful.
+	 */
+	@Rule
+	public Timeout globalTimeout = new Timeout(5000); // 5 seconds max per method tested
 
 	/**
 	 * Tests an interactive console program with multiple commands that should output one line. Calls the main method
