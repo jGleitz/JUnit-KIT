@@ -1,9 +1,10 @@
 package sheet6.c_bookDatabase.subtests;
 
 import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.CoreMatchers.not;
-
+import test.Input;
 import test.TestObject;
 import test.TestObject.SystemExitStatus;
 
@@ -31,7 +32,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
     public void testQuit() {
         // simple quit
         command = "quit";
-        oneLineTest(command, "", "0.5", getFile(simpleValidFile));
+        oneLineTest(command, "", "0.5", Input.getFile(simpleValidFile));
     }
     
     /**
@@ -49,7 +50,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
                 "search creator=Mustermann",
                 "quit"
         };
-        oneLineTest(commands, not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(commands, not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
     }
 
     /**
@@ -68,35 +69,35 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
                 "xyz",
                 "quit"
         };
-        errorTest(commands, "0.5", getFile(simpleValidFile));
+        errorTest(commands, "0.5", Input.getFile(simpleValidFile));
 
         // argument for quit
         commands = new String[] {
                 "quit now",
                 "quit"
         };
-        errorTest(commands, "0.5", getFile(simpleValidFile));
+        errorTest(commands, "0.5", Input.getFile(simpleValidFile));
         
         // no argument for search
         commands = new String[] {
                 "search",
                 "quit"
         };
-        errorTest(commands, "0.5", getFile(simpleValidFile));
+        errorTest(commands, "0.5", Input.getFile(simpleValidFile));
         
         // starts right, ends wrong
         commands = new String[] {
                 "searchi creator=Mustermann",
                 "quit"
         };
-        errorTest(commands, "0.5", getFile(simpleValidFile));
+        errorTest(commands, "0.5", Input.getFile(simpleValidFile));
         
         // starts right, ends wrong
         commands = new String[] {
                 "quiti",
                 "quit"
         };
-        errorTest(commands, "0.5", getFile(simpleValidFile));
+        errorTest(commands, "0.5", Input.getFile(simpleValidFile));
     }
 
 }

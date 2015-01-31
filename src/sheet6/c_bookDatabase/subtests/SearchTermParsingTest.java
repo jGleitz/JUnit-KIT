@@ -3,6 +3,7 @@ package sheet6.c_bookDatabase.subtests;
 import static org.junit.Assert.fail;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.startsWith;
+
 import org.hamcrest.Matcher;
 
 import java.util.LinkedList;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
+
+import test.Input;
 
 /**
  * Asserts the program's ability to correctly parse a complex search term. It should output an error message for bad
@@ -44,32 +47,32 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
 
         // simple search term
         line = "creator=abc";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         correctSearchTerms.add(line);
 
         // simple AND
         line = "AND(creator=abc, year=32)";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         correctSearchTerms.add(line);
 
         // simple OR
         line = "OR(title=abadc, year=32)";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         correctSearchTerms.add(line);
 
         // AND with two ORs
         line = "AND(OR(title=Musterbuch, creator=Elke_Heidenreich), OR(creator=Mustermann, title=Am_Suedpol_denkt_man_ist_es_heiss))";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         correctSearchTerms.add(line);
 
         // OR with two ANDs
         line = "OR(AND(title=Musterbuch, creator=Mustermann), AND(creator=Elke_Heidenreich, title=Am_Suedpol_denkt_man_ist_es_heiss))";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         correctSearchTerms.add(line);
 
         // more complex
         line = "OR(AND(title=Musterbuch, creator=Mustermann), AND(creator=Elke_Heidenreich, title=Am_Suedpol_denkt_man_ist_es_heiss))";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         correctSearchTerms.add(line);
 
         // quite complex
@@ -86,12 +89,12 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
         j = "OR(" + e + ",year=123)";
         k = "AND(" + j + "," + i + ")";
         line = "AND(" + g + "," + k + ")";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         correctSearchTerms.add(line);
 
         // test the same lines but with random case and random spaces
         for (String term : correctSearchTerms) {
-            oneLineTest(search(shuffle(term)), not(startsWith("Error,")), "0.5", getFile(simpleValidFile));
+            oneLineTest(search(shuffle(term)), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
         }
 
         // test multiple search requests
@@ -113,7 +116,7 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
                 commands[m] = "search " + shuffle(correctSearchTerms.get(termIndex));
             }
             commands[numberOfSearches] = "quit";
-            multiLineTest(commands, expectedResultMatchers, "0.5", getFile(simpleValidFile));
+            multiLineTest(commands, expectedResultMatchers, "0.5", Input.getFile(simpleValidFile));
         }
     }
 

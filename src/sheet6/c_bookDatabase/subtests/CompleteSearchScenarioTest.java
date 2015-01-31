@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import test.Input;
+
 /**
  * Asserts the program's correct behaviour for complete search scenarios. This means that a more or less complex input
  * file is read in on which {@code search} operations are run. The program's complete output is asserted to match
@@ -70,6 +72,6 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
          );
         // @formatter:on
 
-        multiLineTest(commands, expectedResultMatchers, "0.5", getFile(file));
+        multiLineTest(commands, expectedResultMatchers, "0.5", Input.getFile(file));
     }
 }
