@@ -6,7 +6,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 
 import test.InteractiveConsoleTest;
@@ -150,5 +152,22 @@ public class BookDatabaseSubTest extends InteractiveConsoleTest {
             fileName = reverseFileMap.get(lines);
         }
         return fileName;
+    }
+    
+    /**
+     * Returns a path to a file containing the lines given in {@code lines}. Creates the file if it was not created
+     * before.
+     * 
+     * @param lines
+     *            The lines to print in the file.
+     * @return path to a file containing {@code lines}
+     */
+    protected static String getFile(Collection<String> lines) {
+    	String[] linesArray = new String[lines.size()];
+    	Iterator<String> iterator = lines.iterator();
+    	for (int i = 0; iterator.hasNext(); i++) {
+    		linesArray[i] = iterator.next();
+    	}
+    	return getFile(linesArray);
     }
 }
