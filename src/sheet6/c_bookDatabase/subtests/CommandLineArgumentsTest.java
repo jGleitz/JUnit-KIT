@@ -6,7 +6,9 @@ import test.TestObject;
 import test.TestObject.SystemExitStatus;
 
 /**
- * Tests whether the program performs good checking on the command line parameters.
+ * Asserts the program's checking of the command line arguments. The program should print error messages for bad formed
+ * command line arguments. Meanwhile, correct ones should be read in without printing anything. Note that the program's
+ * ability to actually parse the input file is asserted in {@link InputFileParsingTest}.
  * 
  * @author Joshua Gleitze
  * @version 1.0

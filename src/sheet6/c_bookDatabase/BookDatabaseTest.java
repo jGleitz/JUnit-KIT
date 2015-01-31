@@ -21,7 +21,9 @@ import sheet6.c_bookDatabase.subtests.*;
 		CommandLineArgumentsTest.class,
 		InputFileParsingTest.class,
 		BasicCommandsTest.class,
-		CompleteSearchScenarioTest.class
+		CompleteSearchScenarioTest.class,
+		SearchTermParsingTest.class
 })
 public class BookDatabaseTest {
+    
 }
