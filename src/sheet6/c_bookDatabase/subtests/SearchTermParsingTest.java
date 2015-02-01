@@ -119,118 +119,118 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
         }
     }
 
-  /**
-   * Tests wheater not-well-formed search queries lead to error-messages-
-   */
-  @Test
-  public void testIllegalSearchTerms() {
-    String query;
+    /**
+     * Tests whether malformed search queries lead to error-messages.
+     */
+    @Test
+    public void testIllegalSearchTerms() {
+        String query;
 
-    // No arg
-    query = "search";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // No arg
+        query = "search";
+        errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Empty arg
-    query = "search ";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Empty arg
+        query = "search ";
+        errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
 
-    // No "="-sign
-    query = "search creator";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // No "="-sign
+        query = "creator";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Two == signs
-    query = "search creator=v1=v2";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Two == signs
+        query = "creator=v1=v2";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal Attribute name
-    query = "search crtor=test";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal Attribute name
+        query = "crtor=test";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal Attribute name
-    query = "search creator?=test";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal Attribute name
+        query = "creator?=test";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // No Attribute name
-    query = "search =test";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // No Attribute name
+        query = "=test";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // No attribute value
-    query = "search creator=";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // No attribute value
+        query = "creator=";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal Attribute value
-    query = "search creator=t?st";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal Attribute value
+        query = "creator=t?st";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "OR(title=abadc, year=32))";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "OR(title=abadc, year=32))";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "OR(title=abadc, year=32";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "OR(title=abadc, year=32";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "ORtitle=abadc, year=32)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "ORtitle=abadc, year=32)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "OR((title=abadc, year=32)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "OR((title=abadc, year=32)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "OR(title=abadc)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "OR(title=abadc)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "OR((title=abadc, year=32))";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "OR((title=abadc, year=32))";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "OR(title=abadc, AND(title=Musterbuch, creator=Mustermann)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "OR(title=abadc, AND(title=Musterbuch, creator=Mustermann)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "OR(title=abadc, title=Musterbuch, creator=Mustermann)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "OR(title=abadc, title=Musterbuch, creator=Mustermann)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Same as above with and instead of or
-    // Illegal brackets
-    query = "AND(title=abadc, year=32))";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Same as above with and instead of or
+        // Illegal brackets
+        query = "AND(title=abadc, year=32))";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "AND(title=abadc, year=32";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "AND(title=abadc, year=32";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "ANDtitle=abadc, year=32)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "ANDtitle=abadc, year=32)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "AND((title=abadc, year=32)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "AND((title=abadc, year=32)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "AND(title=abadc)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "AND(title=abadc)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "AND((title=abadc, year=32))";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "AND((title=abadc, year=32))";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "AND(title=abadc, OR(title=Musterbuch, creator=Mustermann)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "AND(title=abadc, OR(title=Musterbuch, creator=Mustermann)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal brackets
-    query = "AND(title=abadc, title=Musterbuch, creator=Mustermann)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        // Illegal brackets
+        query = "AND(title=abadc, title=Musterbuch, creator=Mustermann)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
 
-    // Illegal prefix
-    query = "AN(title=abadc, year=32)";
-    errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
-  }
+        // Illegal prefix
+        query = "AN(title=abadc, year=32)";
+        errorTest(search(query), "0.3", Input.getFile(simpleValidFile));
+    }
 
     private String shuffle(String line) {
         StringBuilder builder = new StringBuilder();
