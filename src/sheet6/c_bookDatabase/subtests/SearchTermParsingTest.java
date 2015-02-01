@@ -23,7 +23,7 @@ import test.Input;
  * @since 31.01.2015
  */
 public class SearchTermParsingTest extends BookDatabaseSubTest {
-    private static String query;
+    private String query;
 
     /**
      * Fails the test as this test is incomplete an therefore does not grant anything. Remove this method as soon as the
@@ -46,34 +46,34 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
         List<String> correctSearchTerms = new LinkedList<>();
 
         // simple search term
-        line = "creator=abc";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
-        correctSearchTerms.add(line);
+        query = "creator=abc";
+        oneLineTest(search(query), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
+        correctSearchTerms.add(query);
 
         // simple AND
-        line = "AND(creator=abc, year=32)";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
-        correctSearchTerms.add(line);
+        query = "AND(creator=abc, year=32)";
+        oneLineTest(search(query), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
+        correctSearchTerms.add(query);
 
         // simple OR
-        line = "OR(title=abadc, year=32)";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
-        correctSearchTerms.add(line);
+        query = "OR(title=abadc, year=32)";
+        oneLineTest(search(query), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
+        correctSearchTerms.add(query);
 
         // AND with two ORs
-        line = "AND(OR(title=Musterbuch, creator=Elke_Heidenreich), OR(creator=Mustermann, title=Am_Suedpol_denkt_man_ist_es_heiss))";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
-        correctSearchTerms.add(line);
+        query = "AND(OR(title=Musterbuch, creator=Elke_Heidenreich), OR(creator=Mustermann, title=Am_Suedpol_denkt_man_ist_es_heiss))";
+        oneLineTest(search(query), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
+        correctSearchTerms.add(query);
 
         // OR with two ANDs
-        line = "OR(AND(title=Musterbuch, creator=Mustermann), AND(creator=Elke_Heidenreich, title=Am_Suedpol_denkt_man_ist_es_heiss))";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
-        correctSearchTerms.add(line);
+        query = "OR(AND(title=Musterbuch, creator=Mustermann), AND(creator=Elke_Heidenreich, title=Am_Suedpol_denkt_man_ist_es_heiss))";
+        oneLineTest(search(query), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
+        correctSearchTerms.add(query);
 
         // more complex
-        line = "OR(AND(title=Musterbuch, creator=Mustermann), AND(creator=Elke_Heidenreich, title=Am_Suedpol_denkt_man_ist_es_heiss))";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
-        correctSearchTerms.add(line);
+        query = "OR(AND(title=Musterbuch, creator=Mustermann), AND(creator=Elke_Heidenreich, title=Am_Suedpol_denkt_man_ist_es_heiss))";
+        oneLineTest(search(query), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
+        correctSearchTerms.add(query);
 
         // quite complex
         String a, b, c, d, e, f, g, h, i, j, k;
@@ -88,9 +88,9 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
         i = "OR(" + h + "," + c + ")";
         j = "OR(" + e + ",year=123)";
         k = "AND(" + j + "," + i + ")";
-        line = "AND(" + g + "," + k + ")";
-        oneLineTest(search(line), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
-        correctSearchTerms.add(line);
+        query = "AND(" + g + "," + k + ")";
+        oneLineTest(search(query), not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
+        correctSearchTerms.add(query);
 
         // test the same lines but with random case and random spaces
         for (String term : correctSearchTerms) {

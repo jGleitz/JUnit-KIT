@@ -413,6 +413,7 @@ public abstract class InteractiveConsoleTest {
 		for (int i = 0; i < commands.length; i++) {
 			allCommands[i] = commands[i];
 		}
+		allCommands[commands.length] = "quit";
 		return allCommands;
 	}
 }
