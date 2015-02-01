@@ -251,4 +251,16 @@ public class BookSearchTest extends InteractiveConsoleTest {
     };
     errorTest(commands, Input.getFile(book1));
   }
+
+  /**
+   * Calls quit with an argument.
+   */
+  @Test
+  public void testQuitWithArg() {
+    commands = new String[]{
+        "quit ipsum",
+        "quit"
+    };
+    errorTest(commands, Input.getFile(book1));
+  }
 }
