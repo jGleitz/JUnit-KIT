@@ -400,4 +400,14 @@ public abstract class InteractiveConsoleTest {
 		}
 		return result;
 	}
+
+  /**
+   * Adds the "quit" command to a simple one-line command
+   */
+  public static String[] addQuit(String command) {
+    return new String[]{
+        command,
+        "quit"
+    };
+  }
 }
