@@ -23,6 +23,7 @@ import test.Input;
  * @since 31.01.2015
  */
 public class SearchTermParsingTest extends BookDatabaseSubTest {
+    private static String query;
 
     /**
      * Fails the test as this test is incomplete an therefore does not grant anything. Remove this method as soon as the
@@ -124,15 +125,14 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
      */
     @Test
     public void testIllegalSearchTerms() {
-        String query;
 
         // No arg
-        query = "search";
-        errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        command = "search";
+        errorTest(addQuit(command), "0.3", Input.getFile(simpleValidFile));
 
         // Empty arg
-        query = "search ";
-        errorTest(addQuit(query), "0.3", Input.getFile(simpleValidFile));
+        command = "search ";
+        errorTest(addQuit(command), "0.3", Input.getFile(simpleValidFile));
 
         // No "="-sign
         query = "creator";
