@@ -27,11 +27,11 @@ public class BookSearchTest extends InteractiveConsoleTest {
 
 	protected static final String[] book1 = new String[] {
 			"Seite1",
-			"Lorem ipsum dolor sit amet consetetur sadipscing",
-			"Lorem ipsum dolor sit amet consetetur sadipscing",
+			"lorem ipsum dolor sit amet consetetur sadipscing",
+			"lorem ipsum dolor sit amet consetetur sadipscing",
 			"test1",
 			"Seite2",
-			"Lorem test2 amet"
+			"lorem test2 amet"
 	};
 	protected static final String[] book2 = new String[] {
 		"Seite1"
@@ -39,7 +39,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
 	protected static final String[] book4 = new String[] {
 			"Seite1",
 			"Seite2",
-			"Lorem test2 amet"
+			"lorem test2 amet"
 	};
 	protected static final String[] book5 = new String[] {
 			"",
@@ -162,16 +162,16 @@ public class BookSearchTest extends InteractiveConsoleTest {
 	}
 
 	/**
-	 * Searches for a keyword which appearers on two page.
+	 * Searches for a keyword which appearers on two pages.
 	 */
 	@Test
 	public void search2() {
 		commands = new String[] {
-				"search Lorem",
+				"search lorem",
 				"quit"
 		};
 		expectedResults = new String[] {
-			"Lorem:1,2"
+			"lorem:1,2"
 		};
 		multiLineTest(commands, expectedResults, Input.getFile(book1));
 	}
