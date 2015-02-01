@@ -1,9 +1,10 @@
 package sheet6.c_bookDatabase.subtests;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.startsWith;
+
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.CoreMatchers.not;
 import test.Input;
 import test.TestObject;
 import test.TestObject.SystemExitStatus;
@@ -62,7 +63,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
      */
     @Test
     public void testIllegalCommand() {
-        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+    TestObject.allowSystemExit(SystemExitStatus.ALL);
 
         // invalid command
         commands = new String[] {
