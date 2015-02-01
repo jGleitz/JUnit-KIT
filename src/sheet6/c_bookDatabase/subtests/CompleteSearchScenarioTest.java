@@ -2,7 +2,6 @@ package sheet6.c_bookDatabase.subtests;
 
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.fail;
 
 import java.util.UUID;
 
@@ -76,6 +75,10 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 		}
 	}
 
+	/**
+	 * Runs a test scenario with {@code AND} and {@code OR} as attribute values. Asserts that the tested class is not
+	 * confused by that.
+	 */
 	@Test
 	public void testAndOrAttributeValues() {
 		file = new String[] {
@@ -115,6 +118,9 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 		}
 	}
 
+	/**
+	 * Runs a test with a tolerance of {@code 1}. Asserts that the program behaves correctly in that case.
+	 */
 	@Test
 	public void testHighTolerance() {
 
@@ -162,7 +168,10 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 			multiLineTest(shuffledCommands, expectedResultMatchers, "1", Input.getFile(shuffledFile));
 		}
 	}
-
+	
+	/**
+	 * Runs a test with a tolerance of {@code 0.0000000000001}. Asserts that the program behaves correctly in that case.
+	 */
 	@Test
 	public void testLowTolerance() {
 		queries = new String[] {
@@ -202,7 +211,10 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 			multiLineTest(shuffledCommands, expectedResultMatchers, "0.0000000000001", Input.getFile(shuffledFile));
 		}
 	}
-	
+
+	/**
+	 * Runs a test with a tolerance of {@code 0}. Asserts that the program behaves correctly in that case.
+	 */
 	@Test
 	public void testNoTolerance() {
 		queries = new String[] {
@@ -221,8 +233,7 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 		);
         // @formatter:on
 
-		multiLineTest(searchForAll(queries), expectedResultMatchers, "0",
-				Input.getFile(taskSheetInputFile));
+		multiLineTest(searchForAll(queries), expectedResultMatchers, "0", Input.getFile(taskSheetInputFile));
 
 		int randomTestRuns = 3;
 		for (int i = 0; i < randomTestRuns; i++) {
