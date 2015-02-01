@@ -77,7 +77,7 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 
 		multiLineTest(searchForAll(queries), expectedResultMatchers, "0.5", Input.getFile(file));
 
-		int randomTestRuns = 2;
+		int randomTestRuns = 5;
 		for (int i = 0; i < randomTestRuns; i++) {
 			String[] shuffledCommands = searchForAll(shuffle(queries));
 			String[] shuffledFile = shuffleCase(file);
@@ -164,11 +164,51 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 
 		multiLineTest(searchForAll(queries), expectedResultMatchers, "1", Input.getFile(taskSheetInputFile));
 
-		int randomTestRuns = 2;
+		int randomTestRuns = 3;
 		for (int i = 0; i < randomTestRuns; i++) {
 			String[] shuffledCommands = searchForAll(shuffle(queries));
 			String[] shuffledFile = shuffleCase(taskSheetInputFile);
 			multiLineTest(shuffledCommands, expectedResultMatchers, "1", Input.getFile(shuffledFile));
+		}
+	}
+
+	@Test
+	public void testLowTolerance() {
+		queries = new String[] {
+				"creator=galileocomputin",
+				or("title=java_istauch_eine_insel", "creator=ralf_reussmer"),
+				or(or(or("title=java_ist_auch_ein_berg", "creator=ralf_reusner"),
+						or("title=grundkurs_programmieren_ni_java", "creator=galileocomputin")), "year=2005"),
+				or(or("creator=galileocomputing", "year=2007"), "creator=ralf_reussner")
+		};
+		// @formatter:off
+        expectedResultMatchers = getMatchers(
+        	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+        	is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
+          	is("creator=ralf_reussner,title=unknown,year=2006,false"),
+                        
+          	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+        	is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
+          	is("creator=ralf_reussner,title=unknown,year=2006,false"),
+	                        
+          	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+        	is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
+          	is("creator=ralf_reussner,title=unknown,year=2006,false"),
+                        
+            is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,true"),
+            is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,true"),
+            is("creator=ralf_reussner,title=unknown,year=2006,true")
+		);
+        // @formatter:on
+
+		multiLineTest(searchForAll(queries), expectedResultMatchers, "0.0000000000001",
+				Input.getFile(taskSheetInputFile));
+
+		int randomTestRuns = 3;
+		for (int i = 0; i < randomTestRuns; i++) {
+			String[] shuffledCommands = searchForAll(shuffle(queries));
+			String[] shuffledFile = shuffleCase(taskSheetInputFile);
+			multiLineTest(shuffledCommands, expectedResultMatchers, "0.0000000000001", Input.getFile(shuffledFile));
 		}
 	}
 
