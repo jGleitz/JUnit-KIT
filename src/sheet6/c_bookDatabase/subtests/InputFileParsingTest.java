@@ -29,67 +29,67 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 	 */
 	@Test
 	public void testBadFile() {
-		TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+		TestObject.allowSystemExit(SystemExitStatus.ALL);
 
 		// empty file
 		line = "";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// random text
 		line = "Just some random text";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// no value
 		line = "creator=";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
-    // no attribute name
-    line = "=java_insel";
-    errorTest("quit", "0.3", Input.getFile(line));
+		// no attribute name
+		line = "=java_insel";
+		errorTest("quit", "0.3", Input.getFile(line));
 
-    // no neither value nor attribute name
-    line = "=";
-    errorTest("quit", "0.3", Input.getFile(line));
+		// no neither value nor attribute name
+		line = "=";
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// false attribute name
 		line = "creater=Max_Mustermann";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
-    // multiple values
-    line = "creator=value1=value2";
-    errorTest("quit", "0.3", Input.getFile(line));
+		// multiple values
+		line = "creator=value1=value2";
+		errorTest("quit", "0.3", Input.getFile(line));
 
-    // comma at the end
-    line = "creator=Max_Mustermann,";
-    errorTest("quit", "0.3", Input.getFile(line));
+		// comma at the end
+		line = "creator=Max_Mustermann,";
+		errorTest("quit", "0.3", Input.getFile(line));
 
-    // comma at the beginning
-    line = ",creator=Max_Mustermann";
-    errorTest("quit", "0.3", Input.getFile(line));
+		// comma at the beginning
+		line = ",creator=Max_Mustermann";
+		errorTest("quit", "0.3", Input.getFile(line));
 
-    // Duplicated comma
-    line = "title=java,creator=reussner,,year=2005";
-    errorTest("quit", "0.3", Input.getFile(line));
+		// Duplicated comma
+		line = "title=java,creator=reussner,,year=2005";
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// space in between
 		line = "creator=Max_Mustermann, title=Musterbuch";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// Duplicate attribute keyword title
 		line = "title=java,creator=reussner,title=java,year=2005";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// Duplicate attribute keyword year
 		line = "title=java,year=2010,creator=reussner,year=2005";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// Duplicate attribute keyword creator
 		line = "title=java,creator=reussner,creator=mustermann,year=2005";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 
 		// maybe a regex will fail here
 		line = "creator=reussner,year=2014,tl=test";
-    errorTest("quit", "0.3", Input.getFile(line));
+		errorTest("quit", "0.3", Input.getFile(line));
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 	 */
 	@Test
 	public void testWrongInputFileAttributeValues() {
-		TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+		TestObject.allowSystemExit(SystemExitStatus.ALL);
 
 		List<String> correctValues = new LinkedList<>();
 		List<String> falseValues = new LinkedList<>();
@@ -182,7 +182,7 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 		line = "title=a-b-c,year=4";
 		correctLines.add(line);
 		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
-		
+
 		// complete line
 		line = "title=AND,creator=OR";
 		correctLines.add(line);

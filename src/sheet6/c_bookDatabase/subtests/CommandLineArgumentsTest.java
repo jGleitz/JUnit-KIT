@@ -28,7 +28,7 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
      */
     @Test
     public void testWrongTolerance() {
-        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+        TestObject.allowSystemExit(SystemExitStatus.ALL);
 
         // no tolerance
         errorTest("quit", "", Input.getFile(simpleValidFile));
@@ -50,8 +50,8 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
      */
     @Test
     public void testBadFilePath() {
-        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-
+        TestObject.allowSystemExit(SystemExitStatus.ALL);
+        
         // no path
         errorTest("quit", "0.3", "");
         // wrong path
@@ -67,8 +67,8 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
      */
     @Test
     public void testWrongCommandLineArgumentNumber() {
-        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-
+        TestObject.allowSystemExit(SystemExitStatus.ALL);
+        
         // no argument
         errorTest("quit");
         // one empty argument

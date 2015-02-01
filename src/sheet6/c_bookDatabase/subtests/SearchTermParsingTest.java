@@ -12,6 +12,8 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import test.Input;
+import test.TestObject;
+import test.TestObject.SystemExitStatus;
 
 /**
  * Asserts the program's ability to correctly parse a complex search term. It should output an error message for bad
@@ -125,7 +127,8 @@ public class SearchTermParsingTest extends BookDatabaseSubTest {
      */
     @Test
     public void testIllegalSearchTerms() {
-
+        TestObject.allowSystemExit(SystemExitStatus.ALL);
+        
         // No arg
         command = "search";
         errorTest(addQuit(command), "0.3", Input.getFile(simpleValidFile));
