@@ -23,15 +23,6 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 	private String[] queries;
 
 	/**
-	 * Fails the test as this test is incomplete an therefore does not grant anything. Remove this method as soon as the
-	 * test reaches a certain degree of relevance.
-	 */
-	@Test
-	public void incomplete() {
-		fail("\n\nThis test is under development and incomplete!\n\n");
-	}
-
-	/**
 	 * Simulates the Praktomat's public test. Asserts that:
 	 * <ul>
 	 * <li>the program outputs the expected search responses.
@@ -209,6 +200,35 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 			String[] shuffledCommands = searchForAll(shuffle(queries));
 			String[] shuffledFile = shuffleCase(taskSheetInputFile);
 			multiLineTest(shuffledCommands, expectedResultMatchers, "0.0000000000001", Input.getFile(shuffledFile));
+		}
+	}
+	
+	@Test
+	public void testNoTolerance() {
+		queries = new String[] {
+				"creator=galileocomputing",
+				or(or("creator=galileocomputing", "year=2007"), "creator=ralf_reussner")
+		};
+		// @formatter:off
+        expectedResultMatchers = getMatchers(
+          	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+        	is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
+          	is("creator=ralf_reussner,title=unknown,year=2006,false"),
+                        
+            is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+            is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
+            is("creator=ralf_reussner,title=unknown,year=2006,false")
+		);
+        // @formatter:on
+
+		multiLineTest(searchForAll(queries), expectedResultMatchers, "0",
+				Input.getFile(taskSheetInputFile));
+
+		int randomTestRuns = 3;
+		for (int i = 0; i < randomTestRuns; i++) {
+			String[] shuffledCommands = searchForAll(shuffle(queries));
+			String[] shuffledFile = shuffleCase(taskSheetInputFile);
+			multiLineTest(shuffledCommands, expectedResultMatchers, "0", Input.getFile(shuffledFile));
 		}
 	}
 
