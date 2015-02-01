@@ -2,7 +2,6 @@ package sheet6.c_bookDatabase.subtests;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Test;
 
@@ -194,26 +193,9 @@ public class InputFileParsingTest extends BookDatabaseSubTest {
 		oneLineTest("quit", "", "0.5", Input.getFile(correctLines));
 
 		// random case
-		oneLineTest("quit", "", "0.5", Input.getFile(shuffledCase(correctLines)));
-		oneLineTest("quit", "", "0.5", Input.getFile(shuffledCase(correctLines)));
-		oneLineTest("quit", "", "0.5", Input.getFile(shuffledCase(correctLines)));
-	}
-
-	private List<String> shuffledCase(List<String> lines) {
-		List<String> shuffled = new LinkedList<>();
-		for (String line : lines) {
-			shuffled.add(shuffleCaseLine(line));
-		}
-		return shuffled;
-	}
-
-	private String shuffleCaseLine(String line) {
-		StringBuilder builder = new StringBuilder();
-		Random random = new Random();
-		for (char c : line.toCharArray()) {
-			builder.append((random.nextInt(2) != 0) ? Character.toUpperCase(c) : Character.toLowerCase(c));
-		}
-		return builder.toString();
+		oneLineTest("quit", "", "0.5", Input.getFile(shuffleCase(correctLines)));
+		oneLineTest("quit", "", "0.5", Input.getFile(shuffleCase(correctLines)));
+		oneLineTest("quit", "", "0.5", Input.getFile(shuffleCase(correctLines)));
 	}
 
 }

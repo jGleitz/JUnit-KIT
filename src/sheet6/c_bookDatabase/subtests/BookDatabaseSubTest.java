@@ -1,5 +1,9 @@
 package sheet6.c_bookDatabase.subtests;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
 import test.Input;
 import test.InteractiveConsoleTest;
 
@@ -63,4 +67,53 @@ public class BookDatabaseSubTest extends InteractiveConsoleTest {
         }
         return result;
     }
+
+	protected List<String> shuffleCase(List<String> lines) {
+		List<String> shuffled = new LinkedList<>();
+		for (String line : lines) {
+			shuffled.add(shuffleCaseLine(line));
+		}
+		return shuffled;
+	}
+	
+	protected String[] shuffleCase(String[] lines) {
+		String[] shuffled = new String[lines.length];
+		for (int i = 0; i < lines.length; i++) {
+			shuffled[i] = shuffleCaseLine(lines[i]);
+		}
+		return shuffled;
+	}
+
+	private String shuffleCaseLine(String line) {
+		StringBuilder builder = new StringBuilder();
+		Random random = new Random();
+		for (char c : line.toCharArray()) {
+			builder.append((random.nextInt(2) != 0) ? Character.toUpperCase(c) : Character.toLowerCase(c));
+		}
+		return builder.toString();
+	}
+
+	protected String shuffleLine(String line) {
+	    StringBuilder builder = new StringBuilder();
+	    Random random = new Random();
+	    for (char c : line.toCharArray()) {
+	        while (random.nextInt(2) != 0) {
+	            builder.append(" ");
+	        }
+	        builder.append((random.nextInt(2) != 0) ? Character.toUpperCase(c) : Character.toLowerCase(c));
+	    }
+	    while (random.nextInt(2) != 0) {
+	        builder.append(" ");
+	    }
+	    return builder.toString();
+	}
+	
+	protected String[] shuffle(String[] lines) {
+		String[] shuffled = new String[lines.length];
+		for (int i = 0; i < lines.length; i++) {
+			shuffled[i] = shuffleLine(lines[i]);
+		}
+		return shuffled;
+	}
+	
 }
