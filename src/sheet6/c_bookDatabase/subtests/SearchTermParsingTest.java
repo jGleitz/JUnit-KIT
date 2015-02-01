@@ -2,7 +2,6 @@ package sheet6.c_bookDatabase.subtests;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.fail;
 
 import java.util.LinkedList;
 import java.util.List;
