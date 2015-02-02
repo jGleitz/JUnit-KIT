@@ -1,6 +1,7 @@
 package sheet6.a_books;
 
 import static org.junit.Assert.fail;
+import static test.KitMatchers.containsExactlyDividedBy;
 
 import org.junit.Test;
 
@@ -24,6 +25,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
 	/*
 	 * PREDEFINED BOOK INPUT FILES
 	 */
+	private String[] file;
 
 	protected static final String[] book1 = new String[] {
 			"Seite1",
@@ -65,17 +67,6 @@ public class BookSearchTest extends InteractiveConsoleTest {
 			"aa ca a e"
 	};
 
-	/*
-	 * ERROR TESTS
-	 */
-	/**
-	 * Fails the test as this test is incomplete an therefore does not grant anything. Remove this method as soon as the
-	 * test reaches a certain degree of relevance.
-	 */
-	@Test
-	public void incomplete() {
-		fail("\n\nThis test is under development and incomplete!\nEspecially the info command is not tested at all the moment!\n\n");
-	}
 
 	/**
 	 * Tests for an error message, when the user types an illegal command.
@@ -227,7 +218,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
 	@Test
 	public void testInfoWithArg() {
 		TestObject.allowSystemExit(SystemExitStatus.ALL);
-		
+
 		commands = new String[] {
 				"info ipsum",
 				"quit"
@@ -248,7 +239,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
 		};
 		errorTest(commands, Input.getFile(book1));
 	}
-	
+
 	/**
 	 * Just a regular quit
 	 */
@@ -256,5 +247,84 @@ public class BookSearchTest extends InteractiveConsoleTest {
 	public void testQuit() {
 		command = "quit";
 		oneLineTest(command, "", Input.getFile(book1));
+	}
+
+	/**
+	 * Tests the {@code info} command. Asserts that:
+	 * <ul>
+	 * <li>The output of {@code info} is exactly as defined on the task sheet.
+	 */
+	@Test
+	public void testInfo() {
+		command = "info";
+		file = new String[] {
+				"Seite1",
+				"Hallo Welt",
+				"Seite2",
+				"Hallo Menschen"
+		};
+		expectedResults = new String[] {
+				"Hallo:1,2",
+				"Welt:1",
+				"Menschen:2"
+		};
+		expectedResultMatcher = containsExactlyDividedBy(expectedResults, ",");
+		oneLineTest(addQuit(command), expectedResultMatcher, Input.getFile(file));
+
+		file = new String[] {
+				"Seite1",
+				"lorem ipsum dolor sit amet consetetur sadipscing",
+				"sed diam nonumy eirmod tempor invidunt",
+				"Seite2",
+				"ut labore et dolore magna",
+				"aliquyam erat sed diam voluptua",
+				"Seite3",
+				"at vero eos et accusam et justo duo",
+				"olores et ea rebum stet clita kasd gubergren",
+				"no sea takimata sanctus est lorem ipsum dolor sit amet"
+		};
+		expectedResults = new String[] {
+				"accusam:3",
+				"aliquyam:2",
+				"amet:1,3",
+				"at:3",
+				"clita:3",
+				"consetetur:1",
+				"diam:1,2",
+				"dolor:1,3",
+				"dolore:2",
+				"duo:3",
+				"ea:3",
+				"eirmod:1",
+				"eos:3",
+				"erat:2",
+				"est:3",
+				"et:2,3",
+				"gubergren:3",
+				"invidunt:1",
+				"ipsum:1,3",
+				"justo:3",
+				"kasd:3",
+				"labore:2",
+				"lorem:1,3",
+				"magna:2",
+				"no:3",
+				"nonumy:1",
+				"olores:3",
+				"rebum:3",
+				"sadipscing:1",
+				"sanctus:3",
+				"sea:3",
+				"sed:1,2",
+				"sit:1,3",
+				"stet:3",
+				"takimata:3",
+				"tempor:1",
+				"ut:2",
+				"vero:3",
+				"voluptua:2"
+		};
+		expectedResultMatcher = containsExactlyDividedBy(expectedResults, ",");
+		oneLineTest(addQuit(command), expectedResultMatcher, Input.getFile(file));
 	}
 }
