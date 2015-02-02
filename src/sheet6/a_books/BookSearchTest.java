@@ -66,7 +66,6 @@ public class BookSearchTest extends InteractiveConsoleTest {
 			"aa ca a e"
 	};
 
-
 	/**
 	 * Tests for an error message, when the user types an illegal command.
 	 */
