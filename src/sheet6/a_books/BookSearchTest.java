@@ -64,7 +64,6 @@ public class BookSearchTest extends InteractiveConsoleTest {
 			"Seite3",
 			"aa ca a e"
 	};
-	protected static final String[] empytBook = new String[] {};
 
 	/*
 	 * ERROR TESTS
@@ -200,34 +199,11 @@ public class BookSearchTest extends InteractiveConsoleTest {
 	}
 
 	/**
-	 * Launches the program with a valid empty file (no pages)
-	 */
-	@Test
-	public void emptyFile() {
-		oneLineTest("quit", "", Input.getFile(empytBook));
-	}
-
-	/**
 	 * Launches the program with a valid book file containing empty pages.
 	 */
 	@Test
 	public void emptyLine() {
 		oneLineTest("quit", "", Input.getFile(book5));
-	}
-
-	/**
-	 * Executes a search command on an empty book.
-	 */
-	@Test
-	public void searchOnEmptyBook() {
-		commands = new String[] {
-				"search hiergiebtsnichtszufinden",
-				"quit"
-		};
-		expectedResults = new String[] {
-			"hiergiebtsnichtszufinden:null"
-		};
-		multiLineTest(commands, expectedResults, Input.getFile(empytBook));
 	}
 
 	/**
