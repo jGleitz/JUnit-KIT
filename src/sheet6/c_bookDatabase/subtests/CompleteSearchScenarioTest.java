@@ -3,8 +3,6 @@ package sheet6.c_bookDatabase.subtests;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.CoreMatchers.is;
 
-import java.util.UUID;
-
 import org.junit.Test;
 
 import test.Input;
@@ -123,52 +121,79 @@ public class CompleteSearchScenarioTest extends BookDatabaseSubTest {
 	 */
 	@Test
 	public void testHighTolerance() {
+		String foo = "xyxyxyyyxxxxxyyxyxyxyxyxyyyxxxxxxyyyxyxyxyxyxy";
+
+		file = new String[] {
+				"creator=galileocomputing,title=java_ist_auch_eine_insel",
+				"title=grundkurs_programmieren_in_java,creator=Dietmar_Ratz__Jens_Scheffler__Detlef_Seese__Jan_Wiesenberger,year=2007",
+				"creator=ralf_reussner,year=2006"
+		};
 
 		queries = new String[] {
-				"title=" + UUID.randomUUID().toString(),
-				"AND(" + "creator=" + UUID.randomUUID().toString() + "," + "creator=" + UUID.randomUUID().toString()
-						+ ")",
-				and(and(and("creator=" + UUID.randomUUID().toString(), "creator=" + UUID.randomUUID().toString()),
-						and("creator=" + UUID.randomUUID().toString(), "creator=" + UUID.randomUUID().toString())),
-						and(and("title=" + UUID.randomUUID().toString(), "title=" + UUID.randomUUID().toString()),
-								and("title=" + UUID.randomUUID().toString(), "title=" + UUID.randomUUID().toString()))),
-				"creator=a",
-				"year=0"
+				"title=j" + foo,
+
+				or("title=g", "title=j"),
+
+				and("creator=xa" + foo, "creator=xxl" + foo),
+
+				and(and(and("creator=xa" + foo, "creator=xxl" + foo),
+						and("creator=tal", "creator=llllllllllllllllllllllllllllllllll")),
+						and(and("title=javajavajavajavajavajavajavajavajavajavajava", "title=__________"), "title=" + foo + "java" + foo)),
+
+				"title=ya",
+
+				"year=2",
+
+				"creator=x",
+
+				and(and("creator=y", "creator=xll"), and("title=x", "title=i"))
 		};
 		// @formatter:off
         expectedResultMatchers = getMatchers(
         	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,true"),
-        	is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,true"),
+        	is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,false"),
+          	is("creator=ralf_reussner,title=unknown,year=2006,false"),
+          	
+          	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,true"),
+        	is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,true"),
           	is("creator=ralf_reussner,title=unknown,year=2006,false"),
                         
           	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,true"),
-         	is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
+         	is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,false"),
          	is("creator=ralf_reussner,title=unknown,year=2006,true"),
 	                        
          	is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,true"),
-            is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
+            is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,false"),
             is("creator=ralf_reussner,title=unknown,year=2006,false"),
                         
             is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,true"),
-            is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,false"),
-            is("creator=ralf_reussner,title=unknown,year=2006,true"),
+            is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,true"),
+            is("creator=ralf_reussner,title=unknown,year=2006,false"),
                         
             is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
-            is("creator=unknown,title=grundkurs_programmieren_in_java,year=2007,true"),
-            is("creator=ralf_reussner,title=unknown,year=2006,true")
+            is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,true"),
+            is("creator=ralf_reussner,title=unknown,year=2006,true"),
+            
+            is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+            is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,false"),
+            is("creator=ralf_reussner,title=unknown,year=2006,false"),
+            
+            is("creator=galileocomputing,title=java_ist_auch_eine_insel,year=unknown,false"),
+            is("creator=dietmar_ratz__jens_scheffler__detlef_seese__jan_wiesenberger,title=grundkurs_programmieren_in_java,year=2007,false"),
+            is("creator=ralf_reussner,title=unknown,year=2006,false")
 		);
         // @formatter:on
 
-		multiLineTest(searchForAll(queries), expectedResultMatchers, "1", Input.getFile(taskSheetInputFile));
+		multiLineTest(searchForAll(queries), expectedResultMatchers, "1", Input.getFile(file));
 
 		int randomTestRuns = 3;
 		for (int i = 0; i < randomTestRuns; i++) {
 			String[] shuffledCommands = searchForAll(shuffle(queries));
-			String[] shuffledFile = shuffleCase(taskSheetInputFile);
+			String[] shuffledFile = shuffleCase(file);
 			multiLineTest(shuffledCommands, expectedResultMatchers, "1", Input.getFile(shuffledFile));
 		}
 	}
-	
+
 	/**
 	 * Runs a test with a tolerance of {@code 0.0000000000001}. Asserts that the program behaves correctly in that case.
 	 */
