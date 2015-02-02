@@ -1,6 +1,5 @@
 package sheet6.a_books;
 
-import static org.junit.Assert.fail;
 import static test.KitMatchers.containsExactlyDividedBy;
 
 import org.junit.Test;

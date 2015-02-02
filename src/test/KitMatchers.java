@@ -51,7 +51,8 @@ public class KitMatchers {
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("A String containing exactly ").appendValueList("", ", ", "", substrings);
+                description.appendText("A String containing exactly ").appendValueList("", ", ", "", substrings)
+                        .appendText(" divided exactly by ").appendValue(divider);
             }
 
             @Override
