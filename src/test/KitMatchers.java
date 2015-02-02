@@ -1,7 +1,6 @@
 package test;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,7 +30,6 @@ public class KitMatchers {
 	public static Matcher<String> containsExactlyDividedBy(final String[] substrings, final String divider) {
 		return new BaseMatcher<String>() {
 			private List<String> notContained = new LinkedList<>(Arrays.asList(substrings));
-			private String wrongPlacedDivider = null;
 			private boolean hadTooMuch;
 
 			@Override
@@ -39,33 +37,24 @@ public class KitMatchers {
 				String testString = (String) testObject;
 				boolean contains = true;
 				int length = 0;
-				for (int i = 0; i < substrings.length && contains; i++) {
-					String sub = substrings[i];
+				// we don't break at a mismatch as we want to have the notContained list ready
+				for (String sub : substrings) {
 					length += sub.length();
-					int index = testString.indexOf(sub) + sub.length();
-					contains = (index >= sub.length());
-					if (contains) {
+					int innerIndex = testString.indexOf(divider + sub + divider);
+					int lastItemIndex = (testString.length() - sub.length() - divider.length());
+
+					boolean found = (innerIndex > 0 && innerIndex < lastItemIndex); // as inner
+					found = found || (testString.indexOf(sub + divider) == 0); // at start
+					found = found || (testString.indexOf(divider + sub) == lastItemIndex); // at end
+
+					if (found) {
 						notContained.remove(sub);
-						boolean isAtEnd = (index == testString.length());
-						boolean nextIsDivider = (!isAtEnd && testString.substring(index, index + 1).equals(divider));
-						nextIsDivider = nextIsDivider && testString.length() > index + 1;
-						if (nextIsDivider) {
-							testString = testString.substring(0, index) + testString.substring(index + 1);
-						} else {
-							wrongPlacedDivider = sub;
-						}
-						contains = (isAtEnd || nextIsDivider);
 					}
+
+					contains = contains && found;
 				}
-				if (!contains) {
-					Iterator<String> iterator = notContained.iterator();
-					while (iterator.hasNext()) {
-						String sub = iterator.next();
-						if (testString.contains(sub)) {
-							iterator.remove();
-						}
-					}
-				}
+
+				length += (substrings.length - 1) * divider.length();
 				hadTooMuch = contains && (testString.length() != length);
 				return contains && !hadTooMuch;
 			}
@@ -80,11 +69,11 @@ public class KitMatchers {
 			public void describeMismatch(final Object item, final Description description) {
 				description.appendText("was ").appendValue((String) item);
 				if (!notContained.isEmpty()) {
-					description.appendText("\nmissing these items: ").appendValueList("", ", ", "", notContained);
-				} else if (hadTooMuch) {
-					description.appendText("\nhaving too many characters");
-				} else if (wrongPlacedDivider != null) {
-					description.appendText("\nhaving a misplaced divider after ").appendValue(wrongPlacedDivider);
+					description.appendText("\nnot containing these items correctly: ").appendValueList("", ", ", "",
+							notContained);
+				}
+				if (hadTooMuch) {
+					description.appendText("\nhaving to many characters");
 				}
 			}
 
