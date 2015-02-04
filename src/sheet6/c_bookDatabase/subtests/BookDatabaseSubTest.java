@@ -49,10 +49,10 @@ public class BookDatabaseSubTest extends InteractiveConsoleTest {
      */
 
     @Override
-    protected String consoleMessage(String commands, String[] commandLineArguments) {
+    protected String consoleMessage(String[] commands, String[] commandLineArguments) {
         String result = "";
         result += "We ran a session on your interactive console" + getArguments(commandLineArguments)
-                + Input.fileMessage(commandLineArguments) + "running the commands \n\n" + commands
+                + Input.fileMessage(commandLineArguments) + "running the commands \n\n" + joinOnePerLine(commands)
                 + "\n\n but got unexpected output:\n";
         return result;
     }
@@ -68,52 +68,52 @@ public class BookDatabaseSubTest extends InteractiveConsoleTest {
         return result;
     }
 
-	protected List<String> shuffleCase(List<String> lines) {
-		List<String> shuffled = new LinkedList<>();
-		for (String line : lines) {
-			shuffled.add(shuffleCaseLine(line));
-		}
-		return shuffled;
-	}
-	
-	protected String[] shuffleCase(String[] lines) {
-		String[] shuffled = new String[lines.length];
-		for (int i = 0; i < lines.length; i++) {
-			shuffled[i] = shuffleCaseLine(lines[i]);
-		}
-		return shuffled;
-	}
+    protected List<String> shuffleCase(List<String> lines) {
+        List<String> shuffled = new LinkedList<>();
+        for (String line : lines) {
+            shuffled.add(shuffleCaseLine(line));
+        }
+        return shuffled;
+    }
 
-	private String shuffleCaseLine(String line) {
-		StringBuilder builder = new StringBuilder();
-		Random random = new Random();
-		for (char c : line.toCharArray()) {
-			builder.append((random.nextInt(2) != 0) ? Character.toUpperCase(c) : Character.toLowerCase(c));
-		}
-		return builder.toString();
-	}
+    protected String[] shuffleCase(String[] lines) {
+        String[] shuffled = new String[lines.length];
+        for (int i = 0; i < lines.length; i++) {
+            shuffled[i] = shuffleCaseLine(lines[i]);
+        }
+        return shuffled;
+    }
 
-	protected String shuffleLine(String line) {
-	    StringBuilder builder = new StringBuilder();
-	    Random random = new Random();
-	    for (char c : line.toCharArray()) {
-	        while (random.nextInt(2) != 0) {
-	            builder.append(" ");
-	        }
-	        builder.append((random.nextInt(2) != 0) ? Character.toUpperCase(c) : Character.toLowerCase(c));
-	    }
-	    while (random.nextInt(2) != 0) {
-	        builder.append(" ");
-	    }
-	    return builder.toString();
-	}
-	
-	protected String[] shuffle(String[] lines) {
-		String[] shuffled = new String[lines.length];
-		for (int i = 0; i < lines.length; i++) {
-			shuffled[i] = shuffleLine(lines[i]);
-		}
-		return shuffled;
-	}
-	
+    private String shuffleCaseLine(String line) {
+        StringBuilder builder = new StringBuilder();
+        Random random = new Random();
+        for (char c : line.toCharArray()) {
+            builder.append((random.nextInt(2) != 0) ? Character.toUpperCase(c) : Character.toLowerCase(c));
+        }
+        return builder.toString();
+    }
+
+    protected String shuffleLine(String line) {
+        StringBuilder builder = new StringBuilder();
+        Random random = new Random();
+        for (char c : line.toCharArray()) {
+            while (random.nextInt(2) != 0) {
+                builder.append(" ");
+            }
+            builder.append((random.nextInt(2) != 0) ? Character.toUpperCase(c) : Character.toLowerCase(c));
+        }
+        while (random.nextInt(2) != 0) {
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    protected String[] shuffle(String[] lines) {
+        String[] shuffled = new String[lines.length];
+        for (int i = 0; i < lines.length; i++) {
+            shuffled[i] = shuffleLine(lines[i]);
+        }
+        return shuffled;
+    }
+
 }

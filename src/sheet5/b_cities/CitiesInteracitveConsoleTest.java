@@ -3,8 +3,8 @@ package sheet5.b_cities;
 import org.junit.Test;
 
 import test.InteractiveConsoleTest;
+import test.SystemExitStatus;
 import test.TestObject;
-import test.TestObject.SystemExitStatus;
 
 /**
  * A test for the Interactive Console (Task B) <br>

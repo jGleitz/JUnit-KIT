@@ -6,8 +6,8 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import org.junit.Test;
 
 import test.Input;
+import test.SystemExitStatus;
 import test.TestObject;
-import test.TestObject.SystemExitStatus;
 
 /**
  * Asserts the program's behaviour to handle the basic commands. The tested class should print error messages for
@@ -33,7 +33,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
     public void testQuit() {
         // simple quit
         command = "quit";
-        oneLineTest(command, "", "0.5", Input.getFile(simpleValidFile));
+        noOutputTest(command, "0.5", Input.getFile(simpleValidFile));
     }
     
     /**
