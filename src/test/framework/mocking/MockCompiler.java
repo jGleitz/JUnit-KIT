@@ -2,6 +2,8 @@ package test.framework.mocking;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Arrays;
 
 import javax.tools.JavaCompiler;
@@ -30,7 +32,12 @@ public abstract class MockCompiler {
      * @return the {@link MockerJavaClassFile} containing the compiled java byte code
      */
     public static MockerJavaClassFile compile(MockerJavaSourceFile sourceFile) {
-        compiler.getTask(null, fileManager, null, null, null, Arrays.asList(sourceFile)).call();
+        Writer errorWriter = new StringWriter();
+        boolean compilationSuccessful = compiler.getTask(errorWriter, fileManager, null, null, null,
+            Arrays.asList(sourceFile)).call();
+        if (!compilationSuccessful) {
+            throw new FrameworkException("Unable to compile " + sourceFile.getName() + ":\n\n" + errorWriter.toString());
+        }
         return fileManager.pollCompiledMocker(sourceFile.getName());
     }
 
@@ -45,9 +52,19 @@ public abstract class MockCompiler {
                             + "can't find your Java installation!");
                 }
                 FileFilter jdkFilter = new FileFilter() {
+                    final int javaVersion;
+                    {
+                        String javaVersionString = System.getProperty("java.version");
+                        javaVersion = Integer.parseInt(javaVersionString.substring(2, 3));
+                    }
+                    
                     @Override
                     public boolean accept(File file) {
-                        return file.isDirectory() && file.getName().startsWith("jdk1.");
+                        if (file.isDirectory() && file.getName().startsWith("jdk1.")) {
+                            int sdkVersion = Integer.parseInt(file.getName().substring(5, 6));
+                            return (sdkVersion <= javaVersion);
+                        }
+                        return false;
                     }
                 };
                 File[] jdkFolders = javaProgramFolder.listFiles(jdkFilter);
