@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import test.SystemExitStatus;
 import test.TestObject;
-import test.TestObject.SystemExitStatus;
 
 /**
  * A test for the Interactive Console (Task A) <br>

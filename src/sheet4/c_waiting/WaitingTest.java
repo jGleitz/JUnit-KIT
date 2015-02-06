@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
+import test.SystemExitStatus;
 import test.TestObject;
-import test.TestObject.SystemExitStatus;
 
 /**
  * @author Joshua Gleitze

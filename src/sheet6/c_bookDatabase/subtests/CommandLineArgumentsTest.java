@@ -3,8 +3,8 @@ package sheet6.c_bookDatabase.subtests;
 import org.junit.Test;
 
 import test.Input;
+import test.SystemExitStatus;
 import test.TestObject;
-import test.TestObject.SystemExitStatus;
 
 /**
  * Asserts the program's checking of the command line arguments. The program should print error messages for bad formed
@@ -88,15 +88,15 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
     @Test
     public void testCorrectCommandLineArguments() {
         // lower range for tolerance
-        oneLineTest("quit", "", "0", Input.getFile(simpleValidFile));
+        noOutputTest("quit", "0", Input.getFile(simpleValidFile));
         // upper range for tolerance
-        oneLineTest("quit", "", "1", Input.getFile(simpleValidFile));
+        noOutputTest("quit", "1", Input.getFile(simpleValidFile));
         // longer but valid tolerance
-        oneLineTest("quit", "", "0.22456", Input.getFile(simpleValidFile));
+        noOutputTest("quit", "0.22456", Input.getFile(simpleValidFile));
         // tolerance in float notation
-        oneLineTest("quit", "", "0.5f", Input.getFile(simpleValidFile));
+        noOutputTest("quit", "0.5f", Input.getFile(simpleValidFile));
         // tolerance in double notation
-        oneLineTest("quit", "", "0.5d", Input.getFile(simpleValidFile));
+        noOutputTest("quit", "0.5d", Input.getFile(simpleValidFile));
     }
 
 }
