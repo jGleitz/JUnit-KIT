@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import test.framework.mocking.MockerJavaClassFile;
+import test.mocking.MockerJavaClassFile;
 
 /**
  * A parent last class loader to load the classes under test. This class loader is child first: It assures that any

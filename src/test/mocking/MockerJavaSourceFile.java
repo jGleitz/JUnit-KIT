@@ -1,4 +1,4 @@
-package test.framework.mocking;
+package test.mocking;
 
 import java.net.URI;
 import javax.tools.SimpleJavaFileObject;

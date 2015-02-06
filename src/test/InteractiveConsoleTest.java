@@ -327,7 +327,7 @@ public abstract class InteractiveConsoleTest {
      * optional {@code args0} on the test object and runs {@code command} on it. Asserts that the tested class never
      * called {@code Terminal.printLine}.
      * 
-     * @param commands
+     * @param command
      *            The command to run on the test object.
      * @param args0
      *            The arguments for the {@code main}-method
