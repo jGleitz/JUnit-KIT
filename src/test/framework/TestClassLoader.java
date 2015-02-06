@@ -3,6 +3,7 @@ package test.framework;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,11 @@ public class TestClassLoader extends ClassLoader {
 
     public TestClassLoader() {
         super();
+    }
+    
+    @Override
+    public URL getResource(String name) {
+        return super.getResource(name);
     }
 
     /**

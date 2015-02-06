@@ -22,7 +22,7 @@ public class Terminal {
         String[].class
     };
     // @formatter:off
-    private static final String TERMINAL_MOCKER_SOURCE = 
+    private static final String TERMINAL_MOCKER_BYTE_CODE = 
             "package edu.kit.informatik;" +
     
             "import java.util.LinkedList;" +
@@ -72,7 +72,8 @@ public class Terminal {
     private final Class<?> terminalMocker;
 
     static {
-        MockerJavaSourceFile terminalSourceFile = new MockerJavaSourceFile(DEFINED_CLASS_NAME, TERMINAL_MOCKER_SOURCE);
+        MockerJavaSourceFile terminalSourceFile = new MockerJavaSourceFile(DEFINED_CLASS_NAME,
+                TERMINAL_MOCKER_BYTE_CODE);
         MockerJavaClassFile teminalClassFile = MockCompiler.compile(terminalSourceFile);
         TestClassLoader.mock(teminalClassFile);
     }
@@ -87,6 +88,7 @@ public class Terminal {
      */
     public Terminal(ClassLoader classLoader) {
         terminalMocker = loadMockerUnchecked(classLoader);
+        System.out.println(classLoader.getResource("test/framework/mocks/Terminal.txt"));
     }
 
     private static Object[] wrap(Object[] o) {
@@ -150,7 +152,7 @@ public class Terminal {
                 result = returnType.cast(returned);
             }
         } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException e) {
-            throw new IllegalStateException(methodName + " cannot be invoked on the terminal mocker class!\n"
+            throw new FrameworkException(methodName + " cannot be invoked on the terminal mocker class!\n"
                     + e.getClass().getSimpleName() + ": " + e.getMessage());
         } catch (InvocationTargetException e) {
             fail(e.getCause().getMessage());
@@ -162,7 +164,7 @@ public class Terminal {
         try {
             return classLoader.loadClass(DEFINED_CLASS_NAME);
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("The terminal mocker class cannot be loaded!");
+            throw new FrameworkException("The terminal mocker class cannot be loaded!");
         }
     }
 
