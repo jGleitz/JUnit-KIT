@@ -88,7 +88,6 @@ public class Terminal {
      */
     public Terminal(ClassLoader classLoader) {
         terminalMocker = loadMockerUnchecked(classLoader);
-        System.out.println(classLoader.getResource("test/framework/mocks/Terminal.txt"));
     }
 
     private static Object[] wrap(Object[] o) {
