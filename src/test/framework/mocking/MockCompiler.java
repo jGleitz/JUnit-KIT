@@ -47,7 +47,7 @@ public abstract class MockCompiler {
                 FileFilter jdkFilter = new FileFilter() {
                     @Override
                     public boolean accept(File file) {
-                        return file.isDirectory() && file.getName().startsWith("jdk-1.");
+                        return file.isDirectory() && file.getName().startsWith("jdk1.");
                     }
                 };
                 File[] jdkFolders = javaProgramFolder.listFiles(jdkFilter);
