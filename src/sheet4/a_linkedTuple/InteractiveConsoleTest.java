@@ -17,7 +17,7 @@ import test.TestObject;
  * 
  * @author Joshua Gleitze
  */
-
+@SuppressWarnings("deprecation")
 public class InteractiveConsoleTest {
 
     @Before

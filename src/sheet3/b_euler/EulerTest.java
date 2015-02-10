@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import test.TestObject;
 
+@SuppressWarnings("deprecation")
 public class EulerTest {
 
     /*
