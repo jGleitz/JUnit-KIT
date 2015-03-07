@@ -1,6 +1,8 @@
-package test.framework.mocking;
+package test.mocking;
 
 import java.net.URI;
+import java.util.Objects;
+
 import javax.tools.SimpleJavaFileObject;
 
 /**
@@ -29,7 +31,7 @@ public class MockerJavaSourceFile extends SimpleJavaFileObject {
         this.code = code;
         this.name = mockedName;
     }
-
+    
     @Override
     public CharSequence getCharContent(boolean ignoreEncodingErrors) {
         return code;
@@ -40,4 +42,20 @@ public class MockerJavaSourceFile extends SimpleJavaFileObject {
         return name;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, code);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj != null && getClass() == obj.getClass()) {
+            MockerJavaSourceFile sf = (MockerJavaSourceFile) obj;
+            return (this.getName().equals(sf.getName()) && this.getCharContent(true).equals(sf.getCharContent(true)));
+        }
+        return false;
+    }
 }

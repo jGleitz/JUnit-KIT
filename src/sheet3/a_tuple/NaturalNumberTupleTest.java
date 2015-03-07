@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import test.TestObject;
 
+@SuppressWarnings("deprecation")
 public class NaturalNumberTupleTest {
 
     private static String NumbersToString(int[] numbers) {

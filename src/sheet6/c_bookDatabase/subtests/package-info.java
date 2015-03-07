@@ -1,5 +1,5 @@
 /**
- * The actual tests for {@link sheet6.c_bookDatabase.BookDatabaseTest}. They are splitted into multiple files to provide
+ * The actual tests for {@linkplain sheet6.c_bookDatabase.BookDatabaseTest}. They are splitted into multiple files to provide
  * a better overview and readability.
  * 
  * @author Joshua Gleitze

@@ -1,5 +1,5 @@
 /**
- * Classes needed by the framework, mainly {@link test.TestObject}. These are not intended to be used by tests anyhow!
+ * Classes needed by the framework, mainly {@linkplain test.TestObject}. These are not intended to be used by tests anyhow!
  * 
  * @author Joshua Gleitze
  * @version 1.0

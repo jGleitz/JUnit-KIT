@@ -2,5 +2,7 @@
 **.checkstyle
 **.project
 **.settings
+**.ser
 *~
 /bin/
+/.serialization/

@@ -4,9 +4,9 @@ import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
 
-import test.framework.mocking.MockCompiler;
-import test.framework.mocking.MockerJavaClassFile;
-import test.framework.mocking.MockerJavaSourceFile;
+import test.mocking.MockCompiler;
+import test.mocking.MockerJavaClassFile;
+import test.mocking.MockerJavaSourceFile;
 
 /**
  * Connector to the Terminal class provided by the programming lecture. It collects everything the tested class prints

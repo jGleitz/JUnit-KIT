@@ -30,6 +30,7 @@ import test.TestObject;
  * @author Joshua Gleitze
  *
  */
+@SuppressWarnings("deprecation")
 public class WaitingTest {
 
     // 2 seconds should be enough for everything. If not, there is a bug or something.

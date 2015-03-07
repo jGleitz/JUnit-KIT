@@ -7,7 +7,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import test.framework.mocking.MockerJavaClassFile;
+import test.TestObject;
+import test.mocking.MockerJavaClassFile;
 
 /**
  * A parent last class loader to load the classes under test. This class loader is child first: It assures that any
@@ -26,7 +27,7 @@ public class TestClassLoader extends ClassLoader {
     public TestClassLoader() {
         super();
     }
-    
+
     @Override
     public URL getResource(String name) {
         return super.getResource(name);
@@ -34,7 +35,11 @@ public class TestClassLoader extends ClassLoader {
 
     /**
      * Replace a class with another one. When a tested class requires {@code mocker.getName()}, it will get the
-     * implementation provided through {@code mocker.getByteCode()}.
+     * implementation provided through {@code mocker.getByteCode()}.<br>
+     * If the class is already loaded, it will <b>not</b> be replaced. All future instances of this class loader will
+     * use {@code mocker}, though. If you are working with {@link TestObject}, call {@link TestObject#resetClass()}
+     * after mocking to make sure the mocker will be loaded.<br>
+     * To remove mocking, call {@link #forget(String)}.
      * 
      * @param mocker
      *            the {@link MockerJavaClassFile} object
@@ -92,5 +97,18 @@ public class TestClassLoader extends ClassLoader {
             data = inputStream.read();
         }
         return buffer.toByteArray();
+    }
+
+    /**
+     * Makes this class loader forget about the bytecode of {@code className}. Guarantees that the class will be loaded
+     * newly on all future instances of this class loader. Use this method to remove the mocking of classes.<br>
+     * NOTE: Calling this method will not reset the currently loaded class! If you are working with {@link TestObject},
+     * call {@link TestObject#resetClass()} after calling {@code forget} to make sure the original class will be loaded.
+     * 
+     * @param className
+     *            The full qualified name of the class you want to reset.
+     */
+    public static void forget(String className) {
+        knownClasses.remove(className);
     }
 }
