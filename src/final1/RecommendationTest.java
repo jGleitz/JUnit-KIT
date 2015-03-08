@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import final1.subtests.InvalidInputFileTest;
 import final1.subtests.ValidInputFileTest;
 import final1.subtests.ValidNodesCommandTest;
 
@@ -15,6 +16,7 @@ import final1.subtests.ValidNodesCommandTest;
 @RunWith(Suite.class)
 @SuiteClasses({
     ValidInputFileTest.class,
+    InvalidInputFileTest.class,
     ValidNodesCommandTest.class
 })
 public class RecommendationTest {
