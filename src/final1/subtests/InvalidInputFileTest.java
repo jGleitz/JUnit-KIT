@@ -1,5 +1,7 @@
 package final1.subtests;
 
+import static org.junit.Assert.fail;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,43 +17,106 @@ import test.TestObject;
  * @version 1.0
  */
 public class InvalidInputFileTest extends RecommendationSubtest {
+    private String[] input;
 
     @Before
     public void defaultSystemExitStatus() {
         TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
     }
+    
+    @Test
+    public void incomplete() {
+        fail("This test is still in the development state and therefore incomplete!");
+    }
    
     @Test
-    public void synthaxErrorsTest() {
-        errorTest("quit", Input.getFile(SYNTHAX_ERROR_1));
-        errorTest("quit", Input.getFile(SYNTHAX_ERROR_2));
+    public void syntaxErrorsTest() {
+        input = new String[] {
+                "CentOS5 id= 12) contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "CentOS5 (id= 12) likes operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
     }
     
     @Test
     public void semanticErrorsTest() {
-        errorTest("quit", Input.getFile(SEMANTIC_ERROR_1));
-        errorTest("quit", Input.getFile(SEMANTIC_ERROR_2));
-        errorTest("quit", Input.getFile(SEMANTIC_ERROR_3));
+        input = new String[] {
+                "CentOS5 (id= 12) contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingsystems part-of CentOS5 (id = 10)"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingsystems contained-in CentOS5 (id = 10)"
+        };
+        errorTest("quit", Input.getFile(input));
     }
     
     @Test
     public void nameIDMissmatchTest() {
-        errorTest("quit", Input.getFile(NAME_ID_MISSMATCH_1));
-        errorTest("quit", Input.getFile(NAME_ID_MISSMATCH_2));
+        input = new String[] {
+                "CentOS5 (id = 5) contained-in operatingsystems",
+                "CentOS5 (id = 6) contained-in Cent"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "CentOS5 (id = 5) contained-in operatingsystems",
+                "CentOS5Alt (id = 5) contained-in Cent"
+        };
+        errorTest("quit", Input.getFile(input));
     }
     
     @Test
     public void nameTypeMissmatchTest() {
-        errorTest("quit", Input.getFile(NAME_TYPE_MISSMATCH_1));
-        errorTest("quit", Input.getFile(NAME_TYPE_MISSMATCH_2));
+        input = new String[] {
+                "CentOS5 (id = 5) contained-in operatingsystems",
+                "CentOS5 contained-in operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "CentOS5 contained-in operatingsystems",
+                "CentOS5 (id = 5) contained-in operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
     }
     
     @Test
     public void circleTest() {
-        errorTest("quit", Input.getFile(CIRCLE_1));
-        errorTest("quit", Input.getFile(CIRCLE_2));
-        errorTest("quit", Input.getFile(CIRCLE_3));
-        errorTest("quit", Input.getFile(CIRCLE_4));
+        input = new String[] {
+                "operatingsystems contained-in operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+
+        input = new String[] {
+                "os (id=1) part-of os (id=1)"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "writer (id=1) part-of office (id=2)",
+                "office (id=2) part-of officeSuite (id=3)",
+                "officeSuite (id=3) part-of WorkTools (id=4)",
+                "worktools (id=4) part-of writer (id=1)"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "writer contained-in office",
+                "office contained-in writer",
+                "officeSuite contained-in worktools",
+                "writer contains worktools"
+        };
+        errorTest("quit", Input.getFile(input));
     }
     
 
