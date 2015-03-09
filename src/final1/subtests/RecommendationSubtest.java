@@ -1,9 +1,7 @@
 package final1.subtests;
 
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.fail;
 import test.InteractiveConsoleTest;
 import test.SystemExitStatus;
 import test.TestObject;
@@ -17,7 +15,7 @@ import test.TestObject;
  */
 public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     protected String[] TASK_SHEET_INPUT_FILE = new String[] {
-            "CentOS5 ( id= 105) contained-in operattiingSystem",
+            "CentOS5 ( id= 105) contained-in operatingSystem",
             "centOS6 ( id = 106) contained-in OperatingSystem",
             "operatingSystem contains centos7 ( id = 107 )",
             "operatingsystem contained-in Software",
@@ -58,7 +56,7 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     protected void exitTest(String[] commands, String... args0) {
         TestObject.allowSystemExit(SystemExitStatus.ALL);
         errorTest(commands, args0);
-        assertThat(consoleMessage(commands, args0) + "wrong system exit status!",
+        assertThat(consoleMessage(commands, args0) + "\nWrong system exit status!",
             TestObject.getLastMethodsSystemExitStatus(), is(SystemExitStatus.WITH_GREATER_THAN_0));
     }
 }

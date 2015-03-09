@@ -28,6 +28,11 @@ public class NoExitSecurityManager extends SecurityManager {
     @Override
     public void checkExit(int status) {
         super.checkExit(status);
+        if (status > 0) {
+            lastExit = SystemExitStatus.WITH_GREATER_THAN_0;
+        } else if (status == 0) {
+            lastExit = SystemExitStatus.WITH_0;
+        }
         Class<?>[] classContext = this.getClassContext();
         for (Class<?> c : classContext) {
             if (c == targetClass) {
