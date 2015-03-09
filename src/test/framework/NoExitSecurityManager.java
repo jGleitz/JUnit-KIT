@@ -2,6 +2,8 @@ package test.framework;
 
 import java.security.Permission;
 
+import test.SystemExitStatus;
+
 /**
  * Used to catch when the code is trying to call {@link System#exit}. This would leave a test in a hanging state. A
  * {@link ExitException} is thrown if the code tries to call {@link System#exit}.
@@ -11,6 +13,7 @@ import java.security.Permission;
  */
 public class NoExitSecurityManager extends SecurityManager {
     private Class<?> targetClass;
+    private SystemExitStatus lastExit = SystemExitStatus.NONE;
 
     /**
      * Constructs a {@code NoExitSecurityManager}
@@ -41,5 +44,23 @@ public class NoExitSecurityManager extends SecurityManager {
     @Override
     public void checkPermission(Permission perm, Object context) {
         // allow anything.
+    }
+
+    /**
+     * Sets the last exit status to {@link SystemExitStatus#NONE}.
+     */
+    public void resetLastExitStatus() {
+        lastExit = SystemExitStatus.NONE;
+    }
+
+    /**
+     * @return {@link SystemExitStatus#NONE} if no class using this security manager called {@code System.exit(x)} since
+     *         its creation or the last call to {@link NoExitSecurityManager#resetLastExitStatus()}.
+     *         {@link SystemExitStatus#WITH_0} or {@link SystemExitStatus#WITH_GREATER_THAN_0} if the last call to
+     *         {@code System.exit(x)} of a class using this security manager was with {@code x=0} or {@code x>0},
+     *         respectively.
+     */
+    public SystemExitStatus lastExitStatus() {
+        return this.lastExit;
     }
 }

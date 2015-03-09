@@ -127,14 +127,15 @@ import test.framework.TestClassLoader;
  * @version 2.2
  */
 public class TestObject {
-    private static final SecurityManager SYSTEM_SECURITY_MANAGER = System.getSecurityManager();
-    private static final String CLASS_NAME = System.getProperty("className");
-    private static Class<?> clazz;
     private static boolean allowSystemExit0 = false;
     private static boolean allowSystemExitGreater0 = false;
+    private static final String CLASS_NAME = System.getProperty("className");
+    private static Class<?> clazz;
+    private static SystemExitStatus lastSystemExitStatus = SystemExitStatus.NONE;
     private static String[] nextCallInput;
     private static String[] programOutput = new String[0];
     private static List<Class<? extends Exception>> rethrowExceptions = new LinkedList<Class<? extends Exception>>();
+    private static final SecurityManager SYSTEM_SECURITY_MANAGER = System.getSecurityManager();
     private final Object instance;
 
     static {
@@ -236,6 +237,15 @@ public class TestObject {
      */
     public static String[] getLastMethodsOutput() {
         return programOutput;
+    }
+
+    /**
+     * @return {@link SystemExitStatus#NONE} if the last method run didn't call {@code System.exit(x)}.
+     *         {@link SystemExitStatus#WITH_0} or {@link SystemExitStatus#WITH_GREATER_THAN_0} if the last method run
+     *         called {@code System.exit(x)} with {@code x=0} or {@code x>0}, respectively.
+     */
+    public static SystemExitStatus getLastMethodsSystemExitStatus() {
+        return lastSystemExitStatus;
     }
 
     /**
@@ -354,11 +364,12 @@ public class TestObject {
      * itself as well as classes used by it.
      */
     public static void resetClass() {
-        String standardMessage = "\nPlease specify a class in the JVM-parameter via -DclassName=.\n"
-                + "Do not forget to state the correct package!\n"
-                + "Example: '-DclassName=joshuagleitze.tuple.NaturalNumberTuple'\n\n"
-                + "For help to set up the tests, see\n"
-                + "https://github.com/jGleitz/JUnit-KIT/wiki/Using-the-tests-in-Eclipse\n";
+        String standardMessage =
+                "\nPlease specify a class in the JVM-parameter via -DclassName=.\n"
+                        + "Do not forget to state the correct package!\n"
+                        + "Example: '-DclassName=joshuagleitze.tuple.NaturalNumberTuple'\n\n"
+                        + "For help to set up the tests, see\n"
+                        + "https://github.com/jGleitz/JUnit-KIT/wiki/Using-the-tests-in-Eclipse\n";
         if (CLASS_NAME == null || CLASS_NAME.equals("")) {
             fail("\nYou have not provided a class name! So what should we test on?" + standardMessage);
         }
@@ -618,7 +629,8 @@ public class TestObject {
         Object result = null;
         Object[] args = translateAllToImplemented(arguments);
         Class<?>[] types = translateAllClassesToImplemented(formalArguments);
-        System.setSecurityManager(new NoExitSecurityManager(clazz)); // prevent System.exit()
+        NoExitSecurityManager securityManager = new NoExitSecurityManager(clazz);
+        System.setSecurityManager(securityManager); // prevent System.exit()
         Terminal terminal = new Terminal(clazz.getClassLoader());
         if (nextCallInput != null) {
             terminal.provideInput(nextCallInput);
@@ -633,19 +645,22 @@ public class TestObject {
                 result = translateToTestObject(result);
             }
         } catch (NoSuchMethodException e) {
-            String message = "There obviously is no "
-                    + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
-                    + ", in your class while there should be one.\n";
+            String message =
+                    "There obviously is no "
+                            + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                            + ", in your class while there should be one.\n";
             fail(message);
         } catch (NullPointerException e) {
-            String message = "The " + renderMethodFormal(methodName, formalArguments, false, callConstructor)
-                    + " is expected to be static!";
+            String message =
+                    "The " + renderMethodFormal(methodName, formalArguments, false, callConstructor)
+                            + " is expected to be static!";
             fail(message);
         } catch (SecurityException e) {
             fail("SecurityException: '" + e.getMessage() + "'\n\n" + e.getStackTrace());
         } catch (IllegalAccessException e) {
-            String message = "The " + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
-                    + " is not accessible! Correct its visibility!";
+            String message =
+                    "The " + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                            + " is not accessible! Correct its visibility!";
             fail(message);
         } catch (IllegalArgumentException e) {
             String message = "The passed arguments, '";
@@ -655,10 +670,11 @@ public class TestObject {
                 message += arguments[i];
                 message += (i < arguments.length - 1) ? ", " : "";
             }
-            message += "' don't match the formal arguments of the "
-                    + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
-                    + ". Most likely, this test contains an error which causes this. "
-                    + "You wouldn't try to find and fix it, would you?";
+            message +=
+                    "' don't match the formal arguments of the "
+                            + renderMethodFormal(methodName, formalArguments, (inst == null), callConstructor)
+                            + ". Most likely, this test contains an error which causes this. "
+                            + "You wouldn't try to find and fix it, would you?";
             fail(message);
         } catch (InvocationTargetException e) {
             StringWriter stackTraceStringWriter = new StringWriter(); // will hold the printed stack trace of the actual
@@ -667,9 +683,11 @@ public class TestObject {
                 ExitException exitException = (ExitException) e.getCause();
                 exitException.printStackTrace(new PrintWriter(stackTraceStringWriter));
                 if (!((allowSystemExit0 && exitException.status == 0) || (allowSystemExitGreater0 && exitException.status > 0))) {
-                    String message = "While calling " + renderMethodCall(methodName, arguments, callConstructor)
-                            + ", your code called System.exit(" + exitException.status
-                            + "). This was not expected and is an error: \n\n" + stackTraceStringWriter.toString();
+                    String message =
+                            "While calling " + renderMethodCall(methodName, arguments, callConstructor)
+                                    + ", your code called System.exit(" + exitException.status
+                                    + "). This was not expected and is an error: \n\n"
+                                    + stackTraceStringWriter.toString();
                     fail(message);
                 }
             } else {
@@ -679,16 +697,19 @@ public class TestObject {
                     }
                 }
                 e.getCause().printStackTrace(new PrintWriter(stackTraceStringWriter));
-                String message = "An Exception occurred while running "
-                        + renderMethodCall(methodName, arguments, callConstructor) + ": \n\n"
-                        + stackTraceStringWriter.toString();
+                String message =
+                        "An Exception occurred while running "
+                                + renderMethodCall(methodName, arguments, callConstructor) + ": \n\n"
+                                + stackTraceStringWriter.toString();
                 fail(message);
             }
         } catch (InstantiationException e) {
-            String message = clazz.getName() + " could not be instantiated. This are the exception details: \n\n"
-                    + e.getMessage() + "\n\n" + e.getStackTrace();
+            String message =
+                    clazz.getName() + " could not be instantiated. This are the exception details: \n\n"
+                            + e.getMessage() + "\n\n" + e.getStackTrace();
             fail(message);
         } finally {
+            lastSystemExitStatus = securityManager.lastExitStatus();
             System.setSecurityManager(SYSTEM_SECURITY_MANAGER);
             programOutput = terminal.getOutput();
         }

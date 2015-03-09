@@ -11,7 +11,7 @@ import test.InteractiveConsoleTest;
  */
 public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     protected String[] TASK_SHEET_INPUT_FILE = new String[] {
-            "CentOS5 ( id= 105) contained-in operatingSystem",
+            "CentOS5 ( id= 105) contained-in operattiingSystem",
             "centOS6 ( id = 106) contained-in OperatingSystem",
             "operatingSystem contains centos7 ( id = 107 )",
             "operatingsystem contained-in Software",
