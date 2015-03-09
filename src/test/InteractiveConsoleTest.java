@@ -448,7 +448,11 @@ public abstract class InteractiveConsoleTest {
         return result;
     }
 
-    private String[] wrapInArray(String s) {
+    /**
+     * @param s A String.
+     * @return An Array containing {@code s} as only element.
+     */
+    protected String[] wrapInArray(String s) {
         return new String[] {
             s
         };

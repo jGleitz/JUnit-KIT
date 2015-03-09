@@ -1,6 +1,12 @@
 package final1.subtests;
 
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.fail;
 import test.InteractiveConsoleTest;
+import test.SystemExitStatus;
+import test.TestObject;
 
 /**
  * Base class for implementing subtest for the programming lecture's first final task. Contains some convenience methods
@@ -26,4 +32,33 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
             "calc (id=202) part-of libreoffice (id=200)",
             "libreoffice (id=200) has-part impress (id=203)"
     };
+
+    /**
+     * Runs {@link #errorTest(String, String...)} with the provided arguments and asserts that {@code System.exit(x)}
+     * was called with {@code x > 0} afterwards.
+     * 
+     * @param command
+     *            The command to run on the console.
+     * @param args0
+     *            The arguments for the {@code main}-method
+     */
+    protected void exitTest(String command, String... args0) {
+        exitTest(wrapInArray(command), args0);
+    }
+
+    /**
+     * Runs {@link #errorTest(String[], String...)} with the provided arguments and asserts that {@code System.exit(x)}
+     * was called with {@code x > 0} afterwards.
+     * 
+     * @param commands
+     *            The commands to run on the console
+     * @param args0
+     *            The arguments for the {@code main}-method
+     */
+    protected void exitTest(String[] commands, String... args0) {
+        TestObject.allowSystemExit(SystemExitStatus.ALL);
+        errorTest(commands, args0);
+        assertThat(consoleMessage(commands, args0) + "wrong system exit status!",
+            TestObject.getLastMethodsSystemExitStatus(), is(SystemExitStatus.WITH_GREATER_THAN_0));
+    }
 }
