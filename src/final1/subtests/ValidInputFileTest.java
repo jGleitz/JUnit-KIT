@@ -43,6 +43,12 @@ public class ValidInputFileTest extends RecommendationSubtest {
     }
     
     @Test
+    public void oneLineTest() {
+        noOutputTest("quit", Input.getFile(ONE_LINE_INPUT_FILE1));
+        noOutputTest("quit", Input.getFile(ONE_LINE_INPUT_FILE2));
+    }
+    
+    @Test
     public void keywordTest() {
         input = new String[] {
                 "contains contains containers",

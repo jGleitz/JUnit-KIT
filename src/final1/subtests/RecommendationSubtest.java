@@ -73,6 +73,14 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
             " officesuite contained-in   software",
     };
 
+    protected String[] ONE_LINE_INPUT_FILE1 = new String[] {
+            "B(id=1) successor-of A(id=2)"
+    };
+    
+    protected String[] ONE_LINE_INPUT_FILE2 = new String[] {
+            "A contains B(id=2)"
+    };
+    
     protected String[] PSEUDO_CIRCLE_INPUT_FILE1 = new String[] {
             "A(id=1) successor-of B(id=2)",
             "B(id=2) predecessor-of C(id=3)",
