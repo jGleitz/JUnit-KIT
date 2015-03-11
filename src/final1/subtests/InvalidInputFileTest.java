@@ -96,9 +96,14 @@ public class InvalidInputFileTest extends RecommendationSubtest {
             "operatingsystems contained-in operatingsystems"
         };
         exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "os (id=1) part-of os (id=1)"
+        };
+        exitTest("quit", Input.getFile(input));
 
         input = new String[] {
-            "os (id=1) part-of os (id=1)"
+            "os contained-in os"
         };
         exitTest("quit", Input.getFile(input));
 
@@ -117,198 +122,205 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "writer contains worktools"
         };
         exitTest("quit", Input.getFile(input));
-    }
 
+        input = new String[] {
+                "C (id=2) predecessor-of A (id=3)",
+                "A (id=3) predecessor-of C (id=4)"
+        };
+        exitTest("quit", Input.getFile(input));
+    }
+    
+    @Test 
+    public void circleTest() {
+        String[][] relations = new String[][] {
+                {"contains", "contained-in"},
+                {"successor-of", "predecessor-of"},
+                {"has-part", "part-of"}
+        };
+        
+        for (String[] relation : relations) {
+            for (int i = 0; i < 2; i++) {
+                input = new String[] {
+                    "A " + relation[i] + " A"
+                };
+                exitTest("quit", Input.getFile(input));
+                
+                input = new String[] {
+                        "A (id=1) " + relation[i] + " B (id=2)",
+                        "B (id=2) " + relation[i] + " C (id=3)",
+                        "C (id=3) " + relation[i] + " D (id=4)",
+                        "D (id=4) " + relation[i] + " E (id=5)",
+                        "E (id=5) " + relation[i] + " F (id=6)",
+                        "F (id=6) " + relation[i] + " G (id=7)",
+                        "G (id=7) " + relation[i] + " H (id=8)",
+                        "H (id=8) " + relation[i] + " A (id=1)"
+                };
+                exitTest("quit", Input.getFile(input));
+                
+                // different order
+                input = new String[] {
+                        "A (id=1) " + relation[i] + " B (id=2)",
+                        "B (id=2) " + relation[i] + " C (id=3)",
+                        "C (id=3) " + relation[i] + " D (id=4)",
+                        "H (id=8) " + relation[i] + " A (id=1)",
+                        "D (id=4) " + relation[i] + " E (id=5)",
+                        "E (id=5) " + relation[i] + " F (id=6)",
+                        "F (id=6) " + relation[i] + " G (id=7)",
+                        "G (id=7) " + relation[i] + " H (id=8)"
+                };
+                exitTest("quit", Input.getFile(input));
+                
+                input = new String[] {
+                        "A (id=1) " + relation[i] + " B (id=2)",
+                        "B (id=2) " + relation[i] + " C (id=3)",
+                        "C (id=3) " + relation[i] + " D (id=4)",
+                        "D (id=4) " + relation[i] + " E (id=5)",
+                        "E (id=5) " + relation[i] + " F (id=6)",
+                        "F (id=6) " + relation[i] + " G (id=7)",
+                        "G (id=7) " + relation[i] + " H (id=8)",
+                        "H (id=8) " + relation[i % 2] + " A (id=1)"
+                };
+                exitTest("quit", Input.getFile(input));
+                
+                // different order
+                input = new String[] {
+                        "A (id=1) " + relation[i] + " B (id=2)",
+                        "B (id=2) " + relation[i] + " C (id=3)",
+                        "C (id=3) " + relation[i] + " D (id=4)",
+                        "H (id=8) " + relation[i % 2] + " A (id=1)",
+                        "D (id=4) " + relation[i] + " E (id=5)",
+                        "E (id=5) " + relation[i] + " F (id=6)",
+                        "F (id=6) " + relation[i] + " G (id=7)",
+                        "G (id=7) " + relation[i] + " H (id=8)"
+                };
+                exitTest("quit", Input.getFile(input));
+            }
+        }
+    }
+    
     @Test
-    public void containsCircleTest() {
+    public void emptyLinesTest() {
         input = new String[] {
-            "A contains A"
+                "CentOS5 ( id= 105) contained-in operatingSystem",
+                "centOS6 ( id = 106) contained-in OperatingSystem",
+                "operatingSystem contains centos7 ( id = 107 )",
+                "operatingsystem contained-in Software",
+                "",
+                "CentOS7 (id=107) successor-of centos6(id=106)",
+                "CentOS5 (id=105) predecessor-of centos6(id=106)"
         };
         exitTest("quit", Input.getFile(input));
-
+        
         input = new String[] {
-                "A contains B",
-                "B contains C",
-                "C contains D",
-                "D contains E",
-                "E contains F",
-                "F contains G",
-                "G contains H",
-                "H contains A"
+                "",
+                "CentOS5 ( id= 105) contained-in operatingSystem",
+                "centOS6 ( id = 106) contained-in OperatingSystem",
+                "operatingSystem contains centos7 ( id = 107 )",
+                "operatingsystem contained-in Software",
+                "CentOS7 (id=107) successor-of centos6(id=106)",
+                "CentOS5 (id=105) predecessor-of centos6(id=106)"
         };
         exitTest("quit", Input.getFile(input));
-
+        
         input = new String[] {
-                "A contains B",
-                "B contains C",
-                "C contains D",
-                "D contains E",
-                "E contains F",
-                "F contains G",
-                "G contains H",
-                "A contained-in H"
+                "CentOS5 ( id= 105) contained-in operatingSystem",
+                "centOS6 ( id = 106) contained-in OperatingSystem",
+                "operatingSystem contains centos7 ( id = 107 )",
+                "operatingsystem contained-in Software",
+                "CentOS7 (id=107) successor-of centos6(id=106)",
+                "CentOS5 (id=105) predecessor-of centos6(id=106)",
+                ""
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                ""
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        // totally empty input file is not valid: "Die Datenbestand-Datei besteht aus einer oder mehreren Zeilen."
+        input = new String[] {
         };
         exitTest("quit", Input.getFile(input));
     }
-
+    
     @Test
-    public void containedInCircleTest() {
+    public void caseSensitivityTest() {
         input = new String[] {
-            "A contained-in A"
+                "operatingSystem Contains centos7 ( id = 107 )"
         };
         exitTest("quit", Input.getFile(input));
-
+        
         input = new String[] {
-                "A contained-in B",
-                "B contained-in C",
-                "C contained-in D",
-                "D contained-in E",
-                "E contained-in F",
-                "F contained-in G",
-                "G contained-in H",
-                "H contained-in A"
-        };
-        exitTest("quit", Input.getFile(input));
-
-        input = new String[] {
-                "A contained-in B",
-                "B contained-in C",
-                "C contained-in D",
-                "D contained-in E",
-                "E contained-in F",
-                "F contained-in G",
-                "G contained-in H",
-                "A contains H"
+                "operatingSystem contains centos7 ( iD = 107 )"
         };
         exitTest("quit", Input.getFile(input));
     }
-
+    
     @Test
-    public void successorOfCircleTest() {
+    public void invalidArgumentCountTest() {
         input = new String[] {
-            "A (id=1) successor-of A (id=1)"
+                "operatingSystem con tains centos7 (id = 107 )"
         };
         exitTest("quit", Input.getFile(input));
-
+        
         input = new String[] {
-                "A (id=1) successor-of B (id=2)",
-                "B (id=2) successor-of C (id=3)",
-                "C (id=3) successor-of D (id=4)",
-                "D (id=4) successor-of E (id=5)",
-                "E (id=5) successor-of F (id=6)",
-                "F (id=6) successor-of G (id=7)",
-                "G (id=7) successor-of H (id=8)",
-                "H (id=8) successor-of A (id=1)"
+                "operatingSystem contains centos7 (id=107) part-of centos8 (id=108)"
         };
         exitTest("quit", Input.getFile(input));
-
+        
         input = new String[] {
-                "A (id=1) successor-of B (id=2)",
-                "B (id=2) successor-of C (id=3)",
-                "C (id=3) successor-of D (id=4)",
-                "D (id=4) successor-of E (id=5)",
-                "E (id=5) successor-of F (id=6)",
-                "F (id=6) successor-of G (id=7)",
-                "G (id=7) successor-of H (id=8)",
-                "A (id=1) predecessor-of H (id=8)"
+                "operatingSystem contains"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingSystem test"
         };
         exitTest("quit", Input.getFile(input));
     }
-
+    
     @Test
-    public void predecessorOfCircleTest() {
+    public void invalidSymbolTest() {
         input = new String[] {
-            "A (id=1) predecessor-of A (id=1)"
+                "operatingSystem contains centos7 (i d = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operäitingSystem contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operaitingSystem contains centös7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingSystem contains cento-s7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operating-System contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operating System contains centos7 ( id = 107 )"
         };
         exitTest("quit", Input.getFile(input));
 
         input = new String[] {
-                "A (id=1) predecessor-of B (id=2)",
-                "B (id=2) predecessor-of C (id=3)",
-                "C (id=3) predecessor-of D (id=4)",
-                "D (id=4) predecessor-of E (id=5)",
-                "E (id=5) predecessor-of F (id=6)",
-                "F (id=6) predecessor-of G (id=7)",
-                "G (id=7) predecessor-of H (id=8)",
-                "H (id=8) predecessor-of A (id=1)"
-        };
-        exitTest("quit", Input.getFile(input));
-
-        input = new String[] {
-                "A (id=1) predecessor-of B (id=2)",
-                "B (id=2) predecessor-of C (id=3)",
-                "C (id=3) predecessor-of D (id=4)",
-                "D (id=4) predecessor-of E (id=5)",
-                "E (id=5) predecessor-of F (id=6)",
-                "F (id=6) predecessor-of G (id=7)",
-                "G (id=7) predecessor-of H (id=8)",
-                "A (id=1) successor-of H (id=8)"
-        };
-        exitTest("quit", Input.getFile(input));
-    }
-
-    @Test
-    public void hasPartCircleTest() {
-        input = new String[] {
-            "A (id=1) has-part A (id=1)"
-        };
-        exitTest("quit", Input.getFile(input));
-
-        input = new String[] {
-                "A (id=1) has-part B (id=2)",
-                "B (id=2) has-part C (id=3)",
-                "C (id=3) has-part D (id=4)",
-                "D (id=4) has-part E (id=5)",
-                "E (id=5) has-part F (id=6)",
-                "F (id=6) has-part G (id=7)",
-                "G (id=7) has-part H (id=8)",
-                "H (id=8) has-part A (id=1)"
-        };
-        exitTest("quit", Input.getFile(input));
-
-        input = new String[] {
-                "A (id=1) has-part B (id=2)",
-                "B (id=2) has-part C (id=3)",
-                "C (id=3) has-part D (id=4)",
-                "D (id=4) has-part E (id=5)",
-                "E (id=5) has-part F (id=6)",
-                "F (id=6) has-part G (id=7)",
-                "G (id=7) has-part H (id=8)",
-                "A (id=1) part-of H (id=8)"
+                "operatingSystem contains cent os7 ( id = 107 )"
         };
         exitTest("quit", Input.getFile(input));
     }
-
-    @Test
-    public void partOfCircleTest() {
-        input = new String[] {
-            "A (id=1) part-of A (id=1)"
-        };
-        exitTest("quit", Input.getFile(input));
-
-        input = new String[] {
-                "A (id=1) part-of B (id=2)",
-                "B (id=2) part-of C (id=3)",
-                "C (id=3) part-of D (id=4)",
-                "D (id=4) part-of E (id=5)",
-                "E (id=5) part-of F (id=6)",
-                "F (id=6) part-of G (id=7)",
-                "G (id=7) part-of H (id=8)",
-                "H (id=8) part-of A (id=1)"
-        };
-        exitTest("quit", Input.getFile(input));
-
-        input = new String[] {
-                "A (id=1) part-of B (id=2)",
-                "B (id=2) part-of C (id=3)",
-                "C (id=3) part-of D (id=4)",
-                "D (id=4) part-of E (id=5)",
-                "E (id=5) part-of F (id=6)",
-                "F (id=6) part-of G (id=7)",
-                "G (id=7) part-of H (id=8)",
-                "A (id=1) has-part H (id=8)"
-        };
-        exitTest("quit", Input.getFile(input));
-    }
-
+    
 }
