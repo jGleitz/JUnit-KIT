@@ -47,6 +47,31 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
             "calc(id=202) part-of libreoffice(id=200)",
             "libreoffice (id=200) has-part impress (id=203)"
     };
+    
+    /**
+     * Extends the task sheet input file with semantically duplicate lines and some backwards relations
+     */
+    protected String[] TASK_SHEET_INPUT_FILE_DUPLICATES = new String[] {
+            "CentOS5(id=105) contained-in operatingSystem",
+            "    centOS6   (  id   =   106)   contained-in    OperatingSystem    ",
+            "operatingSystem contains centos7 ( id = 107 )",
+            "operatingsystem contained-in Software",
+            "software contains operatingsystem",
+            "operatingsystem contained-in Software",
+            "CentOS7 (id=107) successor-of centos6(id=106) ",
+            " CentOS5 (id=105) predecessor-of centos6(id=106)",
+            "writer (id=201) contained-in officesuite",
+            "calc (id=202) contained-in officesuite ",
+            "impress (id=203) contained-in officesuite",
+            "officesuite contained-in software",
+            "calc (id=202) contained-in officesuite ",
+            "LibreOffice (id=200) contained-in officesuite",
+            "officesuite contains LibreOffice(id=200)",
+            "writer (id=201) part-of LibreOffice   (  id  =  200   )  ",
+            "calc(id=202) part-of libreoffice(id=200)",
+            "libreoffice (id=200) has-part impress (id=203)",
+            " officesuite contained-in   software",
+    };
 
     protected String[] PSEUDO_CIRCLE_INPUT_FILE1 = new String[] {
             "A(id=1) successor-of B(id=2)",

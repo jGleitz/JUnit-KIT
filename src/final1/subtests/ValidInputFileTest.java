@@ -38,6 +38,11 @@ public class ValidInputFileTest extends RecommendationSubtest {
     }
     
     @Test
+    public void duplicatesTest() {
+        noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_DUPLICATES));
+    }
+    
+    @Test
     public void keywordTest() {
         input = new String[] {
                 "contains contains containers",

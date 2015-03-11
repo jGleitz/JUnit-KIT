@@ -31,6 +31,11 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
         testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES);
     }
     
+    @Test
+    public void duplicatesTest() {
+        testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
+    }
+    
     private void testAgainstTaskSheet(String[] input) {
         String[] queries = new String[] {
                 "nodes",
