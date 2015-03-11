@@ -31,10 +31,17 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
             "libreoffice (id=200) has-part impress (id=203)"
     };
 
-    protected String[] PSEUDO_CIRCLE_INPUT_FILE = new String[] {
+    protected String[] PSEUDO_CIRCLE_INPUT_FILE1 = new String[] {
             "A(id=1) successor-of B(id=2)",
             "B(id=2) predecessor-of C(id=3)",
             "C(id=3) predecessor-of A(id=1)"
+    };
+    
+    protected String[] PSEUDO_CIRCLE_INPUT_FILE2 = new String[] {
+            "A (id=1) successor-of B (id=2)",
+            "C (id=3) predecessor-of B (id=2)",
+            "C (id=3) successor-of D (id=5)",
+            "D (id=5) predecessor-of A (id=1)"
     };
     
     /**

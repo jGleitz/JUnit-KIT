@@ -28,7 +28,8 @@ public class ValidInputFileTest extends RecommendationSubtest {
     
     @Test
     public void pseudoCirclesTest() {
-        noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE));
+        noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE1));
+        noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE2));
     }
     
     @Test
