@@ -31,7 +31,7 @@ public abstract class MockCompiler {
     private static final JavaCompiler compiler = getJavaCompiler();
     private static final MockCompilerFileManager fileManager = new MockCompilerFileManager(
             compiler.getStandardFileManager(null, null, null));
-    private static final boolean isWindows = System.getProperty("os.name").startsWith("Windows");
+    private static String OS = null;
 
     /**
      * Compiles the source code provided in {@code sourceFile}. The compiler will run silent. If an error occurs while
@@ -49,8 +49,8 @@ public abstract class MockCompiler {
             // will contain the compiler's error output
             Writer errorWriter = new StringWriter();
             // creates the compilation task, runs it and returns the result
-            boolean compilationSuccessful = compiler.getTask(errorWriter, fileManager, null, null, null,
-                    Arrays.asList(sourceFile)).call();
+            boolean compilationSuccessful =
+                    compiler.getTask(errorWriter, fileManager, null, null, null, Arrays.asList(sourceFile)).call();
             if (!compilationSuccessful) {
                 throw new FrameworkException("Unable to compile " + sourceFile.getName() + ":\n\n"
                         + errorWriter.toString());
@@ -110,9 +110,10 @@ public abstract class MockCompiler {
      *             if there is no known way for us to get the system's compiler.
      */
     private static JavaCompiler getJavaCompiler() {
+        System.out.println("OS: " + OS);
         JavaCompiler comp = ToolProvider.getSystemJavaCompiler();
         if (comp == null) {
-            if (isWindows) {
+            if (isWindows()) {
                 File javaProgramFolder = new File("C:\\Program Files\\Java");
                 if (!javaProgramFolder.exists()) {
                     throw new FrameworkException("Your system does not provide a Java Compiler. It's Windows but we "
@@ -174,7 +175,7 @@ public abstract class MockCompiler {
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
             }
-            if (isWindows) {
+            if (isWindows()) {
                 Runtime.getRuntime().exec("attrib -s -h -r " + parentFile.getAbsolutePath());
             }
             cacheFile.createNewFile();
@@ -199,5 +200,12 @@ public abstract class MockCompiler {
                 }
             }
         }
+    }
+
+    private static boolean isWindows() {
+        if (OS == null) {
+            OS = System.getProperty("os.name");
+        }
+        return OS.startsWith("Windows");
     }
 }
