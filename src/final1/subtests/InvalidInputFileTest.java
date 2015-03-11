@@ -96,9 +96,14 @@ public class InvalidInputFileTest extends RecommendationSubtest {
             "operatingsystems contained-in operatingsystems"
         };
         exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "os (id=1) part-of os (id=1)"
+        };
+        exitTest("quit", Input.getFile(input));
 
         input = new String[] {
-            "os (id=1) part-of os (id=1)"
+            "os contained-in os"
         };
         exitTest("quit", Input.getFile(input));
 
@@ -311,4 +316,124 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         exitTest("quit", Input.getFile(input));
     }
 
+    @Test
+    public void emptyLinesTest() {
+        input = new String[] {
+                "CentOS5 ( id= 105) contained-in operatingSystem",
+                "centOS6 ( id = 106) contained-in OperatingSystem",
+                "operatingSystem contains centos7 ( id = 107 )",
+                "operatingsystem contained-in Software",
+                "",
+                "CentOS7 (id=107) successor-of centos6(id=106)",
+                "CentOS5 (id=105) predecessor-of centos6(id=106)"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "",
+                "CentOS5 ( id= 105) contained-in operatingSystem",
+                "centOS6 ( id = 106) contained-in OperatingSystem",
+                "operatingSystem contains centos7 ( id = 107 )",
+                "operatingsystem contained-in Software",
+                "CentOS7 (id=107) successor-of centos6(id=106)",
+                "CentOS5 (id=105) predecessor-of centos6(id=106)"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "CentOS5 ( id= 105) contained-in operatingSystem",
+                "centOS6 ( id = 106) contained-in OperatingSystem",
+                "operatingSystem contains centos7 ( id = 107 )",
+                "operatingsystem contained-in Software",
+                "CentOS7 (id=107) successor-of centos6(id=106)",
+                "CentOS5 (id=105) predecessor-of centos6(id=106)",
+                ""
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                ""
+        };
+        exitTest("quit", Input.getFile(input));
+    }
+    
+    @Test
+    public void caseSensitivityTest() {
+        input = new String[] {
+                "operatingSystem Contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingSystem contains centos7 ( iD = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+    }
+    
+    @Test
+    public void invalidArgumentCountTest() {
+        input = new String[] {
+                "operatingSystem con tains centos7 (id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingSystem contains centos7 (id=107) part-of centos8 (id=108)"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingSystem contains"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingSystem test"
+        };
+        exitTest("quit", Input.getFile(input));
+    }
+    
+    @Test
+    public void invalidSymbolTest() {
+        input = new String[] {
+                "operatingSystem contains centos7 (i d = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operäitingSystem contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operaitingSystem contains centös7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operatingSystem contains cento-s7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operating-System contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+        
+        input = new String[] {
+                "operating System contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+                "operatingSystem contains cent os7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+    }
+    
 }
