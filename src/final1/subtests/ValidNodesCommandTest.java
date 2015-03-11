@@ -14,14 +14,23 @@ import test.Input;
  */
 public class ValidNodesCommandTest extends RecommendationSubtest {
 
+    private static final String TASK_SHEET_NODES
+            = "calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201";
+    
     /**
      * Asserts that the {@code nodes} command performs as expected for the example given on the task sheet.
      */
     @Test
     public void taskSheetExampleTest() {
         command = "nodes";
-        expectedResult =
-                "calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201";
+        expectedResult = TASK_SHEET_NODES;
+        oneLineTest(addQuit(command), expectedResult, Input.getFile(TASK_SHEET_INPUT_FILE));
+    }
+    
+    @Test
+    public void spacesTest() {
+        command = "nodes";
+        expectedResult = TASK_SHEET_NODES;
         oneLineTest(addQuit(command), expectedResult, Input.getFile(TASK_SHEET_INPUT_FILE));
     }
     

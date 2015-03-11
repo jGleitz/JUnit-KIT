@@ -27,6 +27,11 @@ public class ValidInputFileTest extends RecommendationSubtest {
     }
     
     @Test
+    public void spacesTest() {
+        noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_SPACES));
+    }
+    
+    @Test
     public void pseudoCirclesTest() {
         noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE1));
         noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE2));
