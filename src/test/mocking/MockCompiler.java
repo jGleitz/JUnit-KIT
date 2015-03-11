@@ -110,7 +110,6 @@ public abstract class MockCompiler {
      *             if there is no known way for us to get the system's compiler.
      */
     private static JavaCompiler getJavaCompiler() {
-        System.out.println("OS: " + OS);
         JavaCompiler comp = ToolProvider.getSystemJavaCompiler();
         if (comp == null) {
             if (isWindows()) {
