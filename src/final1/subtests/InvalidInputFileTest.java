@@ -237,6 +237,11 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 ""
         };
         exitTest("quit", Input.getFile(input));
+        
+        // totally empty input file is not valid: "Die Datenbestand-Datei besteht aus einer oder mehreren Zeilen."
+        input = new String[] {
+        };
+        exitTest("quit", Input.getFile(input));
     }
     
     @Test
