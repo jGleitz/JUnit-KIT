@@ -10,7 +10,8 @@ import test.Input;
  * Performs valid calls to the {@code nodes} command and checks the results.
  * 
  * @author Joshua Gleitze
- * @version 1.0
+ * @author Martin Loeper
+ * @version 1.1
  */
 public class ValidNodesCommandTest extends RecommendationSubtest {
 

@@ -11,7 +11,8 @@ import test.Input;
  * read in the files.
  * 
  * @author Joshua Gleitze
- * @version 1.0
+ * @author Martin Loeper
+ * @version 1.1
  */
 public class ValidInputFileTest extends RecommendationSubtest {
 

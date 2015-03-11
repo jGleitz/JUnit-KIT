@@ -11,7 +11,8 @@ import test.TestObject;
  * and fields.
  * 
  * @author Joshua Gleitze
- * @version 1.0
+ * @author Martin Loeper
+ * @version 1.1
  */
 public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     protected String[] TASK_SHEET_INPUT_FILE = new String[] {
