@@ -52,7 +52,7 @@ public class BookDatabaseSubTest extends InteractiveConsoleTest {
     protected String consoleMessage(String[] commands, String[] commandLineArguments) {
         String result = "";
         result += "We ran a session on your interactive console" + getArguments(commandLineArguments)
-                + Input.fileMessage(commandLineArguments) + "running the commands \n\n" + joinOnePerLine(commands)
+                + Input.fileMessage(commandLineArguments[1]) + "running the commands \n\n" + joinOnePerLine(commands)
                 + "\n\n but got unexpected output:\n";
         return result;
     }

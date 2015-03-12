@@ -10,6 +10,7 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import test.Input;
+import test.SystemExitStatus;
 
 /**
  * Performs valid calls to the {@code nodes} command and checks the results.
@@ -19,6 +20,11 @@ import test.Input;
  * @version 1.1
  */
 public class ValidNodesCommandTest extends RecommendationSubtest {
+    
+    
+    public ValidNodesCommandTest() {
+        setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
+    }
 
     /**
      * Asserts correct results for the example given on the task sheet.

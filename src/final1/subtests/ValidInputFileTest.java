@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import test.Input;
+import test.SystemExitStatus;
 
 /**
  * Starts the program with several valid input files without performing any actions. Checks if the tested class is able
@@ -17,6 +18,10 @@ import test.Input;
 public class ValidInputFileTest extends RecommendationSubtest {
 
     private String[] input;
+    
+    public ValidInputFileTest() {
+        setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
+    }
 
     /**
      * Asserts that the tested class is able to read in the input file given as an example on the task.

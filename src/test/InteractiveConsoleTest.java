@@ -18,12 +18,24 @@ import org.junit.rules.Timeout;
 
 /**
  * Contains some useful methods for testing with the interactive console. Extend this class to write interactive console
- * tests.
+ * tests. <h2>Checking the system exit status</h2> There are two ways of asserting the tested class' system exit status.
+ * <p>
+ * <h6>Using {@link TestObject#allowSystemExit(SystemExitStatus) Preferably by overriding
+ * 
+ * {@link #defaultSystemExitStatus()}. This was the old way, but is now Deprecated.
+ * <h6>The new way</h6> The new way of asserting the system exit status has two big advantages:
+ * <ul>
+ * <li>Error messages are shown for failed tests if more than the exit status was wrong
+ * <li>It differentiates between an <i>expected</i> and an <i>allowed</i> system exit status.
+ * </ul>
+ * To use the new way, call {@link #setAllowedSystemExitStatus(SystemExitStatus)} or
+ * {@link #setExpectedSystemStatus(SystemExitStatus)} before running one of the test methods. Typically, a test class
+ * does this once in its constructor.
  * 
  * @author Roman Langrehr
  * @author Joshua Gleitze
  * @since 05.01.2015
- * @version 1.1.1
+ * @version 1.2
  *
  */
 public abstract class InteractiveConsoleTest {
@@ -53,11 +65,15 @@ public abstract class InteractiveConsoleTest {
      * You can use this field to put an expected result Matcher array in it.
      */
     protected List<Matcher<String>> expectedResultMatchers;
-
     /**
      * You can use this field to put an expected result String array in it.
      */
     protected String[] expectedResults;
+    private SystemExitStatus allowedExitStatus;
+    private SystemExitStatus expectedExitStatus;
+    private boolean newSystemExitStatusCeckInited;
+
+    private SystemExitStatus oldDefault;
 
     /**
      * Adds the "quit" command to the given {@code commands}.
@@ -75,6 +91,15 @@ public abstract class InteractiveConsoleTest {
         return allCommands;
     }
 
+    protected static String joinOnePerLine(String[] strings) {
+        String result = "";
+        for (String string : strings) {
+            result += (result != "") ? System.lineSeparator() : "";
+            result += string;
+        }
+        return result;
+    }
+
     private static String expectedAndActual(List<Matcher<String>> expected, String[] actual) {
         String result = "Expected was:\n\n";
         for (Matcher<String> matcher : expected) {
@@ -86,11 +111,43 @@ public abstract class InteractiveConsoleTest {
 
     /**
      * Gets called before each test run. Sets the allowed system exit status to {@link SystemExitStatus#WITH_0}.
-     * Override this method if you which to have another default system exit status.
+     * Override this method if you wish to have another default system exit status.
+     * <p>
+     * <i>Deprecated. Please use {@link #setAllowedSystemExitStatus(SystemExitStatus)} and
+     * {@link #setExpectedSystemStatus(SystemExitStatus)}.
      */
+    @Deprecated
     @Before
     public void defaultSystemExitStatus() {
         TestObject.allowSystemExit(SystemExitStatus.WITH_0);
+    }
+
+    /**
+     * Checks the exit status of a tested method. Has to be called after call to a {@link TestObject} run method.
+     * 
+     * @param commands
+     *            The commands that were run on the interactive console.
+     * @param args0
+     *            The arguments the main method was called with in the test run.
+     * @throws IllegalStateException
+     *             If {@link #initSystemExitStatusCheck()} has not been called before the test run.
+     */
+    protected final void checkSystemExitStatus(String[] commands, String[] args0) {
+        if (!newSystemExitStatusCeckInited) {
+            throw new IllegalStateException("The new way of system exit status checking has not been inited yet!");
+        }
+        if (allowedExitStatus != null || expectedExitStatus != null) {
+            SystemExitStatus actualStatus = TestObject.getLastMethodsSystemExitStatus();
+            if (expectedExitStatus != null) {
+                assertThat(consoleMessage(commands, args0) + "\nWrong system exit status!", actualStatus,
+                    is(expectedExitStatus));
+            } else if (actualStatus != SystemExitStatus.NONE && allowedExitStatus != SystemExitStatus.ALL) {
+                assertThat(consoleMessage(commands, args0) + "\nWrong system exit status!", actualStatus,
+                    is(allowedExitStatus));
+            }
+            TestObject.allowSystemExit(oldDefault);
+        }
+        newSystemExitStatusCeckInited = false;
     }
 
     /**
@@ -105,8 +162,10 @@ public abstract class InteractiveConsoleTest {
      */
     protected String consoleMessage(String[] commands, String[] commandLineArguments) {
         String result = "";
-        result += "We ran a session on your interactive console" + getArguments(commandLineArguments)
-                + ", running the commands \n\n" + joinOnePerLine(commands) + "\n\n but got unexpected output:\n";
+        result +=
+                "We ran a session on your interactive console" + getArguments(commandLineArguments)
+                        + ", running the commands \n\n" + joinOnePerLine(commands)
+                        + "\n\n but got unexpected output:\n";
         return result;
     }
 
@@ -139,15 +198,18 @@ public abstract class InteractiveConsoleTest {
      *            The arguments for the {@code main}-method
      */
     protected void errorTest(String[] commands, String... args0) {
+        initSystemExitStatusCheck();
         String expectedOutputStart = "Error,";
         TestObject.resetClass();
         TestObject.setNextMethodCallInput(commands);
         TestObject.runStaticVoid("main", (Object) args0);
         String[] result = TestObject.getLastMethodsOutput();
         if (result.length == 0) {
-            fail(consoleMessage(commands, args0) + "\n Your code never called Terminal.printLine!");
+            fail(consoleMessage(commands, args0)
+                    + "\n Expected an error message, but your code never called Terminal.printLine!");
         }
         assertThat(consoleMessage(commands, args0), result[0], startsWith(expectedOutputStart));
+        checkSystemExitStatus(commands, args0);
     }
 
     /**
@@ -193,6 +255,26 @@ public abstract class InteractiveConsoleTest {
             result.add(m);
         }
         return result;
+    }
+
+    /**
+     * Initiates the new way of system exit status checking. Has to be called before the first call to a
+     * {@link TestObject} run method.
+     * 
+     * @throws IllegalStateException
+     *             If this method has already been called without a subsequent call to
+     *             {@link #checkSystemExitStatus(String[])}.
+     */
+    protected final void initSystemExitStatusCheck() {
+        if (newSystemExitStatusCeckInited) {
+            throw new IllegalStateException("The new way of system exit status checking may only be inited once. Call "
+                    + "checkSystemExitStatus before initing again!");
+        }
+        if (allowedExitStatus != null || expectedExitStatus != null) {
+            oldDefault = TestObject.getAllowedSystemExitStatus();
+            TestObject.allowSystemExit(SystemExitStatus.ALL);
+        }
+        newSystemExitStatusCeckInited = true;
     }
 
     /**
@@ -280,6 +362,7 @@ public abstract class InteractiveConsoleTest {
      *            The arguments for the {@code main}-method
      */
     protected void multiLineTest(String[] commands, List<Matcher<String>> expectedResults, String... args0) {
+        initSystemExitStatusCheck();
         TestObject.resetClass();
         TestObject.setNextMethodCallInput(commands);
         TestObject.runStaticVoid("main", (Object) args0);
@@ -298,10 +381,12 @@ public abstract class InteractiveConsoleTest {
         Iterator<Matcher<String>> iterator = expectedResults.iterator();
         for (int i = 0; i < expectedResults.size(); i++) {
             lineErrorMessage = "First error at line " + (i + 1) + ":";
-            message = consoleMessage(commands, args0) + expectedAndActual(expectedResults, result) + "\n"
-                    + lineErrorMessage;
+            message =
+                    consoleMessage(commands, args0) + expectedAndActual(expectedResults, result) + "\n"
+                            + lineErrorMessage;
             assertThat(message, result[i], iterator.next());
         }
+        checkSystemExitStatus(commands, args0);
     }
 
     /**
@@ -347,6 +432,7 @@ public abstract class InteractiveConsoleTest {
      *            The arguments for the {@code main}-method
      */
     protected void noOutputTest(String[] commands, String... args0) {
+        initSystemExitStatusCheck();
         TestObject.resetClass();
         TestObject.setNextMethodCallInput(commands);
         TestObject.runStaticVoid("main", (Object) args0);
@@ -354,8 +440,10 @@ public abstract class InteractiveConsoleTest {
         String[] result = TestObject.getLastMethodsOutput();
         if (result.length != 0) {
             fail(consoleMessage(commands, args0)
-                    + "\n Your code called Terminal.printLine, while it was expected not to output anything!");
+                    + "\n Your code called Terminal.printLine, while it was expected not to output anything! The output was:\n"
+                    + joinOnePerLine(result));
         }
+        checkSystemExitStatus(commands, args0);
     }
 
     /**
@@ -403,6 +491,7 @@ public abstract class InteractiveConsoleTest {
      *            The arguments for the {@code main}-method
      */
     protected void oneLineTest(String[] commands, Matcher<String> expectedOutputMatcher, String... args0) {
+        initSystemExitStatusCheck();
         TestObject.resetClass();
         TestObject.setNextMethodCallInput(commands);
         TestObject.runStaticVoid("main", (Object) args0);
@@ -413,6 +502,7 @@ public abstract class InteractiveConsoleTest {
             fail(consoleMessage(commands, args0) + "\n Your code called Terminal.printLine more than once!");
         }
         assertThat(consoleMessage(commands, args0), result[0], expectedOutputMatcher);
+        checkSystemExitStatus(commands, args0);
     }
 
     /**
@@ -431,13 +521,48 @@ public abstract class InteractiveConsoleTest {
         oneLineTest(commands, is(expectedOutput), args0);
     }
 
-    protected static String joinOnePerLine(String[] strings) {
-        String result = "";
-        for (String string : strings) {
-            result += (result != "") ?  System.lineSeparator() : "";
-            result += string;
-        }
-        return result;
+    /**
+     * If the tested class is allowed but not required to call {@code System.exit} with a certain status, set it through
+     * this method. The default status is {@code null}, which disables the new system exit status checking in favour of
+     * the deprecated way through {@link #defaultSystemExitStatus()}. The setting stays until the next call to this
+     * method.
+     * <p>
+     * NOTE: This setting only takes effect if {@link #setExpectedSystemStatus(SystemExitStatus)} was called with
+     * {@code null}!
+     * 
+     * @param status
+     *            The {@code x} the tested class may {@code System.exit} with. {@code null} to disable the new way of
+     *            system exit status checking.
+     */
+    protected final void setAllowedSystemExitStatus(SystemExitStatus status) {
+        this.allowedExitStatus = status;
+    }
+
+    /**
+     * If you expect a certain system exit status (which means the tested class has to call {@code System.exit}, instead
+     * of just being allowed to), set is through this method. The default status is {@code null}, which means no
+     * restriction on the method's system exit status. The setting stays until the next call to this method.
+     * <p>
+     * NOTE: This setting overrides {@link #setAllowedSystemExitStatus(SystemExitStatus)}: The allowed system exit
+     * status is ignored as long as the expected status is not {@code null}.
+     * 
+     * @param status
+     *            The {@code x} the tested class has to call {@code System.exit} with. Set to {@code null} if the tested
+     *            class does not necessary have to call {@code System.exit}.
+     */
+    protected final void setExpectedSystemStatus(SystemExitStatus status) {
+        this.expectedExitStatus = status;
+    }
+
+    /**
+     * @param s
+     *            A String.
+     * @return An Array containing {@code s} as only element.
+     */
+    protected String[] wrapInArray(String s) {
+        return new String[] {
+            s
+        };
     }
 
     private List<Matcher<String>> joinAsIsMatchers(String[] strings) {
@@ -446,15 +571,5 @@ public abstract class InteractiveConsoleTest {
             result.add(is(s));
         }
         return result;
-    }
-
-    /**
-     * @param s A String.
-     * @return An Array containing {@code s} as only element.
-     */
-    protected String[] wrapInArray(String s) {
-        return new String[] {
-            s
-        };
     }
 }

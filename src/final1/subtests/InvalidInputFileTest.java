@@ -2,12 +2,10 @@ package final1.subtests;
 
 import static org.junit.Assert.fail;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
-import test.TestObject;
 
 /**
  * Starts the program with several valid input files without performing any actions. Checks if the program outputs error
@@ -20,9 +18,8 @@ import test.TestObject;
 public class InvalidInputFileTest extends RecommendationSubtest {
     private String[] input;
 
-    @Before
-    public void defaultSystemExitStatus() {
-        TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
+    public InvalidInputFileTest() {
+        setExpectedSystemStatus(SystemExitStatus.WITH_GREATER_THAN_0);
     }
 
     @Test
@@ -38,12 +35,12 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         input = new String[] {
             "CentOS5 id= 12) contains operatingsystems"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "CentOS5 (id= 12) likes operatingsystems"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -54,17 +51,17 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         input = new String[] {
             "CentOS5 (id= 12) contains operatingsystems"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingsystems part-of CentOS5 (id = 10)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingsystems contained-in CentOS5 (id = 10)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -77,13 +74,13 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "CentOS5 (id = 5) contained-in operatingsystems",
                 "CentOS5 (id = 6) contained-in Cent"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "CentOS5 (id = 5) contained-in operatingsystems",
                 "CentOS5Alt (id = 5) contained-in Cent"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -95,19 +92,19 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "CentOS5 (id = 5) contained-in operatingsystems",
                 "CentOS5 contained-in operatingsystems"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "CentOS5 (id = 5) contained-in operatingsystems",
                 "Centos5 contained-in operatingsystems"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "CentOS5 contained-in operatingsystems",
                 "CentOS5 (id = 5) contained-in operatingsystems"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -120,17 +117,17 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         input = new String[] {
             "operatingsystems contained-in operatingsystems"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "os (id=1) part-of os (id=1)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "os contained-in os"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "writer (id=1) part-of office (id=2)",
@@ -138,7 +135,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "officeSuite (id=3) part-of WorkTools (id=4)",
                 "worktools (id=4) part-of writer (id=1)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "writer contained-in office",
@@ -146,13 +143,13 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "officeSuite contained-in worktools",
                 "writer contains worktools"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "C (id=2) predecessor-of A (id=3)",
                 "A (id=3) predecessor-of C (id=4)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -181,7 +178,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 input = new String[] {
                     "A " + relation[i] + " A"
                 };
-                exitTest("quit", Input.getFile(input));
+                errorTest("quit", Input.getFile(input));
 
                 input = new String[] {
                         "A (id=1) " + relation[i] + " B (id=2)",
@@ -193,7 +190,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                         "G (id=7) " + relation[i] + " H (id=8)",
                         "H (id=8) " + relation[i] + " A (id=1)"
                 };
-                exitTest("quit", Input.getFile(input));
+                errorTest("quit", Input.getFile(input));
 
                 // different order
                 input = new String[] {
@@ -206,7 +203,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                         "F (id=6) " + relation[i] + " G (id=7)",
                         "G (id=7) " + relation[i] + " H (id=8)"
                 };
-                exitTest("quit", Input.getFile(input));
+                errorTest("quit", Input.getFile(input));
 
                 input = new String[] {
                         "A (id=1) " + relation[i] + " B (id=2)",
@@ -218,7 +215,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                         "G (id=7) " + relation[i] + " H (id=8)",
                         "H (id=8) " + relation[i % 2] + " A (id=1)"
                 };
-                exitTest("quit", Input.getFile(input));
+                errorTest("quit", Input.getFile(input));
 
                 // different order
                 input = new String[] {
@@ -231,7 +228,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                         "F (id=6) " + relation[i] + " G (id=7)",
                         "G (id=7) " + relation[i] + " H (id=8)"
                 };
-                exitTest("quit", Input.getFile(input));
+                errorTest("quit", Input.getFile(input));
             }
         }
     }
@@ -250,7 +247,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "CentOS7 (id=107) successor-of centos6(id=106)",
                 "CentOS5 (id=105) predecessor-of centos6(id=106)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "",
@@ -261,7 +258,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "CentOS7 (id=107) successor-of centos6(id=106)",
                 "CentOS5 (id=105) predecessor-of centos6(id=106)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
                 "CentOS5 ( id= 105) contained-in operatingSystem",
@@ -272,16 +269,16 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "CentOS5 (id=105) predecessor-of centos6(id=106)",
                 ""
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             ""
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         // totally empty input file is not valid: "Die Datenbestand-Datei besteht aus einer oder mehreren Zeilen."
         input = new String[] {};
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -292,17 +289,17 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         input = new String[] {
             "operatingSystem Contains centos7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             " centos6 ( id = 106 ) predecessor-Of centos7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingSystem contains centos7 ( iD = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -313,27 +310,27 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         input = new String[] {
             "operatingSystem con tains centos7 (id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingSystem contains centos7 (id=107) part-of centos8 (id=108)"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingSystem contains"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "contains centos7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingSystem test"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
@@ -344,37 +341,37 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         input = new String[] {
             "operatingSystem contains centos7 (i d = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operäitingSystem contains centos7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operaitingSystem contains centös7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingSystem contains cento-s7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operating-System contains centos7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operating System contains centos7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
 
         input = new String[] {
             "operatingSystem contains cent os7 ( id = 107 )"
         };
-        exitTest("quit", Input.getFile(input));
+        errorTest("quit", Input.getFile(input));
     }
 
 }

@@ -10,14 +10,15 @@ import final1.subtests.ValidNodesCommandTest;
 
 /**
  * Test suite for the programming lecture's first final test.
+ * 
  * @author Joshua Gleitze
  * @version 1.0
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    ValidInputFileTest.class,
-    InvalidInputFileTest.class,
-    ValidNodesCommandTest.class
+        ValidInputFileTest.class,
+        InvalidInputFileTest.class,
+        ValidNodesCommandTest.class
 })
 public class RecommendationTest {
 }
