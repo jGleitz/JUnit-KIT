@@ -23,7 +23,7 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
   }
 
   /**
-   * Test weather the program detects very simple invalid recommend terms (like an empty recommend
+   * Asserts that the program detects very simple invalid recommend terms (like an empty recommend
    * term)
    */
   @Test
@@ -50,7 +50,7 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
   }
 
   /**
-   * Tests weather the program detects terms with invalid brackets
+   * Asserts that the program detects terms with invalid brackets
    */
   @Test
   public void illegalBracketsTest() {
@@ -92,7 +92,7 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
   }
 
   /**
-   * Test weather the program detects invalid arguments for UNION(...) and INTERSECTION(...)
+   * Asserts that the program detects invalid arguments for UNION(...) and INTERSECTION(...)
    */
   @Test
   public void illegalComplexTermArguments() {
@@ -124,7 +124,8 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
   }
 
   /**
-   * Tests semantic errors like not existing search strategies or product ids
+   * Asserts that the program detects semantic errors like not existing search strategies or product
+   * ids.
    */
   @Test
   public void semanticErrors() {
@@ -145,7 +146,7 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
   }
 
   /**
-   * Tets invalid product ids
+   * Asserts that the program detects invalid product ids.
    */
   @Test
   public void invalidProductIds() {
