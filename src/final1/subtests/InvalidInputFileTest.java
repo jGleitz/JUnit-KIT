@@ -15,6 +15,7 @@ import test.TestObject;
  * 
  * @author Joshua Gleitze
  * @author Martin Loeper
+ * @author Roman Langrehr
  * @version 1.1
  */
 public class InvalidInputFileTest extends RecommendationSubtest {
