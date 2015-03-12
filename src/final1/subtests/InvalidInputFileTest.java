@@ -10,8 +10,8 @@ import test.SystemExitStatus;
 import test.TestObject;
 
 /**
- * Starts the program with several valid input files without performing any actions. Checks if the program outputs error
- * messages.
+ * Starts the program with several invalid input files without performing any actions. Checks if the
+ * program outputs error messages.
  * 
  * @author Joshua Gleitze
  * @author Martin Loeper
@@ -47,8 +47,30 @@ public class InvalidInputFileTest extends RecommendationSubtest {
     }
 
     /**
-     * Asserts that the tested class prints error messages for relations that get passed the wrong shop element type.
-     */
+   * Tests invalid product ids.
+   */
+  @Test
+  public void invalidProductIds() {
+    input = new String[]{
+      "CentOS5 (id=1a2) contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5 (id=efj) contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+  }
+
+  /**
+   * Asserts that the tested class prints error messages for relations that get passed the wrong
+   * shop element type.
+   */
     @Test
     public void worngRelationArgumentTest() {
         input = new String[] {
@@ -111,10 +133,10 @@ public class InvalidInputFileTest extends RecommendationSubtest {
     }
 
     /**
-     * Asserts that the tested class detetects and prints an error message for input files that form circles in the
-     * constructed graph. This method tests with short input files but covers different syntactical constructs,
-     * including lines relating shop elements with themselves.
-     */
+   * Asserts that the tested class detects and prints an error message for input files that form
+   * circles in the constructed graph. This method tests with short input files but covers different
+   * syntactical constructs, including lines relating shop elements with themselves.
+   */
     @Test
     public void basicCircleTest() {
         input = new String[] {
