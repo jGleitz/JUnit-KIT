@@ -8,7 +8,7 @@ package test.framework;
  */
 public class ExitException extends SecurityException {
     private static final long serialVersionUID = -5649621212556394572L;
-    public final int status;
+    private final int status;
 
     /**
      * Constructs a {@code ExitException}
@@ -19,5 +19,12 @@ public class ExitException extends SecurityException {
     public ExitException(int status) {
         super("The method called System.exit(" + status + ")");
         this.status = status;
+    }
+
+    /**
+     * @return The status System.exit was called with.
+     */
+    public int getStatus() {
+        return this.status;
     }
 }

@@ -17,6 +17,20 @@ import test.TestObject;
  */
 public class CommandLineArgumentsTest extends BookDatabaseSubTest {
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see sheet6.c_bookDatabase.subtests.BookDatabaseSubTest#consoleMessage(java.lang.String[], java.lang.String[])
+     */
+    @Override
+    protected String consoleMessage(String[] commands, String[] commandLineArguments) {
+        String result = "";
+        result += "We called your interactive console" + getArguments(commandLineArguments)
+
+        + "\n\n but got unexpected output:\n";
+        return result;
+    }
+
     /**
      * Tests the program's behaviour for a wrong tolerance command line argument. Asserts that the program prints an
      * error message for:
@@ -51,7 +65,7 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
     @Test
     public void testBadFilePath() {
         TestObject.allowSystemExit(SystemExitStatus.ALL);
-        
+
         // no path
         errorTest("quit", "0.3", "");
         // wrong path
@@ -68,7 +82,7 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
     @Test
     public void testWrongCommandLineArgumentNumber() {
         TestObject.allowSystemExit(SystemExitStatus.ALL);
-        
+
         // no argument
         errorTest("quit");
         // one empty argument

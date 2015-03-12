@@ -127,9 +127,16 @@ import test.framework.TestClassLoader;
  * @version 2.2
  */
 public class TestObject {
-    private static boolean allowSystemExit0 = false;
-    private static boolean allowSystemExitGreater0 = false;
+    private static SystemExitStatus allowedSystemExitStatus;
     private static final String CLASS_NAME = System.getProperty("className");
+
+    /**
+     * @return The allowed system exit status set through {@link #allowSystemExit(SystemExitStatus)}
+     */
+    public static SystemExitStatus getAllowedSystemExitStatus() {
+        return allowedSystemExitStatus;
+    }
+
     private static Class<?> clazz;
     private static SystemExitStatus lastSystemExitStatus = SystemExitStatus.NONE;
     private static String[] nextCallInput;
@@ -191,26 +198,10 @@ public class TestObject {
      *            The status you want to allow calling {@link System#exit} with.
      */
     public static void allowSystemExit(SystemExitStatus status) {
-        switch (status) {
-        case ALL:
-            allowSystemExit0 = true;
-            allowSystemExitGreater0 = true;
-            break;
-        case WITH_0:
-            allowSystemExit0 = true;
-            allowSystemExitGreater0 = false;
-            break;
-        case WITH_GREATER_THAN_0:
-            allowSystemExit0 = false;
-            allowSystemExitGreater0 = true;
-            break;
-        case NONE:
-            allowSystemExit0 = false;
-            allowSystemExitGreater0 = false;
-            break;
-        default:
-            break;
+        if (status == null) {
+            throw new NullPointerException();
         }
+        allowedSystemExitStatus = status;
     }
 
     /**
@@ -682,10 +673,31 @@ public class TestObject {
             if (e.getCause() instanceof ExitException) {
                 ExitException exitException = (ExitException) e.getCause();
                 exitException.printStackTrace(new PrintWriter(stackTraceStringWriter));
-                if (!((allowSystemExit0 && exitException.status == 0) || (allowSystemExitGreater0 && exitException.status > 0))) {
+                boolean failBecauseOfWrongStatus = false;
+                switch (allowedSystemExitStatus) {
+                case ALL:
+                    failBecauseOfWrongStatus = false;
+                    break;
+                case NONE:
+                    failBecauseOfWrongStatus = true;
+                    break;
+                case WITH_0:
+                    if (exitException.getStatus() != 0) {
+                        failBecauseOfWrongStatus = true;
+                    }
+                    break;
+                case WITH_GREATER_THAN_0:
+                    if (!(exitException.getStatus() > 0)) {
+                        failBecauseOfWrongStatus = true;
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("The allowed system exit status may not be null!");
+                }
+                if (failBecauseOfWrongStatus) {
                     String message =
                             "While calling " + renderMethodCall(methodName, arguments, callConstructor)
-                                    + ", your code called System.exit(" + exitException.status
+                                    + ", your code called System.exit(" + exitException.getStatus()
                                     + "). This was not expected and is an error: \n\n"
                                     + stackTraceStringWriter.toString();
                     fail(message);

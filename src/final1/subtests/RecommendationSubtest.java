@@ -2,6 +2,7 @@ package final1.subtests;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import test.Input;
 import test.InteractiveConsoleTest;
 import test.SystemExitStatus;
 import test.TestObject;
@@ -104,12 +105,16 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     /**
      * Runs {@link #errorTest(String, String...)} with the provided arguments and asserts that {@code System.exit(x)}
      * was called with {@code x > 0} afterwards.
+     * <p>
+     * This method is deprecated as its function is now provided by
+     * {@link InteractiveConsoleTest#setExpectedSystemStatus}
      * 
      * @param command
      *            The command to run on the console.
      * @param args0
      *            The arguments for the {@code main}-method
      */
+    @Deprecated
     protected void exitTest(String command, String... args0) {
         exitTest(wrapInArray(command), args0);
     }
@@ -117,16 +122,34 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     /**
      * Runs {@link #errorTest(String[], String...)} with the provided arguments and asserts that {@code System.exit(x)}
      * was called with {@code x > 0} afterwards.
+     * <p>
+     * This method is deprecated as its function is now provided by
+     * {@link InteractiveConsoleTest#setExpectedSystemStatus}
      * 
      * @param commands
      *            The commands to run on the console
      * @param args0
      *            The arguments for the {@code main}-method
      */
+    @Deprecated
     protected void exitTest(String[] commands, String... args0) {
         TestObject.allowSystemExit(SystemExitStatus.ALL);
         errorTest(commands, args0);
         assertThat(consoleMessage(commands, args0) + "\nWrong system exit status!",
             TestObject.getLastMethodsSystemExitStatus(), is(SystemExitStatus.WITH_GREATER_THAN_0));
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see test.InteractiveConsoleTest#consoleMessage(java.lang.String[], java.lang.String[])
+     */
+    @Override
+    protected String consoleMessage(String[] commands, String[] commandLineArguments) {
+        String result = "";
+        result +=
+                "We ran a session on your interactive console" + Input.fileMessage(commandLineArguments[0])
+                        + " running the commands \n\n" + joinOnePerLine(commands) + "\n\n but got unexpected output:\n";
+        return result;
     }
 }

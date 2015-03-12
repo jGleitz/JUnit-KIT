@@ -83,16 +83,16 @@ public class Input {
 	/**
 	 * A message giving information about the input file used in a test.
 	 * 
-	 * @param commandLineArguments
+	 * @param filePath
 	 *            The command line arguments the main method was called with during the test. The file message will read
 	 *            the file name in the second argument and output the contents of the file its pointing to.
 	 * @return A text representing the input file
 	 */
-	public static String fileMessage(String[] commandLineArguments) {
+	public static String fileMessage(String filePath) {
 		String result = "";
-		if (commandLineArguments.length > 1 && filesMap.containsKey(commandLineArguments[1])) {
+		if (filesMap.containsKey(filePath)) {
 			result = "\n with the following input file:\n\n"
-					+ arrayToLines(filesMap.get(commandLineArguments[1])) + "\n\n";
+					+ arrayToLines(filesMap.get(filePath)) + "\n\n";
 		}
 		return result;
 	}
