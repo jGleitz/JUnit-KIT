@@ -44,6 +44,41 @@ public class InvalidInputFileTest extends RecommendationSubtest {
             "CentOS5 (id= 12) likes operatingsystems"
         };
         exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5 id=12 contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5 (id= 12) contains operatingsystems test"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5(id=12) contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "(id= 12) contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      " (id= 12) contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5 (id=12)contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5 (id=12) containsoperatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
     }
 
     /**
@@ -53,6 +88,11 @@ public class InvalidInputFileTest extends RecommendationSubtest {
   public void invalidProductIds() {
     input = new String[]{
       "CentOS5 (id=1a2) contains operatingsystems"
+    };
+    exitTest("quit", Input.getFile(input));
+
+    input = new String[]{
+      "CentOS5 (id=1 2) contains operatingsystems"
     };
     exitTest("quit", Input.getFile(input));
 
