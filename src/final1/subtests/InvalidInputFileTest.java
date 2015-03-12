@@ -52,32 +52,12 @@ public class InvalidInputFileTest extends RecommendationSubtest {
     exitTest("quit", Input.getFile(input));
 
     input = new String[]{
-      "CentOS5 (id= 12) contains operatingsystems test"
-    };
-    exitTest("quit", Input.getFile(input));
-
-    input = new String[]{
       "CentOS5(id=12) contains operatingsystems"
     };
     exitTest("quit", Input.getFile(input));
 
     input = new String[]{
-      "(id= 12) contains operatingsystems"
-    };
-    exitTest("quit", Input.getFile(input));
-
-    input = new String[]{
-      " (id= 12) contains operatingsystems"
-    };
-    exitTest("quit", Input.getFile(input));
-
-    input = new String[]{
       "CentOS5 (id=12)contains operatingsystems"
-    };
-    exitTest("quit", Input.getFile(input));
-
-    input = new String[]{
-      "CentOS5 (id=12) containsoperatingsystems"
     };
     exitTest("quit", Input.getFile(input));
     }
