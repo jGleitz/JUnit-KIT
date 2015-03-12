@@ -11,7 +11,9 @@ import final1.subtests.ValidNodesCommandTest;
 
 /**
  * Test suite for the programming lecture's first final test.
+ * 
  * @author Joshua Gleitze
+ * @author Roman Langrehr
  * @version 1.0
  */
 @RunWith(Suite.class)
