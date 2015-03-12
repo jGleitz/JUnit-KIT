@@ -3,7 +3,6 @@ package final1.subtests;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.fail;
-import static test.KitMatchers.containsExactlyDividedBy;
 
 import java.util.List;
 
@@ -21,23 +20,33 @@ import test.Input;
 public class ValidNodesCommandTest extends RecommendationSubtest {
 
     /**
-     * Asserts that the {@code nodes} command performs as expected for the example given on the task sheet.
+     * Asserts correct results for the example given on the task sheet.
      */
     @Test
     public void taskSheetExampleTest() {
         testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
     }
-    
+
+    /**
+     * Asserts correct results if the input file contains spaces.
+     */
     @Test
     public void spacesTest() {
         testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES);
     }
-    
+
+    /**
+     * Asserts correct results if the input file contains semantically dublicates.
+     */
     @Test
     public void duplicatesTest() {
         testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
     }
-    
+
+    /**
+     * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
+     * errors.
+     */
     @Test
     public void oneLineTest() {
         String[] queries = new String[] {
@@ -51,20 +60,11 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
                 "recommend S3 1",
                 "recommend S3 2"
         };
-        List<Matcher<String>> matchers = getMatchers(
-                is("a:2,b:1"),
-                is(""),
-                startsWith("Error,"),
-                startsWith("Error,"),
-                is(""),
-                is("b:1"),
-                startsWith("Error,"),
-                is("a:2"),
-                is("")
-        );
+        List<Matcher<String>> matchers = getMatchers(is("a:2,b:1"), is(""), startsWith("Error,"), startsWith("Error,"),
+            is(""), is("b:1"), startsWith("Error,"), is("a:2"), is(""));
         // edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
         multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE1));
-        
+
         queries = new String[] {
                 "nodes",
                 "recommend S1 1",
@@ -72,16 +72,10 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
                 "recommend S2 2",
                 "recommend S3 2",
         };
-        matchers = getMatchers(
-                is("a,b:2"),
-                startsWith("Error,"),
-                is(""),
-                is(""),
-                is("")
-        );
+        matchers = getMatchers(is("a,b:2"), startsWith("Error,"), is(""), is(""), is(""));
         multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE2));
     }
-    
+
     private void testAgainstTaskSheet(String[] input) {
         // the following queries/matchers are taken directly from the task sheet
         String[] queries = new String[] {
@@ -93,16 +87,12 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
                 "recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
         };
         List<Matcher<String>> matchers = getMatchers(
-                is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201"),
-                is("centos6:106,centos7:107"),
-                is("centos5:105,centos6:106"),
-                is("centos5:105,centos6:106,centos7:107"),
-                is("calc:202,impress:203,libreoffice:200"),
-                is("calc:202,centos6:106,impress:203,libreoffice:200")
-        );
+            is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201"),
+            is("centos6:106,centos7:107"), is("centos5:105,centos6:106"), is("centos5:105,centos6:106,centos7:107"),
+            is("calc:202,impress:203,libreoffice:200"), is("calc:202,centos6:106,impress:203,libreoffice:200"));
         multiLineTest(addQuit(queries), matchers, Input.getFile(input));
     }
-    
+
     @Test
     public void incomplete() {
         fail("This test is still in the development state and therefore incomplete!");
