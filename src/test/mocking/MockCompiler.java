@@ -32,7 +32,7 @@ public abstract class MockCompiler {
     private static Map<String, MockerJavaClassFile> cache = getCache();
     private static final JavaCompiler compiler = getJavaCompiler();
     private static final MockCompilerFileManager fileManager = new MockCompilerFileManager(
-            compiler.getStandardFileManager(null, null, null));
+        compiler.getStandardFileManager(null, null, null));
     private static String OS = null;
 
     /**
@@ -197,7 +197,7 @@ public abstract class MockCompiler {
             cacheFile.createNewFile();
         } catch (final IOException e1) {
             throw new FrameworkException("unable to create file " + cacheFile.getAbsolutePath()
-                    + " to write compiler cache in.");
+                + " to write compiler cache in.");
         }
         FileOutputStream fs = null;
         ObjectOutputStream os = null;

@@ -14,7 +14,7 @@ import test.TestObject;
  * unknown commands. Meanwhile, it should be able to handle the {@code search} and {@code quit} command. Note that the
  * correct execution and parsing of a {@code search} is asserted in {@link SearchTermParsingTest} and
  * {@link CompleteSearchScenarioTest}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 31.01.2015
@@ -35,7 +35,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
         command = "quit";
         noOutputTest(command, "0.5", Input.getFile(simpleValidFile));
     }
-    
+
     /**
      * Tests the {@code search} command. Asserts that:
      * <ul>
@@ -63,7 +63,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
      */
     @Test
     public void testIllegalCommand() {
-    TestObject.allowSystemExit(SystemExitStatus.ALL);
+        TestObject.allowSystemExit(SystemExitStatus.ALL);
 
         // invalid command
         commands = new String[] {
@@ -78,21 +78,21 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
                 "quit"
         };
         errorTest(commands, "0.5", Input.getFile(simpleValidFile));
-        
+
         // no argument for search
         commands = new String[] {
                 "search",
                 "quit"
         };
         errorTest(commands, "0.5", Input.getFile(simpleValidFile));
-        
+
         // starts right, ends wrong
         commands = new String[] {
                 "searchi creator=Mustermann",
                 "quit"
         };
         errorTest(commands, "0.5", Input.getFile(simpleValidFile));
-        
+
         // starts right, ends wrong
         commands = new String[] {
                 "quiti",

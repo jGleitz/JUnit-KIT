@@ -14,14 +14,13 @@ import test.SystemExitStatus;
 
 /**
  * Performs valid calls to the {@code nodes} command and checks the results.
- * 
+ *
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @version 1.1
  */
 public class ValidNodesCommandTest extends RecommendationSubtest {
-    
-    
+
     public ValidNodesCommandTest() {
         setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
     }

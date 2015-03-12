@@ -25,7 +25,7 @@ import test.TestObject;
  * <ul>
  * <li>The interactive console</li>
  * </ul>
- * 
+ *
  * @author Joshua Gleitzeua Gleitze
  */
 
@@ -45,7 +45,7 @@ public class LinkedNaturalNumberTupleTest {
         String result = "{";
         for (int i = 0; i < numbers.length; i++) {
             result += numbers[i];
-            result += (i < numbers.length - 1) ? ", " : "}";
+            result += (i < (numbers.length - 1)) ? ", " : "}";
         }
         return result;
     }
@@ -58,9 +58,44 @@ public class LinkedNaturalNumberTupleTest {
         return (result + "\n").replaceAll("(.{1," + OUTPUT_LINE_WIDTH + "})\\s+", "$1\n");
     }
 
-    private final int[] testnumbers = { 0, 2, 2, 5, 1, -1, 2 };
-    private final int[] testnumbersShuffle = { 0, 2, 5, 2, 1, -1, 2 };
-    private final int[] testnumbers2 = { 0, 490, -50, -50, 5, 12, -1, 22, 4, 490, 490, 480, 11, -12, 0, 0, 0, 3 };
+    private final int[] testnumbers = {
+            0,
+            2,
+            2,
+            5,
+            1,
+            -1,
+            2
+    };
+    private final int[] testnumbersShuffle = {
+            0,
+            2,
+            5,
+            2,
+            1,
+            -1,
+            2
+    };
+    private final int[] testnumbers2 = {
+            0,
+            490,
+            -50,
+            -50,
+            5,
+            12,
+            -1,
+            22,
+            4,
+            490,
+            490,
+            480,
+            11,
+            -12,
+            0,
+            0,
+            0,
+            3
+    };
 
     /**
      * Tests the {@code countNumbers(x)} method. Asserts that:
@@ -127,41 +162,43 @@ public class LinkedNaturalNumberTupleTest {
     public void testEquals() {
         boolean result;
         boolean result2;
-        Class<?>[] objectClassArray = new Class<?>[] { Object.class };
+        Class<?>[] objectClassArray = new Class<?>[] {
+            Object.class
+        };
         TestObject testObject;
 
         // check testnumbers with testnumbers 2
         testObject = new TestObject(testnumbers);
         result = testObject.run(boolean.class, "equals", objectClassArray, new TestObject(testnumbers));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")",
-                        testnumbers), true, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")", testnumbers),
+            true, result);
         // check testnumbers with testnumbers
         testObject = new TestObject(testnumbers);
         result = testObject.run(boolean.class, "equals", objectClassArray, new TestObject(testnumbers2));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
-                        testnumbers), false, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
+                testnumbers), false, result);
 
         // check with another order
         testObject = new TestObject(testnumbers);
         result = testObject.run(boolean.class, "equals", objectClassArray, new TestObject(testnumbersShuffle));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbersShuffle) + ")",
-                        testnumbers), false, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbersShuffle) + ")",
+                testnumbers), false, result);
 
         // check testnumbers2 with testnumbers
         testObject = new TestObject(testnumbers2);
         result = testObject.run(boolean.class, "equals", objectClassArray, new TestObject(testnumbers));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")",
-                        testnumbers2), false, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")",
+                testnumbers2), false, result);
         // check testnumbers2 with testnumbers2
         testObject = new TestObject(testnumbers2);
         result = testObject.run(boolean.class, "equals", objectClassArray, new TestObject(testnumbers2));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
-                        testnumbers2), true, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
+                testnumbers2), true, result);
 
         // check testnumbers2 with new Object()
         testObject = new TestObject(testnumbers2);
@@ -292,7 +329,9 @@ public class LinkedNaturalNumberTupleTest {
         assertEquals(standardMessage("insert(8).indexOf(8)", testnumbers2), 10, result);
 
         // check if insertions works on a empty tuple, too
-        testObject = new TestObject(new Class<?>[]{int[].class}, (Object) null);
+        testObject = new TestObject(new Class<?>[] {
+            int[].class
+        }, (Object) null);
         testObject.run(int.class, "insert", 8);
         result = testObject.run(int.class, "indexOf", 8);
         assertEquals(standardMessage("insert(8).indexOf(8)", null), 0, result);
@@ -324,7 +363,9 @@ public class LinkedNaturalNumberTupleTest {
         result = testObject.run(int.class, "max");
         assertEquals(standardMessage("max()", empty), -1, result);
 
-        testObject = new TestObject(new Class<?>[]{int[].class}, (Object) null);
+        testObject = new TestObject(new Class<?>[] {
+            int[].class
+        }, (Object) null);
         result = testObject.run(int.class, "max");
         assertEquals(standardMessage("max()", null), -1, result);
     }
@@ -354,7 +395,9 @@ public class LinkedNaturalNumberTupleTest {
         testObject = new TestObject(empty);
         result = testObject.run(int.class, "min");
         assertEquals(standardMessage("min()", empty), -1, result);
-        testObject = new TestObject(new Class<?>[]{int[].class}, (Object) null);
+        testObject = new TestObject(new Class<?>[] {
+            int[].class
+        }, (Object) null);
         result = testObject.run(int.class, "min");
         assertEquals(standardMessage("min()", null), -1, result);
     }
@@ -373,7 +416,7 @@ public class LinkedNaturalNumberTupleTest {
         // check if there is a constructor that works for an array;
         testObject = new TestObject(testnumbers);
         assertNotNull("The instantiation of your class does not work with new int[]" + NumbersToString(testnumbers)
-                + "!", testObject);
+            + "!", testObject);
 
         // check if there is a constructor that works for null.
         testObject = new TestObject(testnumbers);
@@ -465,7 +508,9 @@ public class LinkedNaturalNumberTupleTest {
         result = testObject.run(String.class, "toString");
         assertEquals(standardMessage("toString()", testnumbers2), "490,5,12,22,4,490,490,480,11,3", result);
 
-        testObject = new TestObject(new Class<?>[]{int[].class}, (Object) null);
+        testObject = new TestObject(new Class<?>[] {
+            int[].class
+        }, (Object) null);
         result = testObject.run(String.class, "toString");
         assertEquals(standardMessage("toString()", null), "", result);
     }
@@ -580,7 +625,7 @@ public class LinkedNaturalNumberTupleTest {
 
         testObject = new TestObject(testnumbers2);
         result = testObject.run(boolean.class, "swap", 1, 1);
-        assertThat(standardMessage("swap(1, 1)", testnumbers), (boolean) result, is(true));
+        assertThat(standardMessage("swap(1, 1)", testnumbers), result, is(true));
         intResult = testObject.run(int.class, "indexOf", 12);
         assertEquals(standardMessage("swap(1, 1).indexOf(12)", testnumbers2), 2, intResult);
         intResult = testObject.run(int.class, "indexOf", 22);
@@ -590,7 +635,10 @@ public class LinkedNaturalNumberTupleTest {
 
         // swapping existent numbers twice
         testObject = new TestObject(testnumbers);
-        testObject.run(boolean.class, "swap", new Object[] { 0, 3 });
+        testObject.run(boolean.class, "swap", new Object[] {
+                0,
+                3
+        });
         result = testObject.run(boolean.class, "swap", 0, 3);
         assertEquals(standardMessage("2x swap(0, 3)", testnumbers), true, result);
         intResult = testObject.run(int.class, "indexOf", 2);

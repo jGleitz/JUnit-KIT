@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package sheet4.c_waiting;
 
@@ -42,14 +42,14 @@ public class WaitingTest {
     private final String SJF = "waitingarea=sjf";
     private final String nl = System.getProperty("line.separator");
 
-    // @formatter:off 
-    private final String taskSheetExampleJobList = 
-            "Task1,simple,0,5" + nl + 
-            "Task2,simple,3,4" + nl + 
-            "Task3,simple,5,3" + nl + 
+    // @formatter:off
+    private final String taskSheetExampleJobList =
+            "Task1,simple,0,5" + nl +
+            "Task2,simple,3,4" + nl +
+            "Task3,simple,5,3" + nl +
             "Task4,simple,6,5";
-    
-    private final String sortingTestJobList = 
+
+    private final String sortingTestJobList =
             "Task1,complex,0,2" + nl +
             "Task2,simple,1,1" + nl +
             "Task3,simple,2,1" + nl +
@@ -79,8 +79,8 @@ public class WaitingTest {
         String testFileName = new BigInteger(130, random).toString(32) + ".txt";
         try {
             outputWriter = new BufferedWriter(new FileWriter(testFileName));
-            for (int i = 0; i < contentArray.length; i++) {
-                outputWriter.write(contentArray[i]);
+            for (String element : contentArray) {
+                outputWriter.write(element);
                 outputWriter.newLine();
             }
             outputWriter.flush();
@@ -142,7 +142,7 @@ public class WaitingTest {
         String result;
         String message;
         TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);
-        TestObject.runStaticVoid("main","I_do_no_exists.adsf");
+        TestObject.runStaticVoid("main", "I_do_no_exists.adsf");
         result = TestObject.getLastMethodOutput();
         message = "We called your program with a path leading nowhere as a first parameter. Therefore, your program should"
                 + " print an error message!";
@@ -312,14 +312,19 @@ public class WaitingTest {
         Object[] arguments;
         List<Matcher<String>> expectedResultList = new LinkedList<Matcher<String>>();
         for (String res : expectedResult.split("" + nl)) {
-        	expectedResultList.add(is(res));
+            expectedResultList.add(is(res));
         }
         String testFileName = writeFile(inputFile);
         TestObject.allowSystemExit(SystemExitStatus.WITH_0);
         if (mode == null) {
-            arguments = new String[] {testFileName};
+            arguments = new String[] {
+                testFileName
+            };
         } else {
-            arguments = new String[] {testFileName, mode};
+            arguments = new String[] {
+                    testFileName,
+                    mode
+            };
         }
         TestObject.runStaticVoid("main", arguments);
         new File(testFileName).delete();
@@ -327,8 +332,8 @@ public class WaitingTest {
         resultArray = actualResult.split(nl);
         String wholeFileMessage = wholeFileMessage(inputFile, actualResult, expectedResult, mode);
         assertThat(wholeFileMessage + nl
-                + " The number of lines of your program's output mismatched the expected ones.", resultArray.length,
-                is(expectedResultList.size()));
+            + " The number of lines of your program's output mismatched the expected ones.", resultArray.length,
+            is(expectedResultList.size()));
         Iterator<Matcher<String>> iterator = expectedResultList.iterator();
         for (int i = 0; i < resultArray.length; i++) {
             assertThat(wholeFileMessage + nl + "Line " + i + " was bad:", resultArray[i], iterator.next());

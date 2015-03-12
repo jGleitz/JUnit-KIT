@@ -7,7 +7,7 @@ import test.SystemExitStatus;
 /**
  * Used to catch when the code is trying to call {@link System#exit}. This would leave a test in a hanging state. A
  * {@link ExitException} is thrown if the code tries to call {@link System#exit}.
- * 
+ *
  * @author Joshua Gleitze
  *
  */
@@ -17,7 +17,7 @@ public class NoExitSecurityManager extends SecurityManager {
 
     /**
      * Constructs a {@code NoExitSecurityManager}
-     * 
+     *
      * @param targetClass
      *            The class that should be watched for calling {@code System.exit}
      */
@@ -33,7 +33,7 @@ public class NoExitSecurityManager extends SecurityManager {
         } else if (status == 0) {
             lastExit = SystemExitStatus.WITH_0;
         }
-        Class<?>[] classContext = this.getClassContext();
+        Class<?>[] classContext = getClassContext();
         for (Class<?> c : classContext) {
             if (c == targetClass) {
                 throw new ExitException(status);
@@ -66,6 +66,6 @@ public class NoExitSecurityManager extends SecurityManager {
      *         respectively.
      */
     public SystemExitStatus lastExitStatus() {
-        return this.lastExit;
+        return lastExit;
     }
 }

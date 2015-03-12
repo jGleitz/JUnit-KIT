@@ -10,7 +10,7 @@ import test.TestObject;
  * Asserts the program's checking of the command line arguments. The program should print error messages for bad formed
  * command line arguments. Meanwhile, correct ones should be read in without printing anything. Note that the program's
  * ability to actually parse the input file is asserted in {@link InputFileParsingTest}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 30.01.2015
@@ -19,7 +19,7 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see sheet6.c_bookDatabase.subtests.BookDatabaseSubTest#consoleMessage(java.lang.String[], java.lang.String[])
      */
     @Override
@@ -27,7 +27,7 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
         String result = "";
         result += "We called your interactive console" + getArguments(commandLineArguments)
 
-        + "\n\n but got unexpected output:\n";
+                + "\n\n but got unexpected output:\n";
         return result;
     }
 
@@ -38,7 +38,7 @@ public class CommandLineArgumentsTest extends BookDatabaseSubTest {
      * <li>a tolerance that can not be parsed as a Double
      * <li>a tolerance that can be parsed as a Double, but is not between 0 and 1
      * </ul>
-     * 
+     *
      */
     @Test
     public void testWrongTolerance() {

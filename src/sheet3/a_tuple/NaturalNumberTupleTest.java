@@ -1,6 +1,7 @@
 package sheet3.a_tuple;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class NaturalNumberTupleTest {
         String result = "{";
         for (int i = 0; i < numbers.length; i++) {
             result += numbers[i];
-            result += (i < numbers.length - 1) ? ", " : "}";
+            result += (i < (numbers.length - 1)) ? ", " : "}";
         }
         return result;
     }
@@ -22,9 +23,41 @@ public class NaturalNumberTupleTest {
         return functionName + " of a NaturalNumberTuple instantiated with " + NumbersToString(testnumbers);
     }
 
-    private final int[] testnumbers = {0, 2, 2, 5, 1, -1, 2};
-    private final int[] testnumbers2 = {0, 490, -50, -50, 5, 12, -1, 22, 4, 490, 490, 480, 11, -12, 0, 0, 0, 3};
-    private final int[] testnumbers3 = {1, 2, 3, 4};
+    private final int[] testnumbers = {
+            0,
+            2,
+            2,
+            5,
+            1,
+            -1,
+            2
+    };
+    private final int[] testnumbers2 = {
+            0,
+            490,
+            -50,
+            -50,
+            5,
+            12,
+            -1,
+            22,
+            4,
+            490,
+            490,
+            480,
+            11,
+            -12,
+            0,
+            0,
+            0,
+            3
+    };
+    private final int[] testnumbers3 = {
+            1,
+            2,
+            3,
+            4
+    };
 
     @Test
     public void testCountNumbers() {
@@ -48,22 +81,22 @@ public class NaturalNumberTupleTest {
         testObject = new TestObject(testnumbers);
         result = testObject.run(boolean.class, "equals", new TestObject(testnumbers));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")",
-                        testnumbers), true, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")", testnumbers),
+            true, result);
         result = testObject.run(boolean.class, "equals", new TestObject(testnumbers2));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
-                        testnumbers), false, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
+                testnumbers), false, result);
 
         testObject = new TestObject(testnumbers2);
         result = testObject.run(boolean.class, "equals", new TestObject(testnumbers));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")",
-                        testnumbers2), false, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers) + ")",
+                testnumbers2), false, result);
         result = testObject.run(boolean.class, "equals", new TestObject(testnumbers2));
         assertEquals(
-                standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
-                        testnumbers2), true, result);
+            standardMessage("equals(new NaturalNumberTuple(new int[]" + NumbersToString(testnumbers2) + ")",
+                testnumbers2), true, result);
     }
 
     @Test
@@ -232,7 +265,10 @@ public class NaturalNumberTupleTest {
 
         // swapping non existant numbers
         testObject = new TestObject(testnumbers);
-        testObject.run(TestObject.class, "swap", new Object[] {2000, -20});
+        testObject.run(TestObject.class, "swap", new Object[] {
+                2000,
+                -20
+        });
         result = testObject.run(int.class, "indexOf", 1);
         assertEquals(standardMessage("swap(2000, -20).indexOf(1)", testnumbers), 3, result);
         result = testObject.run(int.class, "indexOf", 2);
@@ -241,7 +277,10 @@ public class NaturalNumberTupleTest {
         assertEquals(standardMessage("swap(2000, -20).indexOf(5)", testnumbers), 2, result);
 
         testObject = new TestObject(testnumbers2);
-        testObject.run(TestObject.class, "swap", new Object[] {2000, -20});
+        testObject.run(TestObject.class, "swap", new Object[] {
+                2000,
+                -20
+        });
         result = testObject.run(int.class, "indexOf", 490);
         assertEquals(standardMessage("swap(2000, -20).indexOf(490)", testnumbers2), 0, result);
         result = testObject.run(int.class, "indexOf", 2);
@@ -251,7 +290,10 @@ public class NaturalNumberTupleTest {
 
         // swapping existant numbers
         testObject = new TestObject(testnumbers);
-        testObject.run(TestObject.class, "swap", new Object[] {2, 3});
+        testObject.run(TestObject.class, "swap", new Object[] {
+                2,
+                3
+        });
         result = testObject.run(int.class, "indexOf", 1);
         assertEquals(standardMessage("swap(2, 3).indexOf(1)", testnumbers), 2, result);
         result = testObject.run(int.class, "indexOf", 2);
@@ -260,7 +302,10 @@ public class NaturalNumberTupleTest {
         assertEquals(standardMessage("swap(2, 3).indexOf(5)", testnumbers), 3, result);
 
         testObject = new TestObject(testnumbers2);
-        testObject.run(TestObject.class, "swap", new Object[] {2, 3});
+        testObject.run(TestObject.class, "swap", new Object[] {
+                2,
+                3
+        });
         result = testObject.run(int.class, "indexOf", 12);
         assertEquals(standardMessage("swap(2, 3).indexOf(12)", testnumbers2), 3, result);
         result = testObject.run(int.class, "indexOf", 22);

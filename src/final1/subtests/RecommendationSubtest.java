@@ -1,7 +1,7 @@
 package final1.subtests;
 
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import test.Input;
 import test.InteractiveConsoleTest;
 import test.SystemExitStatus;
@@ -10,7 +10,7 @@ import test.TestObject;
 /**
  * Base class for implementing subtest for the programming lecture's first final task. Contains some convenience methods
  * and fields.
- * 
+ *
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @version 1.1
@@ -82,11 +82,11 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     };
 
     protected String[] ONE_LINE_INPUT_FILE1 = new String[] {
-        "B(id=1) successor-of A(id=2)"
+            "B(id=1) successor-of A(id=2)"
     };
 
     protected String[] ONE_LINE_INPUT_FILE2 = new String[] {
-        "A contains B(id=2)"
+            "A contains B(id=2)"
     };
 
     protected String[] PSEUDO_CIRCLE_INPUT_FILE1 = new String[] {
@@ -108,7 +108,7 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
      * <p>
      * This method is deprecated as its function is now provided by
      * {@link InteractiveConsoleTest#setExpectedSystemStatus}
-     * 
+     *
      * @param command
      *            The command to run on the console.
      * @param args0
@@ -125,7 +125,7 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
      * <p>
      * This method is deprecated as its function is now provided by
      * {@link InteractiveConsoleTest#setExpectedSystemStatus}
-     * 
+     *
      * @param commands
      *            The commands to run on the console
      * @param args0
@@ -141,15 +141,14 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see test.InteractiveConsoleTest#consoleMessage(java.lang.String[], java.lang.String[])
      */
     @Override
     protected String consoleMessage(String[] commands, String[] commandLineArguments) {
         String result = "";
-        result +=
-                "We ran a session on your interactive console" + Input.fileMessage(commandLineArguments[0])
-                        + " running the commands \n\n" + joinOnePerLine(commands) + "\n\n but got unexpected output:\n";
+        result += "We ran a session on your interactive console" + Input.fileMessage(commandLineArguments[0])
+                + " running the commands \n\n" + joinOnePerLine(commands) + "\n\n but got unexpected output:\n";
         return result;
     }
 }

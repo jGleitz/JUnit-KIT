@@ -10,7 +10,7 @@ import test.SystemExitStatus;
 /**
  * Starts the program with several valid input files without performing any actions. Checks if the tested class is able
  * to read in the files without output, exceptions or a call to {@code System.exit(x)} with {@code x>0}.
- * 
+ *
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @version 1.1
@@ -18,7 +18,7 @@ import test.SystemExitStatus;
 public class ValidInputFileTest extends RecommendationSubtest {
 
     private String[] input;
-    
+
     public ValidInputFileTest() {
         setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
     }

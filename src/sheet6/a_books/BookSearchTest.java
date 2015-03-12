@@ -12,9 +12,9 @@ import test.TestObject;
 /**
  * A test for the Interactive Console (Task A) <br>
  * This test is based on the test for Sheet 5 Task C. The test is still under development.
- * 
+ *
  * !!! The info command is not tested at all at the moment !!!
- * 
+ *
  * @author Roman Langrehr
  * @since 30.01.2015
  * @version 0.1
@@ -27,43 +27,43 @@ public class BookSearchTest extends InteractiveConsoleTest {
     private String[] file;
 
     protected static final String[] book1 = new String[] {
-            "Seite1",
-            "lorem ipsum dolor sit amet consetetur sadipscing",
-            "lorem ipsum dolor sit amet consetetur sadipscing",
-            "test1",
-            "Seite2",
-            "lorem test2 amet"
+        "Seite1",
+        "lorem ipsum dolor sit amet consetetur sadipscing",
+        "lorem ipsum dolor sit amet consetetur sadipscing",
+        "test1",
+        "Seite2",
+        "lorem test2 amet"
     };
     protected static final String[] book2 = new String[] {
         "Seite1"
     };
     protected static final String[] book4 = new String[] {
-            "Seite1",
-            "Seite2",
-            "lorem test2 amet"
+        "Seite1",
+        "Seite2",
+        "lorem test2 amet"
     };
     protected static final String[] book5 = new String[] {
-            "",
-            "Seite1",
-            ""
+        "",
+        "Seite1",
+        ""
     };
     protected static final String[] book61 = new String[] {
-            "Seite1",
-            "word1"
+        "Seite1",
+        "word1"
     };
     protected static final String[] book62 = new String[] {
-            "Seite1",
-            "word1",
-            "Seite2",
-            "word1"
+        "Seite1",
+        "word1",
+        "Seite2",
+        "word1"
     };
     protected static final String[] book7 = new String[] {
-            "Seite1",
-            "b c a",
-            "Seite2",
-            "b d",
-            "Seite3",
-            "aa ca a e"
+        "Seite1",
+        "b c a",
+        "Seite2",
+        "b d",
+        "Seite3",
+        "aa ca a e"
     };
 
     /**
@@ -144,7 +144,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
                 "quit"
         };
         expectedResults = new String[] {
-            "ipsum:1"
+                "ipsum:1"
         };
         multiLineTest(commands, expectedResults, Input.getFile(book1));
     }
@@ -159,7 +159,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
                 "quit"
         };
         expectedResults = new String[] {
-            "lorem:1,2"
+                "lorem:1,2"
         };
         multiLineTest(commands, expectedResults, Input.getFile(book1));
     }
@@ -174,7 +174,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
                 "quit"
         };
         expectedResults = new String[] {
-            "muellll:null"
+                "muellll:null"
         };
         multiLineTest(commands, expectedResults, Input.getFile(book1));
     }
@@ -205,7 +205,7 @@ public class BookSearchTest extends InteractiveConsoleTest {
                 "quit"
         };
         expectedResults = new String[] {
-            "amet:2"
+                "amet:2"
         };
         multiLineTest(commands, expectedResults, Input.getFile(book4));
     }

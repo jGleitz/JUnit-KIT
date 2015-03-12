@@ -1,7 +1,7 @@
 package test.test;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.After;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import test.mocking.MockerJavaSourceFile;
 /**
  * Run this test to check the funcionality of the test framework. Help is appreciated! Set up this class to test
  * {@code test.test.TestClass}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 2
  * @since 24.01.2015
@@ -37,20 +37,20 @@ public class FrameworkTest {
         assertThat(result, is(1));
         TestObject.resetClass();
         result = TestObject.runStatic(int.class, "staticAddition");
-        assertThat((int) result, is(1));
+        assertThat(result, is(1));
         TestObject.resetClass();
         result = TestObject.runStatic(int.class, "staticAddition");
-        assertThat((int) result, is(1));
+        assertThat(result, is(1));
         TestObject.resetClass();
 
         result = TestObject.runStatic(int.class, "delegatedStaticAddition");
         assertThat(result, is(1));
         TestObject.resetClass();
         result = TestObject.runStatic(int.class, "delegatedStaticAddition");
-        assertThat((int) result, is(1));
+        assertThat(result, is(1));
         TestObject.resetClass();
         result = TestObject.runStatic(int.class, "delegatedStaticAddition");
-        assertThat((int) result, is(1));
+        assertThat(result, is(1));
         TestObject.resetClass();
     }
 
@@ -84,16 +84,16 @@ public class FrameworkTest {
         MockerJavaSourceFile sf;
         MockerJavaClassFile cf;
         //@formatter:off
-        String mockClass = 
-            "package test.test;" +
+        String mockClass =
+                "package test.test;" +
 
             "public class AnotherTestClass {" +
-                "private static int x = 0;" +
+            "private static int x = 0;" +
 
-                "public static int staticAddition() {" + 
-                    "return ++x;" + 
+                "public static int staticAddition() {" +
+                "return ++x;" +
                 "}" +
-            "}";
+                "}";
         //@formatter:on
 
         result = TestObject.runStatic(int.class, "delegatedStaticAddition");

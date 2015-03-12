@@ -12,7 +12,7 @@ import javax.tools.JavaFileObject.Kind;
 
 /**
  * File manager to handle the compilation results from {@link MockCompiler}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 04.02.2015
@@ -40,7 +40,7 @@ public class MockCompilerFileManager extends ForwardingJavaFileManager<JavaFileM
 
     /**
      * Retrieves and removes the compilation of {@code mockName} from this file manager.
-     * 
+     *
      * @param mockName
      *            the full qualified name of the compiled class
      * @return the {@link MockerJavaClassFile}
