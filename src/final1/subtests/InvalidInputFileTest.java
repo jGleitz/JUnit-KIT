@@ -80,7 +80,14 @@ public class InvalidInputFileTest extends RecommendationSubtest {
     errorTest("quit", Input.getFile(input));
 
     input = new String[]{
-      "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contains operatingsystems"
+                "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contained-in operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+        
+        // test too big number after the product has been mentioned with a valid ID
+        input = new String[]{
+                "CentOS5 (id=2) contained-in operatingsystems",
+                "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) part-of somethingelse(id=3)"
     };
     errorTest("quit", Input.getFile(input));
   }
@@ -90,7 +97,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
    * shop element type.
    */
     @Test
-    public void worngRelationArgumentTest() {
+    public void wrongRelationArgumentTest() {
         input = new String[] {
             "CentOS5 (id= 12) contains operatingsystems"
         };
@@ -190,7 +197,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 
         input = new String[] {
                 "C (id=2) predecessor-of A (id=3)",
-                "A (id=3) predecessor-of C (id=4)"
+                "A (id=3) predecessor-of C (id=2)"
         };
         errorTest("quit", Input.getFile(input));
     }
