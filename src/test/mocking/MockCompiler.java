@@ -11,6 +11,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.tools.JavaCompiler;
@@ -20,7 +22,7 @@ import test.framework.FrameworkException;
 
 /**
  * Helper class to compile a {@link MockerJavaSourceFile}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 04.02.2015
@@ -36,7 +38,7 @@ public abstract class MockCompiler {
     /**
      * Compiles the source code provided in {@code sourceFile}. The compiler will run silent. If an error occurs while
      * compiling, the compiler's error text will be provided with the exception.
-     * 
+     *
      * @param sourceFile
      *            The {@link MockerJavaSourceFile} to compile
      * @return the {@link MockerJavaClassFile} containing the compiled java byte code
@@ -47,15 +49,15 @@ public abstract class MockCompiler {
         // check if this version of the class is already cached
         if (!cache.containsKey(sourceFile.getName()) || !cache.get(sourceFile.getName()).isFromSourceFile(sourceFile)) {
             // will contain the compiler's error output
-            Writer errorWriter = new StringWriter();
+            final Writer errorWriter = new StringWriter();
             // creates the compilation task, runs it and returns the result
-            boolean compilationSuccessful =
-                    compiler.getTask(errorWriter, fileManager, null, null, null, Arrays.asList(sourceFile)).call();
+            final boolean compilationSuccessful = compiler.getTask(errorWriter, fileManager, null, null, null,
+                Arrays.asList(sourceFile)).call();
             if (!compilationSuccessful) {
                 throw new FrameworkException("Unable to compile " + sourceFile.getName() + ":\n\n"
                         + errorWriter.toString());
             }
-            MockerJavaClassFile compiled = fileManager.pollCompiledMocker(sourceFile.getName());
+            final MockerJavaClassFile compiled = fileManager.pollCompiledMocker(sourceFile.getName());
             if (compiled == null) {
                 throw new FrameworkException("Unable to retrieved compiled '" + sourceFile.getName() + "'."
                         + "\nMake sure that the full qualified name of the MockerJavaSourceFile matches exactly the \n"
@@ -71,7 +73,7 @@ public abstract class MockCompiler {
 
     /**
      * Reads in the serialised cache and returns it, if present. Returns an empty map otherwise.
-     * 
+     *
      * @return The cache map for compilation results.
      */
     @SuppressWarnings("unchecked")
@@ -85,15 +87,15 @@ public abstract class MockCompiler {
                 is = new ObjectInputStream(fs);
                 result = (HashMap<String, MockerJavaClassFile>) is.readObject();
                 return result;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // stay silent - return new cache
-            } catch (ClassNotFoundException e) {
+            } catch (final ClassNotFoundException e) {
                 // stay silent - return new cache
             } finally {
                 if (is != null) {
                     try {
                         is.close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         // stay silent
                     }
                 }
@@ -104,7 +106,7 @@ public abstract class MockCompiler {
 
     /**
      * Tries to get the system's Java Compiler.
-     * 
+     *
      * @return A java Compiler, if possible
      * @throws FrameworkException
      *             if there is no known way for us to get the system's compiler.
@@ -113,41 +115,49 @@ public abstract class MockCompiler {
         JavaCompiler comp = ToolProvider.getSystemJavaCompiler();
         if (comp == null) {
             if (isWindows()) {
-                File javaProgramFolder = new File("C:\\Program Files\\Java");
-                if (!javaProgramFolder.exists()) {
+                final File javaProgramFolder = new File("C:\\Program Files\\Java");
+                final File javaProgramFolder32bit = new File("C:\\Program Files (x86)\\Java");
+                if (!javaProgramFolder.exists() && !javaProgramFolder32bit.exists()) {
                     throw new FrameworkException("Your system does not provide a Java Compiler. It's Windows but we "
                             + "can't find your Java installation!");
                 }
-                FileFilter jdkFilter = new FileFilter() {
+                final FileFilter jdkFilter = new FileFilter() {
                     final int javaVersion;
                     {
-                        String javaVersionString = System.getProperty("java.version");
+                        final String javaVersionString = System.getProperty("java.version");
                         javaVersion = Integer.parseInt(javaVersionString.substring(2, 3));
                     }
 
                     @Override
                     public boolean accept(File file) {
                         if (file.isDirectory() && file.getName().startsWith("jdk1.")) {
-                            int sdkVersion = Integer.parseInt(file.getName().substring(5, 6));
+                            final int sdkVersion = Integer.parseInt(file.getName().substring(5, 6));
                             return (sdkVersion <= javaVersion);
                         }
                         return false;
                     }
                 };
-                File[] jdkFolders = javaProgramFolder.listFiles(jdkFilter);
-                for (File f : jdkFolders) {
+                final List<File> jdkFolders = new LinkedList<>();
+                if (javaProgramFolder.exists()) {
+                    jdkFolders.addAll(Arrays.asList(javaProgramFolder.listFiles(jdkFilter)));
+                }
+                if (javaProgramFolder32bit.exists()) {
+                    jdkFolders.addAll(Arrays.asList(javaProgramFolder32bit.listFiles(jdkFilter)));
+                }
+                jdkFolders.addAll(Arrays.asList(javaProgramFolder32bit.listFiles(jdkFilter)));
+                for (final File f : jdkFolders) {
                     System.setProperty("java.home", f.getAbsolutePath());
                     comp = ToolProvider.getSystemJavaCompiler();
                     if (comp != null) {
                         break;
                     }
                 }
-                if (comp == null && jdkFolders.length == 0) {
+                if ((comp == null) && (jdkFolders.size() == 0)) {
                     throw new FrameworkException("Your system does not provide a Java Compiler. It's Windows, but "
                             + "we can't find a JDK!");
                 } else if (comp == null) {
                     throw new FrameworkException("Your system does not provide a Java Compiler. It's Windows and "
-                            + "we did find " + jdkFolders.length + " JDKs. Still, no compiler!");
+                            + "we did find " + jdkFolders.size() + " JDKs. Still, no compiler!");
                 }
             } else {
                 throw new FrameworkException("Your System does not provide a Java Compiler and is not Windows – "
@@ -157,9 +167,16 @@ public abstract class MockCompiler {
         return comp;
     }
 
+    private static boolean isWindows() {
+        if (OS == null) {
+            OS = System.getProperty("os.name");
+        }
+        return OS.startsWith("Windows");
+    }
+
     /**
      * Serialises the cache so it can be read in again on next run.
-     * 
+     *
      * @param sourceFile
      *            The source File that was compiled
      * @param classFile
@@ -170,7 +187,7 @@ public abstract class MockCompiler {
     private static void writeCache(MockerJavaSourceFile sourceFile, MockerJavaClassFile classFile) {
         cache.put(sourceFile.getName(), classFile);
         try {
-            File parentFile = cacheFile.getParentFile();
+            final File parentFile = cacheFile.getParentFile();
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
             }
@@ -178,7 +195,7 @@ public abstract class MockCompiler {
                 Runtime.getRuntime().exec("attrib -s -h -r " + parentFile.getAbsolutePath());
             }
             cacheFile.createNewFile();
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
             throw new FrameworkException("unable to create file " + cacheFile.getAbsolutePath()
                     + " to write compiler cache in.");
         }
@@ -188,23 +205,16 @@ public abstract class MockCompiler {
             fs = new FileOutputStream(cacheFile);
             os = new ObjectOutputStream(fs);
             os.writeObject(cache);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new FrameworkException("error while writing compiler cache into " + cacheFile.getAbsolutePath() + ".");
         } finally {
             if (os != null) {
                 try {
                     os.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // stay silent
                 }
             }
         }
-    }
-
-    private static boolean isWindows() {
-        if (OS == null) {
-            OS = System.getProperty("os.name");
-        }
-        return OS.startsWith("Windows");
     }
 }
