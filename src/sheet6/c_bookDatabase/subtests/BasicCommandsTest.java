@@ -51,6 +51,7 @@ public class BasicCommandsTest extends BookDatabaseSubTest {
                 "search creator=Mustermann",
                 "quit"
         };
+        
         oneLineTest(commands, not(startsWith("Error,")), "0.5", Input.getFile(simpleValidFile));
     }
 
