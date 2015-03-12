@@ -2,7 +2,7 @@ package sheet4.a_linkedTuple;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import test.TestObject;
  * A test for the Interactive Console (Task A) <br>
  * <br>
  * Unfortunately, this test only tested a very small amount of commands.
- * 
+ *
  * @author Joshua Gleitze
  */
 @SuppressWarnings("deprecation")
@@ -63,7 +63,7 @@ public class InteractiveConsoleTest {
         commands += "quit\n";
         expectedOutput = "";
         TestObject.setNextMethodCallInput(commands);
-        TestObject.runStaticVoid("main", (Object) new String[]{});
+        TestObject.runStaticVoid("main", (Object) new String[] {});
         result = TestObject.getLastMethodOutput();
         assertThat(consoleMessage(commands), result, is(expectedOutput));
     }
@@ -75,7 +75,7 @@ public class InteractiveConsoleTest {
         commands += "quit\n";
         expectedStart = "Error,";
         TestObject.setNextMethodCallInput(commands);
-        TestObject.runStaticVoid("main", (Object) new String[]{});
+        TestObject.runStaticVoid("main", (Object) new String[] {});
         result = TestObject.getLastMethodOutput();
         assertThat(consoleMessage(commands), result, startsWith(expectedStart));
     }

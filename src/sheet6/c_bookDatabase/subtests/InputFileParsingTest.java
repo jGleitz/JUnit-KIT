@@ -12,7 +12,7 @@ import test.TestObject;
 /**
  * Asserts correct parsing of the input file. The tested class should print error messages for bad files and meanwhile
  * read in good files without any output.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 31.01.2015

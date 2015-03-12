@@ -12,7 +12,7 @@ import test.mocking.MockerJavaSourceFile;
  * Connector to the Terminal class provided by the programming lecture. It collects everything the tested class prints
  * through {@code Terminal.printLine()}. Plus, you can provide input that the tested class can read in through
  * {@code Terminal.readLine()}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.2
  */
@@ -22,49 +22,49 @@ public class Terminal {
         String[].class
     };
     // @formatter:off
-    private static final String TERMINAL_MOCKER_BYTE_CODE = 
+    private static final String TERMINAL_MOCKER_BYTE_CODE =
             "package edu.kit.informatik;" +
-    
+
             "import java.util.LinkedList;" +
             "import java.util.List;" +
-            "import java.util.Arrays;" + 
+            "import java.util.Arrays;" +
             "import java.util.concurrent.BlockingQueue;" +
             "import java.util.concurrent.LinkedBlockingQueue;" +
 
             "public final class Terminal {" +
-                "private static List<String> printList = new LinkedList<>();" +
-                "private static BlockingQueue<String> readList = new LinkedBlockingQueue<>();" +
+            "private static List<String> printList = new LinkedList<>();" +
+            "private static BlockingQueue<String> readList = new LinkedBlockingQueue<>();" +
 
                 "public static void printLine(String out) {" +
-                    "printList.add(out);" +
+                "printList.add(out);" +
                 "}" +
 
-                "public static String readLine() {" + 
+                "public static String readLine() {" +
                 "try {" +
-                        "return readList.take();" +
-                    "} catch (InterruptedException e) {" +
-                        "throw new RuntimeException(\"the tested class got stuck because it tried to get " +
-                            "more input from Terminal.readLine while there was no more available!\");" +
-                    "}" +
+                "return readList.take();" +
+                "} catch (InterruptedException e) {" +
+                "throw new RuntimeException(\"the tested class got stuck because it tried to get " +
+                "more input from Terminal.readLine while there was no more available!\");" +
                 "}" +
-                    
+                "}" +
+
                 "public static void resetOutput() {" +
-                    "printList = new LinkedList<String>();" +
+                "printList = new LinkedList<String>();" +
                 "}" +
-                    
+
                 "public static String[] getAllOutput() {" +
-                    "return printList.toArray(new String[printList.size()]);" +
+                "return printList.toArray(new String[printList.size()]);" +
                 "}" +
-                    
+
                 "public static void appendInput(String[] input) {" +
-                    "for (String i : input) {" +
-                        "readList.offer(i);" +
-                    "}" +
+                "for (String i : input) {" +
+                "readList.offer(i);" +
                 "}" +
-                    
+                "}" +
+
                 "public static void setInput(String[] input) {" +
-                    "readList = new LinkedBlockingQueue<String>();" +
-                    "appendInput(input);" +
+                "readList = new LinkedBlockingQueue<String>();" +
+                "appendInput(input);" +
                 "}" +
 
             "}";
@@ -73,7 +73,7 @@ public class Terminal {
 
     static {
         MockerJavaSourceFile terminalSourceFile = new MockerJavaSourceFile(DEFINED_CLASS_NAME,
-                TERMINAL_MOCKER_BYTE_CODE);
+            TERMINAL_MOCKER_BYTE_CODE);
         MockerJavaClassFile teminalClassFile = MockCompiler.compile(terminalSourceFile);
         TestClassLoader.mock(teminalClassFile);
     }
@@ -81,7 +81,7 @@ public class Terminal {
     /**
      * Creates a new Terminal handler. It will observe everything that will be printed by the tested class trough
      * {@code Terminal.printLine()}. Plus, you can provide input to the tested class trough it.
-     * 
+     *
      * @param classLoader
      *            The class loader to retrieve Terminal class from. It is crucial that this is the same class loader as
      *            the one
@@ -92,14 +92,14 @@ public class Terminal {
 
     private static Object[] wrap(Object[] o) {
         return new Object[] {
-            o
+                o
         };
     }
 
     /**
      * Returns everything that has been written by the tested class through {@code Terminal.printLine} since the
      * creation of this Terminal or since the last call to {@link #reset()}.
-     * 
+     *
      * @return the tested class' output
      */
     public String[] getOutput() {
@@ -109,7 +109,7 @@ public class Terminal {
     /**
      * Provides the given input through the Terminal class. One element of the Array will be served per call to
      * {@code Terminal.readLine()}. Execution will be blocked once no more elements.
-     * 
+     *
      * @param input
      *            what {@code Terminal.printLine} should return per call.
      */

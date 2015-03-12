@@ -25,7 +25,7 @@ import test.TestObject;
  * <ul>
  * <li>None</li>
  * </ul>
- * 
+ *
  * @author Roman Langrehr
  * @since 05.01.2015
  * @version 1.1
@@ -182,7 +182,7 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
     @Test
     public void searchOnEmptyBook() {
         oneLineTest("search hiergiebtsnichtszufinden\nquit\n", "hiergiebtsnichtszufinden:null",
-                EMPTY_BOOK.getAbsolutePath(), "traverse=pre-order");
+            EMPTY_BOOK.getAbsolutePath(), "traverse=pre-order");
     }
 
     @Test
@@ -248,7 +248,7 @@ public class BooksInteractiveConsoleTest extends InteractiveConsoleTest {
     @Test
     public void infoWithLevelOrder3() {
         oneLineTest("info\nquit\n", "b:1,2,a:1,3,c:1,aa:3,d:2,ca:3,e:3", BOOK_7.getAbsolutePath(),
-                "traverse=level-order");
+            "traverse=level-order");
     }
 
     @Test

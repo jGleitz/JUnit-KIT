@@ -6,7 +6,7 @@ public class TestClass {
     public static int staticAddition() {
         return ++x;
     }
-    
+
     public static int delegatedStaticAddition() {
         return AnotherTestClass.staticAddition();
     }

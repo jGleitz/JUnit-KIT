@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * A very simple wrapper for an {@link ByteArrayOutputStream} that is serialisable. Once the stream is closed, its bytes
  * are saved. For serialisation, only those bytes will be saved and restored.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 10.02.2015
@@ -30,7 +30,7 @@ public class SerializableByteArrayOutputStream extends OutputStream implements S
 
     /**
      * Gets the bytes written to the stream.
-     * 
+     *
      * @return the bytes that were written into this stream
      * @throws IllegalStateException
      *             if this method is called before the stream was closed.

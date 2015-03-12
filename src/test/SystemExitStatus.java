@@ -2,7 +2,7 @@ package test;
 
 /**
  * Represents a status {@link System#exit} can be called with.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  */

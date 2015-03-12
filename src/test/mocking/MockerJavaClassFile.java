@@ -16,7 +16,7 @@ import javax.tools.JavaFileObject;
 
 /**
  * Compiled java byte code suitable to mock the class names {@link #getName()}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 04.02.2015
@@ -29,28 +29,28 @@ public class MockerJavaClassFile implements Serializable, JavaFileObject {
 
     /**
      * Constructs a new mocker class file for the given class name. The compiler can write its results in it.
-     * 
+     *
      * @param mockedName
      *            the class name of the mocked class
      */
     MockerJavaClassFile(String mockedName) {
-        this.name = mockedName;
+        name = mockedName;
     }
 
     /**
      * Provides the source file this class file was compiled from. It is crucial to call this method after this class
      * file has been compiled!
-     * 
+     *
      * @param sourceFile
      *            the source file this class file was compiled from.
      */
     void setSourceFile(MockerJavaSourceFile sourceFile) {
-        this.sourceHash = sourceFile.hashCode();
+        sourceHash = sourceFile.hashCode();
     }
 
     /**
      * Whether this class file contains the compilation of {@code sourceFile}.
-     * 
+     *
      * @param sourceFile
      *            the source file to check against
      * @return {@code true} if, and only if, this class file contains the compilation for exactly (same name, same code)
@@ -64,22 +64,22 @@ public class MockerJavaClassFile implements Serializable, JavaFileObject {
      * The compiled java byte code of the mocker class.
      */
     public byte[] getByteCode() {
-        return this.outputStream.toByteArray();
+        return outputStream.toByteArray();
     }
 
     @Override
     public String getName() {
-        return this.name;
+        return name;
     }
 
     @Override
     public OutputStream openOutputStream() throws IOException {
-        return this.outputStream;
+        return outputStream;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, Arrays.hashCode(this.getByteCode()));
+        return Objects.hash(name, Arrays.hashCode(getByteCode()));
     }
 
     @Override
@@ -87,16 +87,16 @@ public class MockerJavaClassFile implements Serializable, JavaFileObject {
         if (obj == this) {
             return true;
         }
-        if (obj != null && getClass() == obj.getClass()) {
+        if ((obj != null) && (getClass() == obj.getClass())) {
             MockerJavaClassFile cf = (MockerJavaClassFile) obj;
-            return (this.getName().equals(cf.getName()) && Arrays.equals(this.getByteCode(), cf.getByteCode()));
+            return (getName().equals(cf.getName()) && Arrays.equals(getByteCode(), cf.getByteCode()));
         }
         return false;
     }
 
     @Override
     public URI toUri() {
-        return URI.create("string:///" + this.name.replace('.', '/') + Kind.CLASS.extension);
+        return URI.create("string:///" + name.replace('.', '/') + Kind.CLASS.extension);
     }
 
     @Override

@@ -9,7 +9,7 @@ import test.InteractiveConsoleTest;
 
 /**
  * Contains all helper methods and fields to test Sheet 6 Task C.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 31.01.2015
@@ -31,9 +31,9 @@ public class BookDatabaseSubTest extends InteractiveConsoleTest {
      * The input file that was given as valid on the task sheet.
      */
     protected static final String[] taskSheetInputFile = {
-            "title=Java_ist_auch_eine_Insel,creator=GalileoComputing",
-            "tITle=Grundkurs_Programmieren_iN_JAVA,year=2007",
-            "Creator=Ralf_Reussner,year=2006"
+        "title=Java_ist_auch_eine_Insel,creator=GalileoComputing",
+        "tITle=Grundkurs_Programmieren_iN_JAVA,year=2007",
+        "Creator=Ralf_Reussner,year=2006"
     };
 
     /**

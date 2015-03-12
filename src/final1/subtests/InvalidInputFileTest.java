@@ -8,9 +8,9 @@ import test.Input;
 import test.SystemExitStatus;
 
 /**
- * Starts the program with several invalid input files without performing any actions. Checks if the
- * program outputs error messages.
- * 
+ * Starts the program with several invalid input files without performing any actions. Checks if the program outputs
+ * error messages.
+ *
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @author Roman Langrehr
@@ -43,61 +43,65 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         };
         errorTest("quit", Input.getFile(input));
 
-    input = new String[]{
-      "CentOS5 id=12 contains operatingsystems"
-    };
-    errorTest("quit", Input.getFile(input));
+        input = new String[] {
+            "CentOS5 id=12 contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
 
-    input = new String[]{
-      "CentOS5(id=12) contains operatingsystems"
-    };
-    errorTest("quit", Input.getFile(input));
+        input = new String[] {
+            "CentOS5(id=12) contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
 
-    input = new String[]{
-      "CentOS5 (id=12)contains operatingsystems"
-    };
-    errorTest("quit", Input.getFile(input));
+        input = new String[] {
+            "CentOS5 (id=12)contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
     }
 
     /**
-   * Tests invalid product ids.
-   */
-  @Test
-  public void invalidProductIds() {
-    input = new String[]{
-      "CentOS5 (id=1a2) contains operatingsystems"
-    };
-    errorTest("quit", Input.getFile(input));
-
-    input = new String[]{
-      "CentOS5 (id=1 2) contains operatingsystems"
-    };
-    errorTest("quit", Input.getFile(input));
-
-    input = new String[]{
-      "CentOS5 (id=efj) contains operatingsystems"
-    };
-    errorTest("quit", Input.getFile(input));
-
-    input = new String[]{
-                "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contained-in operatingsystems"
+     * Tests invalid product ids.
+     */
+    @Test
+    public void invalidProductIds() {
+        input = new String[] {
+            "CentOS5 (id=1a2) contains operatingsystems"
         };
         errorTest("quit", Input.getFile(input));
-        
+
+        input = new String[] {
+            "CentOS5 (id=1 2) contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "CentOS5 (id=efj) contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contains operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contained-in operatingsystems"
+        };
+        errorTest("quit", Input.getFile(input));
+
         // test too big number after the product has been mentioned with a valid ID
-        input = new String[]{
+        input = new String[] {
                 "CentOS5 (id=2) contained-in operatingsystems",
                 "CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) part-of somethingelse(id=3)"
-    };
-    errorTest("quit", Input.getFile(input));
-  }
+        };
+        errorTest("quit", Input.getFile(input));
+    }
 
-  /**
-   * Asserts that the tested class prints error messages for relations that get passed the wrong
-   * shop element type.
-   */
+    /**
+     * Asserts that the tested class prints error messages for relations that get passed the wrong shop element type.
+     */
     @Test
-    public void wrongRelationArgumentTest() {
+    public void worngRelationArgumentTest() {
         input = new String[] {
             "CentOS5 (id= 12) contains operatingsystems"
         };
@@ -158,10 +162,10 @@ public class InvalidInputFileTest extends RecommendationSubtest {
     }
 
     /**
-   * Asserts that the tested class detects and prints an error message for input files that form
-   * circles in the constructed graph. This method tests with short input files but covers different
-   * syntactical constructs, including lines relating shop elements with themselves.
-   */
+     * Asserts that the tested class detects and prints an error message for input files that form circles in the
+     * constructed graph. This method tests with short input files but covers different syntactical constructs,
+     * including lines relating shop elements with themselves.
+     */
     @Test
     public void basicCircleTest() {
         input = new String[] {
@@ -197,7 +201,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 
         input = new String[] {
                 "C (id=2) predecessor-of A (id=3)",
-                "A (id=3) predecessor-of C (id=2)"
+                "A (id=3) predecessor-of C (id=4)"
         };
         errorTest("quit", Input.getFile(input));
     }

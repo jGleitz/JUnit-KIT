@@ -15,7 +15,7 @@ import test.mocking.MockerJavaClassFile;
  * class referenced by a class once loaded with this class loader will be loaded with this class loader. Therefore, a
  * new {@code TestClassLoader} assures to provide completly "fresh" classes. Classes can as well be mocked through
  * {@code #mock(MockerJavaClassFile)}.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.3
  * @since 24.01.2015
@@ -40,7 +40,7 @@ public class TestClassLoader extends ClassLoader {
      * use {@code mocker}, though. If you are working with {@link TestObject}, call {@link TestObject#resetClass()}
      * after mocking to make sure the mocker will be loaded.<br>
      * To remove mocking, call {@link #forget(String)}.
-     * 
+     *
      * @param mocker
      *            the {@link MockerJavaClassFile} object
      */
@@ -104,7 +104,7 @@ public class TestClassLoader extends ClassLoader {
      * newly on all future instances of this class loader. Use this method to remove the mocking of classes.<br>
      * NOTE: Calling this method will not reset the currently loaded class! If you are working with {@link TestObject},
      * call {@link TestObject#resetClass()} after calling {@code forget} to make sure the original class will be loaded.
-     * 
+     *
      * @param className
      *            The full qualified name of the class you want to reset.
      */

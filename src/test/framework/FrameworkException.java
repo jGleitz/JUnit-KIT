@@ -3,7 +3,7 @@ package test.framework;
 /**
  * Thrown if an exception occurs that is unfixable and forces the framework to exit. The message points the user to
  * GitHub to report about the error.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 06.02.2015
@@ -16,7 +16,7 @@ public class FrameworkException extends RuntimeException {
 
     /**
      * New Framework Exception.
-     * 
+     *
      * @param message
      *            Detailed error description
      */

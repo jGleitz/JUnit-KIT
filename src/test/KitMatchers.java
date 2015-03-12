@@ -10,7 +10,7 @@ import org.hamcrest.Matcher;
 
 /**
  * Contains Matchers that are not provided {@code #org.hamcrest.CoreMatchers} but needed by a test.
- * 
+ *
  * @author Joshua Gleitze
  * @version 1.0
  * @since 02.02.2015
@@ -20,7 +20,7 @@ public class KitMatchers {
     /**
      * Creates a matcher that matches if the examined String contains exactly the elements in the specified String
      * Array, separated exactly by {@code divider}.
-     * 
+     *
      * @param substrings
      *            the substrings that the returned matcher will expect to be contained by any examined string
      * @param divider
@@ -43,7 +43,7 @@ public class KitMatchers {
                     int innerIndex = testString.indexOf(divider + sub + divider);
                     int lastItemIndex = (testString.length() - sub.length() - divider.length());
 
-                    boolean found = (innerIndex > 0 && innerIndex < lastItemIndex); // as inner
+                    boolean found = ((innerIndex > 0) && (innerIndex < lastItemIndex)); // as inner
                     found = found || (testString.indexOf(sub + divider) == 0); // at start
                     found = found || (testString.indexOf(divider + sub) == lastItemIndex); // at end
 
@@ -62,12 +62,12 @@ public class KitMatchers {
             @Override
             public void describeTo(Description description) {
                 description.appendText("A String containing exactly ").appendValueList("", ", ", "", substrings)
-                        .appendText(" divided exactly by ").appendValue(divider);
+                .appendText(" divided exactly by ").appendValue(divider);
             }
 
             @Override
             public void describeMismatch(final Object item, final Description description) {
-                description.appendText("was ").appendValue((String) item);
+                description.appendText("was ").appendValue(item);
                 if (!notContained.isEmpty()) {
                     description.appendText("\nnot containing these items correctly: ").appendValueList("", ", ", "",
                         notContained);
