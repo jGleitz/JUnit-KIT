@@ -10,8 +10,8 @@ import test.SystemExitStatus;
 import test.TestObject;
 
 /**
- * Starts the program with several valid input files without performing any actions and checks if the program is able to
- * read in the files.
+ * Starts the program with several valid input files without performing any actions. Checks if the program outputs error
+ * messages.
  * 
  * @author Joshua Gleitze
  * @author Martin Loeper
@@ -30,6 +30,9 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         fail("This test is still in the development state and therefore incomplete!");
     }
 
+    /**
+     * Asserts that the program detects syntactical errors
+     */
     @Test
     public void syntaxErrorsTest() {
         input = new String[] {
@@ -43,8 +46,11 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         exitTest("quit", Input.getFile(input));
     }
 
+    /**
+     * Asserts that the tested class prints error messages for relations that get passed the wrong shop element type.
+     */
     @Test
-    public void semanticErrorsTest() {
+    public void worngRelationArgumentTest() {
         input = new String[] {
             "CentOS5 (id= 12) contains operatingsystems"
         };
@@ -61,6 +67,10 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         exitTest("quit", Input.getFile(input));
     }
 
+    /**
+     * Asserts that the tested class prints an error message for input files that do not directly match product IDs and
+     * names.
+     */
     @Test
     public void nameIDMissmatchTest() {
         input = new String[] {
@@ -76,11 +86,20 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         exitTest("quit", Input.getFile(input));
     }
 
+    /**
+     * Asserts that the tested class prints an error message if the same name is used for two shop elements.
+     */
     @Test
     public void nameTypeMissmatchTest() {
         input = new String[] {
                 "CentOS5 (id = 5) contained-in operatingsystems",
                 "CentOS5 contained-in operatingsystems"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+                "CentOS5 (id = 5) contained-in operatingsystems",
+                "Centos5 contained-in operatingsystems"
         };
         exitTest("quit", Input.getFile(input));
 
@@ -91,15 +110,20 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         exitTest("quit", Input.getFile(input));
     }
 
+    /**
+     * Asserts that the tested class detetects and prints an error message for input files that form circles in the
+     * constructed graph. This method tests with short input files but covers different syntactical constructs,
+     * including lines relating shop elements with themselves.
+     */
     @Test
     public void basicCircleTest() {
         input = new String[] {
             "operatingsystems contained-in operatingsystems"
         };
         exitTest("quit", Input.getFile(input));
-        
+
         input = new String[] {
-                "os (id=1) part-of os (id=1)"
+            "os (id=1) part-of os (id=1)"
         };
         exitTest("quit", Input.getFile(input));
 
@@ -130,22 +154,35 @@ public class InvalidInputFileTest extends RecommendationSubtest {
         };
         exitTest("quit", Input.getFile(input));
     }
-    
-    @Test 
+
+    /**
+     * Asserts that the tested class detetects and prints an error message for input files that form circles in the
+     * constructed graph. This method tests with a longer input file and all relations.
+     */
+    @Test
     public void circleTest() {
         String[][] relations = new String[][] {
-                {"contains", "contained-in"},
-                {"successor-of", "predecessor-of"},
-                {"has-part", "part-of"}
+                {
+                        "contains",
+                        "contained-in"
+                },
+                {
+                        "successor-of",
+                        "predecessor-of"
+                },
+                {
+                        "has-part",
+                        "part-of"
+                }
         };
-        
+
         for (String[] relation : relations) {
             for (int i = 0; i < 2; i++) {
                 input = new String[] {
                     "A " + relation[i] + " A"
                 };
                 exitTest("quit", Input.getFile(input));
-                
+
                 input = new String[] {
                         "A (id=1) " + relation[i] + " B (id=2)",
                         "B (id=2) " + relation[i] + " C (id=3)",
@@ -157,7 +194,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                         "H (id=8) " + relation[i] + " A (id=1)"
                 };
                 exitTest("quit", Input.getFile(input));
-                
+
                 // different order
                 input = new String[] {
                         "A (id=1) " + relation[i] + " B (id=2)",
@@ -170,7 +207,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                         "G (id=7) " + relation[i] + " H (id=8)"
                 };
                 exitTest("quit", Input.getFile(input));
-                
+
                 input = new String[] {
                         "A (id=1) " + relation[i] + " B (id=2)",
                         "B (id=2) " + relation[i] + " C (id=3)",
@@ -182,7 +219,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                         "H (id=8) " + relation[i % 2] + " A (id=1)"
                 };
                 exitTest("quit", Input.getFile(input));
-                
+
                 // different order
                 input = new String[] {
                         "A (id=1) " + relation[i] + " B (id=2)",
@@ -198,7 +235,10 @@ public class InvalidInputFileTest extends RecommendationSubtest {
             }
         }
     }
-    
+
+    /**
+     * Asserts that the tested class prints an error message for empty lines, which are syntactical errors.
+     */
     @Test
     public void emptyLinesTest() {
         input = new String[] {
@@ -211,7 +251,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "CentOS5 (id=105) predecessor-of centos6(id=106)"
         };
         exitTest("quit", Input.getFile(input));
-        
+
         input = new String[] {
                 "",
                 "CentOS5 ( id= 105) contained-in operatingSystem",
@@ -222,7 +262,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 "CentOS5 (id=105) predecessor-of centos6(id=106)"
         };
         exitTest("quit", Input.getFile(input));
-        
+
         input = new String[] {
                 "CentOS5 ( id= 105) contained-in operatingSystem",
                 "centOS6 ( id = 106) contained-in OperatingSystem",
@@ -233,95 +273,108 @@ public class InvalidInputFileTest extends RecommendationSubtest {
                 ""
         };
         exitTest("quit", Input.getFile(input));
-        
+
         input = new String[] {
-                ""
+            ""
         };
         exitTest("quit", Input.getFile(input));
-        
+
         // totally empty input file is not valid: "Die Datenbestand-Datei besteht aus einer oder mehreren Zeilen."
-        input = new String[] {
-        };
+        input = new String[] {};
         exitTest("quit", Input.getFile(input));
     }
-    
+
+    /**
+     * Asserts that the tested class checks for the right case in the input file.
+     */
     @Test
     public void caseSensitivityTest() {
         input = new String[] {
-                "operatingSystem Contains centos7 ( id = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operatingSystem contains centos7 ( iD = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-    }
-    
-    @Test
-    public void invalidArgumentCountTest() {
-        input = new String[] {
-                "operatingSystem con tains centos7 (id = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operatingSystem contains centos7 (id=107) part-of centos8 (id=108)"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operatingSystem contains"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "contains centos7 ( id = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operatingSystem test"
-        };
-        exitTest("quit", Input.getFile(input));
-    }
-    
-    @Test
-    public void invalidSymbolTest() {
-        input = new String[] {
-                "operatingSystem contains centos7 (i d = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operäitingSystem contains centos7 ( id = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operaitingSystem contains centös7 ( id = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operatingSystem contains cento-s7 ( id = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operating-System contains centos7 ( id = 107 )"
-        };
-        exitTest("quit", Input.getFile(input));
-        
-        input = new String[] {
-                "operating System contains centos7 ( id = 107 )"
+            "operatingSystem Contains centos7 ( id = 107 )"
         };
         exitTest("quit", Input.getFile(input));
 
         input = new String[] {
-                "operatingSystem contains cent os7 ( id = 107 )"
+            " centos6 ( id = 106 ) predecessor-Of centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operatingSystem contains centos7 ( iD = 107 )"
         };
         exitTest("quit", Input.getFile(input));
     }
-    
+
+    /**
+     * Asserts that the tested class outputs an error message if an input line contains more parts than allowed.
+     */
+    @Test
+    public void invalidArgumentCountTest() {
+        input = new String[] {
+            "operatingSystem con tains centos7 (id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operatingSystem contains centos7 (id=107) part-of centos8 (id=108)"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operatingSystem contains"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operatingSystem test"
+        };
+        exitTest("quit", Input.getFile(input));
+    }
+
+    /**
+     * Asserts that the tested class detects illegal characters in the input file.
+     */
+    @Test
+    public void invalidSymbolTest() {
+        input = new String[] {
+            "operatingSystem contains centos7 (i d = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operäitingSystem contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operaitingSystem contains centös7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operatingSystem contains cento-s7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operating-System contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operating System contains centos7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+
+        input = new String[] {
+            "operatingSystem contains cent os7 ( id = 107 )"
+        };
+        exitTest("quit", Input.getFile(input));
+    }
+
 }

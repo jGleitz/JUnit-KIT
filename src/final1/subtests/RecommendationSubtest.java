@@ -15,6 +15,9 @@ import test.TestObject;
  * @version 1.1
  */
 public abstract class RecommendationSubtest extends InteractiveConsoleTest {
+    /**
+     * The input file as given on the task sheet.
+     */
     protected String[] TASK_SHEET_INPUT_FILE = new String[] {
             "CentOS5 ( id= 105) contained-in operatingSystem",
             "centOS6 ( id = 106) contained-in OperatingSystem",
@@ -31,7 +34,10 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
             "calc (id=202) part-of libreoffice (id=200)",
             "libreoffice (id=200) has-part impress (id=203)"
     };
-    
+
+    /**
+     * The input file from the task sheet decorated with legal spaces.
+     */
     protected String[] TASK_SHEET_INPUT_FILE_SPACES = new String[] {
             "CentOS5(id=105) contained-in operatingSystem",
             "    centOS6   (  id   =   106)   contained-in    OperatingSystem    ",
@@ -48,9 +54,9 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
             "calc(id=202) part-of libreoffice(id=200)",
             "libreoffice (id=200) has-part impress (id=203)"
     };
-    
+
     /**
-     * Extends the task sheet input file with semantically duplicate lines and some backwards relations
+     * Extends the task sheet input file with semantically duplicate lines and some backwards relations.
      */
     protected String[] TASK_SHEET_INPUT_FILE_DUPLICATES = new String[] {
             "CentOS5(id=105) contained-in operatingSystem",
@@ -75,26 +81,26 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
     };
 
     protected String[] ONE_LINE_INPUT_FILE1 = new String[] {
-            "B(id=1) successor-of A(id=2)"
+        "B(id=1) successor-of A(id=2)"
     };
-    
+
     protected String[] ONE_LINE_INPUT_FILE2 = new String[] {
-            "A contains B(id=2)"
+        "A contains B(id=2)"
     };
-    
+
     protected String[] PSEUDO_CIRCLE_INPUT_FILE1 = new String[] {
             "A(id=1) successor-of B(id=2)",
             "B(id=2) predecessor-of C(id=3)",
             "C(id=3) predecessor-of A(id=1)"
     };
-    
+
     protected String[] PSEUDO_CIRCLE_INPUT_FILE2 = new String[] {
             "A (id=1) successor-of B (id=2)",
             "C (id=3) predecessor-of B (id=2)",
             "C (id=3) successor-of D (id=5)",
             "D (id=5) predecessor-of A (id=1)"
     };
-    
+
     /**
      * Runs {@link #errorTest(String, String...)} with the provided arguments and asserts that {@code System.exit(x)}
      * was called with {@code x > 0} afterwards.
