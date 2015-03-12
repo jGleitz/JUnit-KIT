@@ -66,8 +66,19 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
                 "recommend S3 1",
                 "recommend S3 2"
         };
-        List<Matcher<String>> matchers = getMatchers(is("a:2,b:1"), is(""), startsWith("Error,"), startsWith("Error,"),
-            is(""), is("b:1"), startsWith("Error,"), is("a:2"), is(""));
+        // @formatter:off
+        List<Matcher<String>> matchers = getMatchers(
+            is("a:2,b:1"),
+            is(""),
+            startsWith("Error,"),
+            startsWith("Error,"),
+            is(""),
+            is("b:1"),
+            startsWith("Error,"),
+            is("a:2"),
+            is("")
+        );
+        // @formatter:on
         // edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
         multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE1));
 
@@ -78,7 +89,15 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
                 "recommend S2 2",
                 "recommend S3 2",
         };
-        matchers = getMatchers(is("a,b:2"), startsWith("Error,"), is(""), is(""), is(""));
+        // @formatter:off
+        matchers = getMatchers(
+            is("a,b:2"),
+            startsWith("Error,"),
+            is(""),
+            is(""),
+            is("")
+        );
+        // @formatter:on
         multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE2));
     }
 
@@ -92,10 +111,16 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
                 "recommend S1 201",
                 "recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
         };
+        // @formatter:off
         List<Matcher<String>> matchers = getMatchers(
             is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201"),
-            is("centos6:106,centos7:107"), is("centos5:105,centos6:106"), is("centos5:105,centos6:106,centos7:107"),
-            is("calc:202,impress:203,libreoffice:200"), is("calc:202,centos6:106,impress:203,libreoffice:200"));
+            is("centos6:106,centos7:107"),
+            is("centos5:105,centos6:106"),
+            is("centos5:105,centos6:106,centos7:107"),
+            is("calc:202,impress:203,libreoffice:200"),
+            is("calc:202,centos6:106,impress:203,libreoffice:200")
+        );
+        // @formatter:on
         multiLineTest(addQuit(queries), matchers, Input.getFile(input));
     }
 
