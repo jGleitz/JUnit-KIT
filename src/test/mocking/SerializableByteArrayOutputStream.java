@@ -14,32 +14,32 @@ import java.io.Serializable;
  * @since 10.02.2015
  */
 public class SerializableByteArrayOutputStream extends OutputStream implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private byte[] bytes;
-    private transient ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	private static final long serialVersionUID = 1L;
+	private byte[] bytes;
+	private transient ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-    @Override
-    public void write(int b) throws IOException {
-        outputStream.write(b);
-    }
+	@Override
+	public void write(int b) throws IOException {
+		outputStream.write(b);
+	}
 
-    @Override
-    public void close() throws IOException {
-        bytes = outputStream.toByteArray();
-    }
+	@Override
+	public void close() throws IOException {
+		bytes = outputStream.toByteArray();
+	}
 
-    /**
-     * Gets the bytes written to the stream.
-     *
-     * @return the bytes that were written into this stream
-     * @throws IllegalStateException
-     *             if this method is called before the stream was closed.
-     */
-    public byte[] toByteArray() {
-        if (bytes == null) {
-            throw new IllegalStateException("Bytes cannot be retrieved before the stream is closed!");
-        }
-        return bytes;
-    }
+	/**
+	 * Gets the bytes written to the stream.
+	 *
+	 * @return the bytes that were written into this stream
+	 * @throws IllegalStateException
+	 *             if this method is called before the stream was closed.
+	 */
+	public byte[] toByteArray() {
+		if (bytes == null) {
+			throw new IllegalStateException("Bytes cannot be retrieved before the stream is closed!");
+		}
+		return bytes;
+	}
 
 }

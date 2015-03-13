@@ -21,52 +21,52 @@ import test.SystemExitStatus;
  */
 public class ValidNodesCommandTest extends RecommendationSubtest {
 
-    public ValidNodesCommandTest() {
-        setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
-    }
+	public ValidNodesCommandTest() {
+		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
+	}
 
-    /**
-     * Asserts correct results for the example given on the task sheet.
-     */
-    @Test
-    public void taskSheetExampleTest() {
-        testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
-    }
+	/**
+	 * Asserts correct results for the example given on the task sheet.
+	 */
+	@Test
+	public void taskSheetExampleTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
+	}
 
-    /**
-     * Asserts correct results if the input file contains spaces.
-     */
-    @Test
-    public void spacesTest() {
-        testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES);
-    }
+	/**
+	 * Asserts correct results if the input file contains spaces.
+	 */
+	@Test
+	public void spacesTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES);
+	}
 
-    /**
-     * Asserts correct results if the input file contains semantically dublicates.
-     */
-    @Test
-    public void duplicatesTest() {
-        testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
-    }
+	/**
+	 * Asserts correct results if the input file contains semantically dublicates.
+	 */
+	@Test
+	public void duplicatesTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
+	}
 
-    /**
-     * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
-     * errors.
-     */
-    @Test
-    public void oneLineTest() {
-        String[] queries = new String[] {
-                "nodes",
-                "recommend S1 1",
-                "recommend S1 3",
-                "recommend S4 1",
-                "recommend S2 1",
-                "recommend S2 2",
-                "redbutton",
-                "recommend S3 1",
-                "recommend S3 2"
-        };
-        // @formatter:off
+	/**
+	 * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
+	 * errors.
+	 */
+	@Test
+	public void oneLineTest() {
+		String[] queries = new String[] {
+				"nodes",
+				"recommend S1 1",
+				"recommend S1 3",
+				"recommend S4 1",
+				"recommend S2 1",
+				"recommend S2 2",
+				"redbutton",
+				"recommend S3 1",
+				"recommend S3 2"
+		};
+		// @formatter:off
         List<Matcher<String>> matchers = getMatchers(
             is("a:2,b:1"),
             is(""),
@@ -79,17 +79,17 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
             is("")
         );
         // @formatter:on
-        // edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
-        multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE1));
+		// edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
+		multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE1));
 
-        queries = new String[] {
-                "nodes",
-                "recommend S1 1",
-                "recommend S1 2",
-                "recommend S2 2",
-                "recommend S3 2",
-        };
-        // @formatter:off
+		queries = new String[] {
+				"nodes",
+				"recommend S1 1",
+				"recommend S1 2",
+				"recommend S2 2",
+				"recommend S3 2",
+		};
+		// @formatter:off
         matchers = getMatchers(
             is("a,b:2"),
             startsWith("Error,"),
@@ -98,20 +98,20 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
             is("")
         );
         // @formatter:on
-        multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE2));
-    }
+		multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE2));
+	}
 
-    private void testAgainstTaskSheet(String[] input) {
-        // the following queries/matchers are taken directly from the task sheet
-        String[] queries = new String[] {
-                "nodes",
-                "recommend S1 105",
-                "recommend S3 107",
-                "recommend UNION(S1 105,S3 107)",
-                "recommend S1 201",
-                "recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
-        };
-        // @formatter:off
+	private void testAgainstTaskSheet(String[] input) {
+		// the following queries/matchers are taken directly from the task sheet
+		String[] queries = new String[] {
+				"nodes",
+				"recommend S1 105",
+				"recommend S3 107",
+				"recommend UNION(S1 105,S3 107)",
+				"recommend S1 201",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+		};
+		// @formatter:off
         List<Matcher<String>> matchers = getMatchers(
             is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201"),
             is("centos6:106,centos7:107"),
@@ -121,11 +121,11 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
             is("calc:202,centos6:106,impress:203,libreoffice:200")
         );
         // @formatter:on
-        multiLineTest(addQuit(queries), matchers, Input.getFile(input));
-    }
+		multiLineTest(addQuit(queries), matchers, Input.getFile(input));
+	}
 
-    @Test
-    public void incomplete() {
-        fail("This test is still in the development state and therefore incomplete!");
-    }
+	@Test
+	public void incomplete() {
+		fail("This test is still in the development state and therefore incomplete!");
+	}
 }
