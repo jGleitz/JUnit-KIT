@@ -81,6 +81,36 @@ public class KitMatchers {
 	}
 
 	/**
+	 * Creates a matcher that matches if the examined Integer suits the needs implied by {@code systemExitStatus}.
+	 * 
+	 * @param systemExitStatus
+	 *            The exit status any examined Integer is expected to match
+	 * @param mandatory
+	 *            Whether it was mandatory for the tested class to call {@code System.exit} the way defined by
+	 *            {@code SystemExitStatus}.
+	 */
+	public static Matcher<Integer> suits(final SystemExitStatus systemExitStatus, final boolean mandatory) {
+		return new BaseMatcher<Integer>() {
+
+			@Override
+			public boolean matches(final Object testObject) {
+				Integer status = (Integer) testObject;
+				return systemExitStatus.matches(status, mandatory);
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText(systemExitStatus.toString());
+			}
+
+			@Override
+			public void describeMismatch(final Object item, final Description description) {
+				description.appendText("was System.exit(" + item + ")");
+			}
+		};
+	}
+
+	/**
 	 * Creates a matcher that matches if the examined String array contains exactly as much elements as specified by
 	 * {@code outputLines}. This matcher is meant to assert a tested class' output. It provides a appropriate error
 	 * message.
