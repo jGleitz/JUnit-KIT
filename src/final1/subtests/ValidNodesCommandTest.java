@@ -20,41 +20,41 @@ import test.runs.NoOutputRun;
  */
 public class ValidNodesCommandTest extends RecommendationSubtest {
 
-    public ValidNodesCommandTest() {
-        setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
-    }
+	public ValidNodesCommandTest() {
+		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
+	}
 
-    /**
-     * Asserts correct results for the example given on the task sheet.
-     */
-    @Test
-    public void taskSheetExampleTest() {
-        testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
-    }
+	/**
+	 * Asserts correct results for the example given on the task sheet.
+	 */
+	@Test
+	public void taskSheetExampleTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
+	}
 
-    /**
-     * Asserts correct results if the input file contains spaces.
-     */
-    @Test
-    public void spacesTest() {
-        testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES);
-    }
+	/**
+	 * Asserts correct results if the input file contains spaces.
+	 */
+	@Test
+	public void spacesTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES);
+	}
 
-    /**
-     * Asserts correct results if the input file contains semantically dublicates.
-     */
-    @Test
-    public void duplicatesTest() {
-        testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
-    }
+	/**
+	 * Asserts correct results if the input file contains semantically dublicates.
+	 */
+	@Test
+	public void duplicatesTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
+	}
 
-    /**
-     * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
-     * errors.
-     */
-    @Test
-    public void oneLineTest() {
-        // @formatter:off
+	/**
+	 * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
+	 * errors.
+	 */
+	@Test
+	public void oneLineTest() {
+		// @formatter:off
 		runs = getRuns(
 			new ExactRun("nodes", is("a:2,b:1")),
 			new ExactRun("recommend S1 1", is("")),
@@ -68,10 +68,10 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 			new NoOutputRun("quit")
 		);
 		// @formatter:on
-        // edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
-        sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
+		// edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
 
-        // @formatter:off
+		// @formatter:off
 		runs = getRuns(
 			new ExactRun("nodes", is("a,b:2")),
 			new ErrorRun("recommend S1 1"),
@@ -81,11 +81,11 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 			new NoOutputRun("quit")
 		);
 		// @formatter:on
-        sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
-    }
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
+	}
 
-    private void testAgainstTaskSheet(String[] input) {
-        //@formatter:off
+	private void testAgainstTaskSheet(String[] input) {
+		//@formatter:off
 
         // the following queries/matchers are taken directly from the task sheet
 		runs = getRuns(
@@ -98,11 +98,11 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 			new NoOutputRun("quit")
 		);
 		//@formatter:on
-        sessionTest(runs, Input.getFile(input));
-    }
+		sessionTest(runs, Input.getFile(input));
+	}
 
-    @Test
-    public void incomplete() {
-        fail("This test is still in the development state and therefore incomplete!");
-    }
+	@Test
+	public void incomplete() {
+		fail("This test is still in the development state and therefore incomplete!");
+	}
 }
