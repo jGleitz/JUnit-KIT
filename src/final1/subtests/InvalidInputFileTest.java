@@ -10,7 +10,7 @@ import test.SystemExitStatus;
 /**
  * Starts the program with several invalid input files without performing any actions. Checks if the program outputs
  * error messages.
- *
+ * 
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @author Roman Langrehr
@@ -66,6 +66,11 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 	public void invalidProductIds() {
 		input = new String[] {
 			"CentOS5 (id=1a2) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id=-1) contains operatingsystems"
 		};
 		errorTest("quit", Input.getFile(input));
 

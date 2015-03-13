@@ -1,16 +1,15 @@
 package final1.subtests;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.fail;
 
-import java.util.List;
-
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
+import test.runs.ExactRun;
+import test.runs.NoOutputRun;
+import test.runs.Run;
 
 /**
  * Performs valid calls to the {@code nodes} command and checks the results.
@@ -50,8 +49,7 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	}
 
 	/**
-	 * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
-	 * errors.
+	 * Asserts correct results for simple one line input files.
 	 */
 	@Test
 	public void oneLineTest() {
@@ -59,29 +57,31 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 				new ExactRun("nodes", is("a:2,b:1")),
 				new NoOutputRun("quit")
 		};
- 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
- 
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
+
 		runs = new Run[] {
 				new ExactRun("nodes", is("a,b:2")),
 				new NoOutputRun("quit")
 		};
- 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
+	}
+
+	/**
+	 * Asserts that product ID 0 can be handled correctly.
+	 */
+	@Test
+	public void zeroIdTest() {
+		oneLineTest(addQuit("nodes"), "a,b:0,c:1", Input.getFile(ZERO_ID_INPUT_FILE));
 	}
 
 	private void testAgainstTaskSheet(String[] input) {
-		//@formatter:off
-
-        // the following queries/matchers are taken directly from the task sheet
+		// the following queries/matchers are taken directly from the task sheet
 		runs = new Run[] {
-			new ExactRun("nodes", is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201")),
-			new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
-			new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
-			new ExactRun("recommend UNION(S1 105,S3 107)", is("centos5:105,centos6:106,centos7:107")),
-			new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
-			new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))", is("calc:202,centos6:106,impress:203,libreoffice:200")),
-			new NoOutputRun("quit")
+				new ExactRun(
+						"nodes",
+						is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201")),
+				new NoOutputRun("quit")
 		};
-		//@formatter:on
 		sessionTest(runs, Input.getFile(input));
 	}
 

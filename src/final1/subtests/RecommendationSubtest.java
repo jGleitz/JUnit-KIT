@@ -91,6 +91,11 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 		"A contains B(id=2)"
 	};
 
+	protected String[] ZERO_ID_INPUT_FILE = new String[] {
+			"A contains B(id=0)",
+			"A contains C(id=1)"
+	};
+
 	protected String[] PSEUDO_CIRCLE_INPUT_FILE1 = new String[] {
 			"A(id=1) successor-of B(id=2)",
 			"B(id=2) predecessor-of C(id=3)",

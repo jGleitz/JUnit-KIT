@@ -48,6 +48,11 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
 		errorTest(addQuit(commands), Input.getFile(TASK_SHEET_INPUT_FILE));
 
 		commands = new String[] {
+			"recommend S1 -1"
+		};
+		errorTest(addQuit(commands), Input.getFile(TASK_SHEET_INPUT_FILE));
+
+		commands = new String[] {
 			"recommend S1, 105"
 		};
 		errorTest(addQuit(commands), Input.getFile(TASK_SHEET_INPUT_FILE));

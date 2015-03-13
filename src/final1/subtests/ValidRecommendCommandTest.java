@@ -2,7 +2,6 @@ package final1.subtests;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +136,22 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 		multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE2));
 	}
 
+	/**
+	 * Asserts that product ID 0 can be handled correctly.
+	 */
+	@Test
+	public void zeroIdTest() {
+		multiLineTest(addQuit(new String[] {
+				"recommend S1 0",
+				"recommend S1 1",
+				"recommend S2 0"
+		}), new String[] {
+				"c:1",
+				"b:0",
+				""
+		}, Input.getFile(ZERO_ID_INPUT_FILE));
+	}
+
 	@Test
 	public void complexTest() {
 		String[][] commandResultArray = new String[][] {
@@ -241,11 +256,6 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 			matchers.add(is(commandResultArray[i][1]));
 		}
 		multiLineTest(addQuit(queries), matchers, Input.getFile(COMPLEX_INPUT_FILE));
-	}
-
-	@Test
-	public void incomplete() {
-		fail("This test is still in the development state and therefore incomplete!");
 	}
 
 }

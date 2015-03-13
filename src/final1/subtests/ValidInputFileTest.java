@@ -77,6 +77,14 @@ public class ValidInputFileTest extends RecommendationSubtest {
 	}
 
 	/**
+	 * Asserts that 0 is a valid product ID.
+	 */
+	@Test
+	public void zeroIdTest() {
+		noOutputTest("quit", Input.getFile(ZERO_ID_INPUT_FILE));
+	}
+
+	/**
 	 * Asserts that the tested class is able to read in input files that have keywords as shop element names.
 	 */
 	@Test
