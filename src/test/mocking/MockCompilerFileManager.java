@@ -18,35 +18,35 @@ import javax.tools.JavaFileObject.Kind;
  * @since 04.02.2015
  */
 public class MockCompilerFileManager extends ForwardingJavaFileManager<JavaFileManager> {
-    private Map<String, MockerJavaClassFile> mockJavaClassFiles = new HashMap<>();
+	private Map<String, MockerJavaClassFile> mockJavaClassFiles = new HashMap<>();
 
-    protected MockCompilerFileManager(JavaFileManager fileManager) {
-        super(fileManager);
-    }
+	protected MockCompilerFileManager(JavaFileManager fileManager) {
+		super(fileManager);
+	}
 
-    @Override
-    public JavaFileObject getJavaFileForOutput(Location location, String className, Kind kind, FileObject sibling)
-            throws IOException {
-        JavaFileObject result;
-        if (kind == Kind.CLASS) {
-            MockerJavaClassFile mockFile = new MockerJavaClassFile(className);
-            result = mockFile;
-            mockJavaClassFiles.put(className, mockFile);
-        } else {
-            result = super.getJavaFileForOutput(location, className, kind, sibling);
-        }
-        return result;
-    }
+	@Override
+	public JavaFileObject getJavaFileForOutput(Location location, String className, Kind kind, FileObject sibling)
+			throws IOException {
+		JavaFileObject result;
+		if (kind == Kind.CLASS) {
+			MockerJavaClassFile mockFile = new MockerJavaClassFile(className);
+			result = mockFile;
+			mockJavaClassFiles.put(className, mockFile);
+		} else {
+			result = super.getJavaFileForOutput(location, className, kind, sibling);
+		}
+		return result;
+	}
 
-    /**
-     * Retrieves and removes the compilation of {@code mockName} from this file manager.
-     *
-     * @param mockName
-     *            the full qualified name of the compiled class
-     * @return the {@link MockerJavaClassFile}
-     */
-    public MockerJavaClassFile pollCompiledMocker(String mockName) {
-        return mockJavaClassFiles.remove(mockName);
-    }
+	/**
+	 * Retrieves and removes the compilation of {@code mockName} from this file manager.
+	 *
+	 * @param mockName
+	 *            the full qualified name of the compiled class
+	 * @return the {@link MockerJavaClassFile}
+	 */
+	public MockerJavaClassFile pollCompiledMocker(String mockName) {
+		return mockJavaClassFiles.remove(mockName);
+	}
 
 }

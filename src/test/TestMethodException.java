@@ -11,20 +11,20 @@ package test;
  *
  */
 public class TestMethodException extends RuntimeException {
-    private static final long serialVersionUID = -4003741199866036203L;
-    private final Throwable cause;
+	private static final long serialVersionUID = -4003741199866036203L;
+	private final Throwable cause;
 
-    TestMethodException(Throwable cause) {
-        this.cause = cause;
-    }
+	TestMethodException(Throwable cause) {
+		this.cause = cause;
+	}
 
-    /**
-     * Returns the actual exception that occurred while running the tested method.
-     * 
-     * @return The exception
-     */
-    @Override
-    public Throwable getCause() {
-        return cause;
-    }
+	/**
+	 * Returns the actual exception that occurred while running the tested method.
+	 * 
+	 * @return The exception
+	 */
+	@Override
+	public Throwable getCause() {
+		return cause;
+	}
 }
