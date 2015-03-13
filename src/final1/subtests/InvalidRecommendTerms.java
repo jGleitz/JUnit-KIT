@@ -9,11 +9,11 @@ import test.SystemExitStatus;
 
 /**
  * Launches the program with a valid input file and then tests some illegal recommend commands.
- *
+ * 
  * @author Roman Langrehr
  * @since 12.03.2015
  * @version 1.0
- *
+ * 
  */
 public class InvalidRecommendTerms extends RecommendationSubtest {
 	private String[] commands;
@@ -175,4 +175,31 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
 		};
 		errorTest(addQuit(commands), Input.getFile(TASK_SHEET_INPUT_FILE));
 	}
+
+	/**
+	 * Tests for invalid spaces
+	 */
+	@Test
+	public void invalidSpaces() {
+		String[] variants = {
+				" recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+				"rec ommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNI ON(S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S 1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 2 01,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S 1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 10 5,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S 3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 10 7))",
+				"recommend UNION(S1 201,INTERSECTI ON(S1 105,S3 107))",
+				"recommendUNION(S1 201,INTERSECTION(S1 105,S3 10 7))",
+				"recommend UNION(S1201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3107))"
+		};
+		for (String variant : variants) {
+			errorTest(addQuit(variant), Input.getFile(TASK_SHEET_INPUT_FILE));
+		}
+	}
+
 }

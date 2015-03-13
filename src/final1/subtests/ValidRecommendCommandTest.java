@@ -29,14 +29,7 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 	@Test
 	public void taskSheetExampleTest() {
 		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
-	}
-
-	/**
-	 * Asserts correct results if the input file contains spaces.
-	 */
-	@Test
-	public void spacesTest() {
-		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES);
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES); // Not sure if this is really needed
 	}
 
 	/**
@@ -45,6 +38,55 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 	@Test
 	public void duplicatesTest() {
 		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
+	}
+
+	private void testAgainstTaskSheet(String[] input) {
+		// the following queries/matchers are taken directly from the task sheet
+		String[] queries = new String[] {
+				"recommend S1 105",
+				"recommend S3 107",
+				"recommend UNION(S1 105,S3 107)",
+				"recommend S1 201",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+		};
+		// @formatter:off
+        List<Matcher<String>> matchers = getMatchers(
+            is("centos6:106,centos7:107"),
+            is("centos5:105,centos6:106"),
+            is("centos5:105,centos6:106,centos7:107"),
+            is("calc:202,impress:203,libreoffice:200"),
+            is("calc:202,centos6:106,impress:203,libreoffice:200")
+        );
+        // @formatter:on
+		multiLineTest(addQuit(queries), matchers, Input.getFile(input));
+	}
+
+	/**
+	 * Asserts correct results for different variations of spaces in the recommend command.
+	 */
+	@Test
+	public void spacesTest() {
+		String[] variants = {
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend  UNION  (S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION  (S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1  201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201  ,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201,  INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION  (S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(  S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105   ,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1   105,  S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3  107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107  ))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107)  )",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))  ",
+				"recommend        UNION      (     S1     201    ,    INTERSECTION    (    S1    105   ,   S3    107    )    )     "
+		};
+		for (String variant : variants) {
+			oneLineTest(addQuit(variant), "calc:202,centos6:106,impress:203,libreoffice:200",
+				Input.getFile(TASK_SHEET_INPUT_FILE));
+		}
 	}
 
 	/**
@@ -95,29 +137,8 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 		multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE2));
 	}
 
-	private void testAgainstTaskSheet(String[] input) {
-		// the following queries/matchers are taken directly from the task sheet
-		String[] queries = new String[] {
-				"recommend S1 105",
-				"recommend S3 107",
-				"recommend UNION(S1 105,S3 107)",
-				"recommend S1 201",
-				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
-		};
-		// @formatter:off
-        List<Matcher<String>> matchers = getMatchers(
-            is("centos6:106,centos7:107"),
-            is("centos5:105,centos6:106"),
-            is("centos5:105,centos6:106,centos7:107"),
-            is("calc:202,impress:203,libreoffice:200"),
-            is("calc:202,centos6:106,impress:203,libreoffice:200")
-        );
-        // @formatter:on
-		multiLineTest(addQuit(queries), matchers, Input.getFile(input));
-	}
-
 	@Test
-	public void complexRecommendTest() {
+	public void complexTest() {
 		String[][] commandResultArray = new String[][] {
 				{
 						"S1 7",

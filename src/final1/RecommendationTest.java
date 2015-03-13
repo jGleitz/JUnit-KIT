@@ -10,6 +10,7 @@ import final1.subtests.InvalidInputFileTest;
 import final1.subtests.InvalidRecommendTerms;
 import final1.subtests.ValidInputFileTest;
 import final1.subtests.ValidNodesCommandTest;
+import final1.subtests.ValidRecommendCommandTest;
 
 /**
  * Test suite for the programming lecture's first final test.
@@ -24,6 +25,7 @@ import final1.subtests.ValidNodesCommandTest;
 		ValidInputFileTest.class,
 		InvalidInputFileTest.class,
 		ValidNodesCommandTest.class,
+		ValidRecommendCommandTest.class,
 		InvalidRecommendTerms.class
 })
 public class RecommendationTest {
