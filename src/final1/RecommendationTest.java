@@ -17,10 +17,10 @@ import final1.subtests.ValidNodesCommandTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    ValidInputFileTest.class,
-    InvalidInputFileTest.class,
-    ValidNodesCommandTest.class,
-    InvalidRecommendTerms.class
+		ValidInputFileTest.class,
+		InvalidInputFileTest.class,
+		ValidNodesCommandTest.class,
+		InvalidRecommendTerms.class
 })
 public class RecommendationTest {
 }

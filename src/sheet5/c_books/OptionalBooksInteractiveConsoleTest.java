@@ -24,13 +24,13 @@ import org.junit.Test;
  */
 public class OptionalBooksInteractiveConsoleTest extends BooksInteractiveConsoleTest {
 
-    @Test
-    public void wrongCommand() {
-        errorTest("bla\nquit\n", BOOK_1.getAbsolutePath(), "traverse=pre-order");
-    }
+	@Test
+	public void wrongCommand() {
+		errorTest("bla\nquit\n", BOOK_1.getAbsolutePath(), "traverse=pre-order");
+	}
 
-    @Test
-    public void wrongCommand2() {
-        errorTest("bla bla\nquit\n", BOOK_1.getAbsolutePath(), "traverse=pre-order");
-    }
+	@Test
+	public void wrongCommand2() {
+		errorTest("bla bla\nquit\n", BOOK_1.getAbsolutePath(), "traverse=pre-order");
+	}
 }

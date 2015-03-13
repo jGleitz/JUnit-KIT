@@ -22,11 +22,11 @@ import sheet6.c_bookDatabase.subtests.SearchTermParsingTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-        CommandLineArgumentsTest.class,
-        InputFileParsingTest.class,
-        BasicCommandsTest.class,
-        CompleteSearchScenarioTest.class,
-        SearchTermParsingTest.class
+		CommandLineArgumentsTest.class,
+		InputFileParsingTest.class,
+		BasicCommandsTest.class,
+		CompleteSearchScenarioTest.class,
+		SearchTermParsingTest.class
 })
 public class BookDatabaseTest {
 
