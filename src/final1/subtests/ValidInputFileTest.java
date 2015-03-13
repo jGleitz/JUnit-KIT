@@ -48,6 +48,15 @@ public class ValidInputFileTest extends RecommendationSubtest {
     public void pseudoCirclesTest() {
         noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE1));
         noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE2));
+
+        input = new String[] {
+                "B (id=2) predecessor-of C (id=3)",
+                "B (id=2) predecessor-of D (id=4)",
+                "C (id=3) predecessor-of E (id=5)",
+                "D (id=4) predecessor-of E (id=5)",
+                "A (id=1) predecessor-of B (id=2)"
+        };
+        noOutputTest("quit", Input.getFile(input));
     }
 
     /**
