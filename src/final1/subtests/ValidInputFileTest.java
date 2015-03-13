@@ -10,7 +10,7 @@ import test.SystemExitStatus;
 /**
  * Starts the program with several valid input files without performing any actions. Checks if the tested class is able
  * to read in the files without output, exceptions or a call to {@code System.exit(x)} with {@code x>0}.
- *
+ * 
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @version 1.1
@@ -92,6 +92,11 @@ public class ValidInputFileTest extends RecommendationSubtest {
 				"contains (id=1) part-of dump(id=2)"
 		};
 		noOutputTest("quit", Input.getFile(input));
+	}
+
+	@Test
+	public void complexTest() {
+		noOutputTest("quit", Input.getFile(COMPLEX_INPUT_FILE));
 	}
 
 	@Test

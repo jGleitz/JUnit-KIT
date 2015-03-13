@@ -1,20 +1,20 @@
 package final1.subtests;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
-import test.runs.ErrorRun;
-import test.runs.ExactRun;
-import test.runs.NoOutputRun;
-import test.runs.Run;
 
 /**
  * Performs valid calls to the {@code nodes} command and checks the results.
- *
+ * 
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @version 1.1
@@ -42,7 +42,7 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	}
 
 	/**
-	 * Asserts correct results if the input file contains semantically dublicates.
+	 * Asserts correct results if the input file contains semantical duplicates.
 	 */
 	@Test
 	public void duplicatesTest() {
@@ -55,31 +55,17 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	 */
 	@Test
 	public void oneLineTest() {
-		// @formatter:off
 		runs = new Run[] {
-			new ExactRun("nodes", is("a:2,b:1")),
-			new ExactRun("recommend S1 1", is("")),
-			new ErrorRun("recommend S1 3"),
-			new ErrorRun("recommend S4 1"),
-			new ExactRun("recommend S2 1", is("")),
-			new ExactRun("recommend S2 2", is("b:1")),
-			new ErrorRun("redbutton"),
-			new ExactRun("recommend S3 1", is("a:2")),
-			new ExactRun("recommend S3 2", is("")),
-			new NoOutputRun("quit")
-		};
-		// edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
-		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
-
-		runs = new Run[] {
-				new ExactRun("nodes", is("a,b:2")),
-				new ErrorRun("recommend S1 1"),
-				new ExactRun("recommend S1 2", is("")),
-				new ExactRun("recommend S2 1", is("")),
-				new ExactRun("recommend S3 1", is("")),
+				new ExactRun("nodes", is("a:2,b:1")),
 				new NoOutputRun("quit")
 		};
-		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
+ 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
+ 
+		runs = new Run[] {
+				new ExactRun("nodes", is("a,b:2")),
+				new NoOutputRun("quit")
+		};
+ 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
 	}
 
 	private void testAgainstTaskSheet(String[] input) {
@@ -103,4 +89,5 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	public void incomplete() {
 		fail("This test is still in the development state and therefore incomplete!");
 	}
+
 }
