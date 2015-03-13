@@ -15,7 +15,7 @@ import test.SystemExitStatus;
 public class InvalidCommandLineArgumentsTest extends RecommendationSubtest {
 
 	public InvalidCommandLineArgumentsTest() {
-		setExpectedSystemStatus(SystemExitStatus.WITH_GREATER_THAN_0);
+		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
 	/**
