@@ -5,6 +5,8 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import static test.KitMatchers.suits;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -140,7 +142,7 @@ public abstract class InteractiveConsoleTest {
 
 	/**
 	 * Checks the exit status of a tested method. Has to be called after call to a {@link TestObject} run method.
-	 *
+	 * 
 	 * @param commands
 	 *            The commands that were run on the interactive console.
 	 * @param args0
@@ -152,14 +154,14 @@ public abstract class InteractiveConsoleTest {
 		if (!newSystemExitStatusCeckInited) {
 			throw new IllegalStateException("The new way of system exit status checking has not been inited yet!");
 		}
-		if ((allowedExitStatus != null) || (expectedExitStatus != null)) {
-			SystemExitStatus actualStatus = TestObject.getLastMethodsSystemExitStatus();
+		if (allowedExitStatus != null || expectedExitStatus != null) {
+			Integer actualStatus = TestObject.getLastMethodsSystemExitStatus();
 			if (expectedExitStatus != null) {
 				assertThat(consoleMessage(commands, args0) + "\nWrong system exit status!", actualStatus,
-					is(expectedExitStatus));
-			} else if ((actualStatus != SystemExitStatus.NONE) && (allowedExitStatus != SystemExitStatus.ALL)) {
+					suits(expectedExitStatus, true));
+			} else {
 				assertThat(consoleMessage(commands, args0) + "\nWrong system exit status!", actualStatus,
-					is(allowedExitStatus));
+					suits(allowedExitStatus, false));
 			}
 			TestObject.allowSystemExit(oldDefault);
 		}
@@ -373,7 +375,7 @@ public abstract class InteractiveConsoleTest {
 	 * Example:<br>
 	 * Say we expect the main method to output three times {@code "Success!"}, an empty line afterwards, and then a line
 	 * starting with {@code "Error,"}. The call would work like this: <br>
-	 *
+	 * 
 	 * <pre>
 	 * <code>
 	 * {@code
@@ -386,7 +388,7 @@ public abstract class InteractiveConsoleTest {
 	 * }
 	 * </code>
 	 * </pre>
-	 *
+	 * 
 	 * @param commands
 	 *            The commands to run on the console.
 	 * @param expectedResults

@@ -2,8 +2,6 @@ package test.framework;
 
 import java.security.Permission;
 
-import test.SystemExitStatus;
-
 /**
  * Used to catch when the code is trying to call {@link System#exit}. This would leave a test in a hanging state. A
  * {@link ExitException} is thrown if the code tries to call {@link System#exit}.
@@ -13,7 +11,7 @@ import test.SystemExitStatus;
  */
 public class NoExitSecurityManager extends SecurityManager {
 	private Class<?> targetClass;
-	private SystemExitStatus lastExit = SystemExitStatus.NONE;
+	private Integer lastExit = null;
 
 	/**
 	 * Constructs a {@code NoExitSecurityManager}
@@ -28,12 +26,8 @@ public class NoExitSecurityManager extends SecurityManager {
 	@Override
 	public void checkExit(int status) {
 		super.checkExit(status);
-		if (status > 0) {
-			lastExit = SystemExitStatus.WITH_GREATER_THAN_0;
-		} else if (status == 0) {
-			lastExit = SystemExitStatus.WITH_0;
-		}
-		Class<?>[] classContext = getClassContext();
+		this.lastExit = status;
+		Class<?>[] classContext = this.getClassContext();
 		for (Class<?> c : classContext) {
 			if (c == targetClass) {
 				throw new ExitException(status);
@@ -52,20 +46,17 @@ public class NoExitSecurityManager extends SecurityManager {
 	}
 
 	/**
-	 * Sets the last exit status to {@link SystemExitStatus#NONE}.
+	 * Sets the last exit status to {@code null}.
 	 */
 	public void resetLastExitStatus() {
-		lastExit = SystemExitStatus.NONE;
+		lastExit = null;
 	}
 
 	/**
-	 * @return {@link SystemExitStatus#NONE} if no class using this security manager called {@code System.exit(x)} since
-	 *         its creation or the last call to {@link NoExitSecurityManager#resetLastExitStatus()}.
-	 *         {@link SystemExitStatus#WITH_0} or {@link SystemExitStatus#WITH_GREATER_THAN_0} if the last call to
-	 *         {@code System.exit(x)} of a class using this security manager was with {@code x=0} or {@code x>0},
-	 *         respectively.
+	 * @return The last status a class using this security manager called {@code System.exit} with. {@code null} if no
+	 *         call to {@code System.exit} was recognised since the last call to {@link #resetLastExitStatus()}.
 	 */
-	public SystemExitStatus lastExitStatus() {
-		return lastExit;
+	public Integer lastExitStatus() {
+		return this.lastExit;
 	}
 }

@@ -1,6 +1,7 @@
 package final1.subtests;
 
-import static org.hamcrest.CoreMatchers.is;
+import static test.KitMatchers.suits;
+
 import static org.junit.Assert.assertThat;
 import test.Input;
 import test.InteractiveConsoleTest;
@@ -136,7 +137,7 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 		TestObject.allowSystemExit(SystemExitStatus.ALL);
 		errorTest(commands, args0);
 		assertThat(consoleMessage(commands, args0) + "\nWrong system exit status!",
-			TestObject.getLastMethodsSystemExitStatus(), is(SystemExitStatus.WITH_GREATER_THAN_0));
+			TestObject.getLastMethodsSystemExitStatus(), suits(SystemExitStatus.WITH_GREATER_THAN_0, true));
 	}
 
 	/*
