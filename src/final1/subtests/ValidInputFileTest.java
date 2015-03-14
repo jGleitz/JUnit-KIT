@@ -23,21 +23,63 @@ public class ValidInputFileTest extends RecommendationSubtest {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
 
-	/**
-	 * Asserts that the tested class is able to read in the input file given as an example on the task.
-	 */
 	@Test
-	public void taskSheetInputFileTest() {
-		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE));
+	public void complexTest() {
+		noOutputTest("quit", Input.getFile(COMPLEX_INPUT_FILE));
 	}
 
 	/**
-	 * Asserts that the tested class is able to read in the input file from the task sheet, decorated with some legal
-	 * spaces.
+	 * Asserts that the tested class is able to read in input files that contain semantically dublicates.
 	 */
 	@Test
-	public void spacesTest() {
-		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_SPACES));
+	public void duplicatesTest() {
+		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_DUPLICATES));
+	}
+
+	@Test
+	public void incomplete() {
+		fail("This test is still in the development state and therefore incomplete!");
+	}
+
+	/**
+	 * Asserts that the tested class is able to read in input files that have keywords as shop element names.
+	 */
+	@Test
+	public void keywordTest() {
+		input = new String[] {
+				"contains contains containers",
+				"containers contains dump(id=1)"
+		};
+		noOutputTest("quit", Input.getFile(input));
+
+		input = new String[] {
+				"contains (id=1) contained-in containers",
+				"contains (id=1) part-of dump(id=2)"
+		};
+		noOutputTest("quit", Input.getFile(input));
+	}
+
+	@Test
+	  public void leadingZerosTest() {
+	    String[] file = new String[] {
+	        "CentOS5   ( id= 00105) contained-in operatingSystem",
+	        "centOS6  (  id  = 0000106) contained-in   OperatingSystem",
+	        "operatingSystem   contains centos7 ( id = 107 )",
+	        "operatingsystem contained-in Software  ",
+	        "CentOS7 (id=00107) successor-of centos6(id=106)", // id=00107 is equivalent to id=107, so it should work
+	        "CentOS5 (id=105) predecessor-of centos6(id=106)",
+	        "  writer (id=201) contained-in officesuite"
+	    };
+	    noOutputTest("quit", Input.getFile(file));
+	  }
+
+	/**
+	 * Asserts that the tested class is able to read in the one-lined test input files.
+	 */
+	@Test
+	public void oneLineTest() {
+		noOutputTest("quit", Input.getFile(ONE_LINE_INPUT_FILE1));
+		noOutputTest("quit", Input.getFile(ONE_LINE_INPUT_FILE2));
 	}
 
 	/**
@@ -60,56 +102,27 @@ public class ValidInputFileTest extends RecommendationSubtest {
 	}
 
 	/**
-	 * Asserts that the tested class is able to read in input files that contain semantically dublicates.
+	 * Asserts that the tested class is able to read in the input file from the task sheet, decorated with some legal
+	 * spaces.
 	 */
 	@Test
-	public void duplicatesTest() {
-		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_DUPLICATES));
+	public void spacesTest() {
+		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_SPACES));
 	}
 
 	/**
-	 * Asserts that the tested class is able to read in the one-lined test input files.
+	 * Asserts that the tested class is able to read in the input file given as an example on the task.
 	 */
 	@Test
-	public void oneLineTest() {
-		noOutputTest("quit", Input.getFile(ONE_LINE_INPUT_FILE1));
-		noOutputTest("quit", Input.getFile(ONE_LINE_INPUT_FILE2));
+	public void taskSheetInputFileTest() {
+		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE));
 	}
 
-	/**
+  /**
 	 * Asserts that 0 is a valid product ID.
 	 */
 	@Test
 	public void zeroIdTest() {
 		noOutputTest("quit", Input.getFile(ZERO_ID_INPUT_FILE));
 	}
-
-	/**
-	 * Asserts that the tested class is able to read in input files that have keywords as shop element names.
-	 */
-	@Test
-	public void keywordTest() {
-		input = new String[] {
-				"contains contains containers",
-				"containers contains dump(id=1)"
-		};
-		noOutputTest("quit", Input.getFile(input));
-
-		input = new String[] {
-				"contains (id=1) contained-in containers",
-				"contains (id=1) part-of dump(id=2)"
-		};
-		noOutputTest("quit", Input.getFile(input));
-	}
-
-	@Test
-	public void complexTest() {
-		noOutputTest("quit", Input.getFile(COMPLEX_INPUT_FILE));
-	}
-
-	@Test
-	public void incomplete() {
-		fail("This test is still in the development state and therefore incomplete!");
-	}
-
 }

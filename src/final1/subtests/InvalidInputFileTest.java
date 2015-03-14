@@ -23,149 +23,6 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
-	@Test
-	public void incomplete() {
-		fail("This test is still in the development state and therefore incomplete!");
-	}
-
-	/**
-	 * Asserts that the program detects syntactical errors
-	 */
-	@Test
-	public void syntaxErrorsTest() {
-		input = new String[] {
-			"CentOS5 id= 12) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 (id= 12) likes operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 id=12 contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5(id=12) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 (id=12)contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-	}
-
-	/**
-	 * Tests invalid product ids.
-	 */
-	@Test
-	public void invalidProductIds() {
-		input = new String[] {
-			"CentOS5 (id=1a2) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 (id=-1) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 (id=1 2) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 (id=efj) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contained-in operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		// test too big number after the product has been mentioned with a valid ID
-		input = new String[] {
-				"CentOS5 (id=2) contained-in operatingsystems",
-				"CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) part-of somethingelse(id=3)"
-		};
-		errorTest("quit", Input.getFile(input));
-	}
-
-	/**
-	 * Asserts that the tested class prints error messages for relations that get passed the wrong shop element type.
-	 */
-	@Test
-	public void worngRelationArgumentTest() {
-		input = new String[] {
-			"CentOS5 (id= 12) contains operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"operatingsystems part-of CentOS5 (id = 10)"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"operatingsystems contained-in CentOS5 (id = 10)"
-		};
-		errorTest("quit", Input.getFile(input));
-	}
-
-	/**
-	 * Asserts that the tested class prints an error message for input files that do not directly match product IDs and
-	 * names.
-	 */
-	@Test
-	public void nameIDMissmatchTest() {
-		input = new String[] {
-				"CentOS5 (id = 5) contained-in operatingsystems",
-				"CentOS5 (id = 6) contained-in Cent"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-				"CentOS5 (id = 5) contained-in operatingsystems",
-				"CentOS5Alt (id = 5) contained-in Cent"
-		};
-		errorTest("quit", Input.getFile(input));
-	}
-
-	/**
-	 * Asserts that the tested class prints an error message if the same name is used for two shop elements.
-	 */
-	@Test
-	public void nameTypeMissmatchTest() {
-		input = new String[] {
-				"CentOS5 (id = 5) contained-in operatingsystems",
-				"CentOS5 contained-in operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-				"CentOS5 (id = 5) contained-in operatingsystems",
-				"Centos5 contained-in operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-				"CentOS5 contained-in operatingsystems",
-				"CentOS5 (id = 5) contained-in operatingsystems"
-		};
-		errorTest("quit", Input.getFile(input));
-	}
-
 	/**
 	 * Asserts that the tested class detects and prints an error message for input files that form circles in the
 	 * constructed graph. This method tests with short input files but covers different syntactical constructs,
@@ -207,6 +64,27 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 		input = new String[] {
 				"C (id=2) predecessor-of A (id=3)",
 				"A (id=3) predecessor-of C (id=4)"
+		};
+		errorTest("quit", Input.getFile(input));
+	}
+
+	/**
+	 * Asserts that the tested class checks for the right case in the input file.
+	 */
+	@Test
+	public void caseSensitivityTest() {
+		input = new String[] {
+			"operatingSystem Contains centos7 ( id = 107 )"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			" centos6 ( id = 106 ) predecessor-Of centos7 ( id = 107 )"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"operatingSystem contains centos7 ( iD = 107 )"
 		};
 		errorTest("quit", Input.getFile(input));
 	}
@@ -340,25 +218,9 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 		errorTest("quit", Input.getFile(input));
 	}
 
-	/**
-	 * Asserts that the tested class checks for the right case in the input file.
-	 */
 	@Test
-	public void caseSensitivityTest() {
-		input = new String[] {
-			"operatingSystem Contains centos7 ( id = 107 )"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			" centos6 ( id = 106 ) predecessor-Of centos7 ( id = 107 )"
-		};
-		errorTest("quit", Input.getFile(input));
-
-		input = new String[] {
-			"operatingSystem contains centos7 ( iD = 107 )"
-		};
-		errorTest("quit", Input.getFile(input));
+	public void incomplete() {
+		fail("This test is still in the development state and therefore incomplete!");
 	}
 
 	/**
@@ -388,6 +250,49 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 
 		input = new String[] {
 			"operatingSystem test"
+		};
+		errorTest("quit", Input.getFile(input));
+	}
+
+	/**
+	 * Tests invalid product ids.
+	 */
+	@Test
+	public void invalidProductIds() {
+		input = new String[] {
+			"CentOS5 (id=1a2) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id=-1) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id=1 2) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id=efj) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) contained-in operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		// test too big number after the product has been mentioned with a valid ID
+		input = new String[] {
+				"CentOS5 (id=2) contained-in operatingsystems",
+				"CentOS5 (id=999999999999999999999999999999999999999999999999999999999999999999999999999999999) part-of somethingelse(id=3)"
 		};
 		errorTest("quit", Input.getFile(input));
 	}
@@ -429,6 +334,107 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 
 		input = new String[] {
 			"operatingSystem contains cent os7 ( id = 107 )"
+		};
+		errorTest("quit", Input.getFile(input));
+	}
+
+	/**
+	 * Asserts that the tested class prints an error message for input files that do not directly match product IDs and
+	 * names.
+	 */
+	@Test
+	public void nameIDMissmatchTest() {
+		input = new String[] {
+				"CentOS5 (id = 5) contained-in operatingsystems",
+				"CentOS5 (id = 6) contained-in Cent"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+				"CentOS5 (id = 5) contained-in operatingsystems",
+				"CentOS5Alt (id = 5) contained-in Cent"
+		};
+		errorTest("quit", Input.getFile(input));
+		
+		input = new String[] {
+		            "CentOS5 (id = 5) contained-in operatingsystems",
+		            "CentOS6 (id = 00000005) contained-in operatingsystems"
+		        };
+		        errorTest("quit", Input.getFile(input));
+	}
+
+	/**
+	 * Asserts that the tested class prints an error message if the same name is used for two shop elements.
+	 */
+	@Test
+	public void nameTypeMissmatchTest() {
+		input = new String[] {
+				"CentOS5 (id = 5) contained-in operatingsystems",
+				"CentOS5 contained-in operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+				"CentOS5 (id = 5) contained-in operatingsystems",
+				"Centos5 contained-in operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+				"CentOS5 contained-in operatingsystems",
+				"CentOS5 (id = 5) contained-in operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+	}
+
+	/**
+	 * Asserts that the program detects syntactical errors
+	 */
+	@Test
+	public void syntaxErrorsTest() {
+		input = new String[] {
+			"CentOS5 id= 12) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id= 12) likes operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 id=12 contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5(id=12) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"CentOS5 (id=12)contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+	}
+
+	/**
+	 * Asserts that the tested class prints error messages for relations that get passed the wrong shop element type.
+	 */
+	@Test
+	public void worngRelationArgumentTest() {
+		input = new String[] {
+			"CentOS5 (id= 12) contains operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"operatingsystems part-of CentOS5 (id = 10)"
+		};
+		errorTest("quit", Input.getFile(input));
+
+		input = new String[] {
+			"operatingsystems contained-in CentOS5 (id = 10)"
 		};
 		errorTest("quit", Input.getFile(input));
 	}
