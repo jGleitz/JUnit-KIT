@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import test.Input;
+import test.SystemExitStatus;
 
 /**
  * Launches the program with a valid input file and then tests some illegal recommend commands.
@@ -16,6 +17,10 @@ import test.Input;
  */
 public class InvalidRecommendTerms extends RecommendationSubtest {
 	private String[] commands;
+
+	public InvalidRecommendTerms() {
+		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
+	}
 
 	@Test
 	public void incomplete() {
