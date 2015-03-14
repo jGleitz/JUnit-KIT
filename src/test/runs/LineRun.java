@@ -68,11 +68,11 @@ public class LineRun implements Run {
 	public void check(String[] testedClassOutput, String errorMessage) {
 		StringBuilder mergedOutputBuilder = new StringBuilder();
 		for (String output : testedClassOutput) {
-			mergedOutputBuilder.append(output);
-			mergedOutputBuilder.append(System.lineSeparator());
+			mergedOutputBuilder.append(output.replace("\r", ""));
+			mergedOutputBuilder.append("\n");
 		}
 		Iterator<Matcher<String>> expectedIterator = expectedResults.iterator();
-		String[] outputLines = mergedOutputBuilder.toString().split(System.lineSeparator());
+		String[] outputLines = mergedOutputBuilder.toString().split("\n");
 		assertThat(errorMessage, outputLines, hasExcactlyThatMuchLines(expectedResults.size(), lineCountMessage()));
 		for (int i = 0; i < outputLines.length; i++) {
 			String appendix = "\n First error at line " + i + ":";
