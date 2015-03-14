@@ -85,7 +85,7 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * You can use this field to put the test runs in it.
 	 */
-	protected List<Run> runs;
+	protected Run[] runs;
 
 	private SystemExitStatus allowedExitStatus;
 	private SystemExitStatus expectedExitStatus;
@@ -267,30 +267,6 @@ public abstract class InteractiveConsoleTest {
 	@SafeVarargs
 	protected final List<Matcher<String>> getMatchers(Matcher<String>... matchers) {
 		return Arrays.asList(matchers);
-	}
-
-	/**
-	 * Constructs a List of runs to be used for {@link #sessionTest(List, String...)}. This method can be used to write
-	 * down expected output nicely, one run per line. For example:
-	 *
-	 * <pre>
-	 * <code>
-	 * 	// @formatter:off
-	 * 	runs = getRuns(
-	 * 		new LineRun("command1", "firstLine\nsecondLine"),
-	 * 		new ErrorRun("command2"),
-	 * 		new ExactRun("command3", is("firstOutput"), startWith("Error,"))
-	 * 	);
-	 * 	// @formatter:on
-	 * </code>
-	 * </pre>
-	 *
-	 * @param runs
-	 *            the runs to construct the list.
-	 * @return a list containing {@code runs}
-	 */
-	protected final List<Run> getRuns(Run... runs) {
-		return Arrays.asList(runs);
 	}
 
 	/**
@@ -552,7 +528,7 @@ public abstract class InteractiveConsoleTest {
 	 * @param args0
 	 *            The arguments for the {@code main}-method
 	 */
-	protected void sessionTest(List<Run> runs, String... args0) {
+	protected void sessionTest(Run[] runs, String... args0) {
 		sessionTest(new NoOutputRun(""), runs, args0);
 	}
 
@@ -571,12 +547,10 @@ public abstract class InteractiveConsoleTest {
 	 * @param args0
 	 *            The arguments for the {@code main}-method
 	 */
-	protected void sessionTest(Run initOutputRun, List<Run> runs, String... args0) {
-		String[] commands = new String[runs.size()];
-		Iterator<Run> runIterator = runs.iterator();
-		for (int i = 0; i < commands.length; i++) {
-			Run run = runIterator.next();
-			commands[i] = run.getCommand();
+	protected void sessionTest(Run initOutputRun, Run[] runs, String... args0) {
+		String[] commands = new String[runs.length];
+		for (int i = 0; i < runs.length; i++) {
+			commands[i] = runs[i].getCommand();
 		}
 
 		initSystemExitStatusCheck();
@@ -591,10 +565,9 @@ public abstract class InteractiveConsoleTest {
 		errorMessageBuilder.append("\n");
 		initOutputRun.check(result[0], errorMessageBuilder.toString());
 
-		runIterator = runs.iterator();
 		for (int j = 1; j < result.length; j++) {
+			Run run = runs[j - 1];
 			errorMessageBuilder = new StringBuilder();
-			Run run = runIterator.next();
 			errorMessageBuilder.append(consoleMessage(commands, args0));
 			errorMessageBuilder.append("the first error occurred for command\n");
 			errorMessageBuilder.append(run.getCommand());

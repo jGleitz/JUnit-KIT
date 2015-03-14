@@ -10,6 +10,7 @@ import test.SystemExitStatus;
 import test.runs.ErrorRun;
 import test.runs.ExactRun;
 import test.runs.NoOutputRun;
+import test.runs.Run;
 
 /**
  * Performs valid calls to the {@code nodes} command and checks the results.
@@ -55,7 +56,7 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	@Test
 	public void oneLineTest() {
 		// @formatter:off
-		runs = getRuns(
+		runs = new Run[] {
 			new ExactRun("nodes", is("a:2,b:1")),
 			new ExactRun("recommend S1 1", is("")),
 			new ErrorRun("recommend S1 3"),
@@ -66,21 +67,18 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 			new ExactRun("recommend S3 1", is("a:2")),
 			new ExactRun("recommend S3 2", is("")),
 			new NoOutputRun("quit")
-		);
-		// @formatter:on
+		};
 		// edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
 
-		// @formatter:off
-		runs = getRuns(
-			new ExactRun("nodes", is("a,b:2")),
-			new ErrorRun("recommend S1 1"),
-			new ExactRun("recommend S1 2", is("")),
-			new ExactRun("recommend S2 1", is("")),
-			new ExactRun("recommend S3 1", is("")),
-			new NoOutputRun("quit")
-		);
-		// @formatter:on
+		runs = new Run[] {
+				new ExactRun("nodes", is("a,b:2")),
+				new ErrorRun("recommend S1 1"),
+				new ExactRun("recommend S1 2", is("")),
+				new ExactRun("recommend S2 1", is("")),
+				new ExactRun("recommend S3 1", is("")),
+				new NoOutputRun("quit")
+		};
 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
 	}
 
@@ -88,7 +86,7 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 		//@formatter:off
 
         // the following queries/matchers are taken directly from the task sheet
-		runs = getRuns(
+		runs = new Run[] {
 			new ExactRun("nodes", is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201")),
 			new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
 			new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
@@ -96,7 +94,7 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 			new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
 			new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))", is("calc:202,centos6:106,impress:203,libreoffice:200")),
 			new NoOutputRun("quit")
-		);
+		};
 		//@formatter:on
 		sessionTest(runs, Input.getFile(input));
 	}
