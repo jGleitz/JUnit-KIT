@@ -56,6 +56,11 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
 			"recommend S1, 105"
 		};
 		errorTest(addQuit(commands), Input.getFile(TASK_SHEET_INPUT_FILE));
+
+		commands = new String[] {
+			"recommend UNION(S1 105, S1 106) UNION(S1 105, S1 106)"
+		};
+		errorTest(addQuit(commands), Input.getFile(TASK_SHEET_INPUT_FILE));
 	}
 
 	/**
