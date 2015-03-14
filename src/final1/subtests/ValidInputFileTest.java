@@ -1,9 +1,5 @@
 package final1.subtests;
 
-import static org.junit.Assert.fail;
-
-import java.util.Arrays;
-
 import org.junit.Test;
 
 import test.Input;
@@ -38,11 +34,6 @@ public class ValidInputFileTest extends RecommendationSubtest {
 		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_DUPLICATES));
 	}
 
-	@Test
-	public void incomplete() {
-		fail("This test is still in the development state and therefore incomplete!");
-	}
-
 	/**
 	 * Asserts that the tested class is able to read in input files that have keywords as shop element names.
 	 */
@@ -62,18 +53,19 @@ public class ValidInputFileTest extends RecommendationSubtest {
 	}
 
 	@Test
-	  public void leadingZerosTest() {
-	    String[] file = new String[] {
-	        "CentOS5   ( id= 00105) contained-in operatingSystem",
-	        "centOS6  (  id  = 0000106) contained-in   OperatingSystem",
-	        "operatingSystem   contains centos7 ( id = 107 )",
-	        "operatingsystem contained-in Software  ",
-	        "CentOS7 (id=00107) successor-of centos6(id=106)", // id=00107 is equivalent to id=107, so it should work
-	        "CentOS5 (id=105) predecessor-of centos6(id=106)",
-	        "  writer (id=201) contained-in officesuite"
-	    };
-	    noOutputTest("quit", Input.getFile(file));
-	  }
+	public void leadingZerosTest() {
+		String[] file = new String[] {
+				"CentOS5   ( id= 00105) contained-in operatingSystem",
+				"centOS6  (  id  = 0000106) contained-in   OperatingSystem",
+				"operatingSystem   contains centos7 ( id = 107 )",
+				"operatingsystem contained-in Software  ",
+				"CentOS7 (id=00107) successor-of centos6(id=106)", // id=00107 is equivalent to id=107, so it should
+																	// work
+				"CentOS5 (id=105) predecessor-of centos6(id=106)",
+				"  writer (id=201) contained-in officesuite"
+		};
+		noOutputTest("quit", Input.getFile(file));
+	}
 
 	/**
 	 * Asserts that the tested class is able to read in the one-lined test input files.
@@ -198,7 +190,7 @@ public class ValidInputFileTest extends RecommendationSubtest {
 		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE));
 	}
 
-  /**
+	/**
 	 * Asserts that 0 is a valid product ID.
 	 */
 	@Test

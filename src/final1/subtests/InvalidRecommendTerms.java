@@ -1,7 +1,5 @@
 package final1.subtests;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 import test.Input;
@@ -20,11 +18,6 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
 
 	public InvalidRecommendTerms() {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
-	}
-
-	@Test
-	public void incomplete() {
-		fail("This test is still in the development state and therefore incomplete!");
 	}
 
 	/**

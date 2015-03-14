@@ -1,7 +1,5 @@
 package final1.subtests;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 import test.Input;
@@ -201,11 +199,6 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 		errorTest("quit", Input.getFile(input));
 	}
 
-	@Test
-	public void incomplete() {
-		fail("This test is still in the development state and therefore incomplete!");
-	}
-
 	/**
 	 * Asserts that the tested class outputs an error message if an input line contains more parts than allowed.
 	 */
@@ -338,12 +331,12 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 				"CentOS5Alt (id = 5) contained-in Cent"
 		};
 		errorTest("quit", Input.getFile(input));
-		
+
 		input = new String[] {
-		            "CentOS5 (id = 5) contained-in operatingsystems",
-		            "CentOS6 (id = 00000005) contained-in operatingsystems"
-		        };
-		        errorTest("quit", Input.getFile(input));
+				"CentOS5 (id = 5) contained-in operatingsystems",
+				"CentOS6 (id = 00000005) contained-in operatingsystems"
+		};
+		errorTest("quit", Input.getFile(input));
 	}
 
 	/**

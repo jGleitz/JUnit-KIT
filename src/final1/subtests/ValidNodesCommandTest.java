@@ -1,7 +1,6 @@
 package final1.subtests;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -33,23 +32,18 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	}
 
 	@Test
-	public void incomplete() {
-		fail("This test is still in the development state and therefore incomplete!");
+	public void leadingZerosTest() {
+		String[] file = new String[] {
+				"CentOS5 ( id= 00105) contained-in operatingSystem",
+				"centOS6 ( id = 0000106) contained-in OperatingSystem",
+				"operatingSystem contains centos7 ( id = 107 )"
+		};
+		runs = new Run[] {
+				new ExactRun("nodes", is("centos5:105,centos6:106,centos7:107,operatingsystem")),
+				new NoOutputRun("quit")
+		};
+		sessionTest(runs, Input.getFile(file));
 	}
-
-	@Test
-    public void leadingZerosTest() {
-      String[] file = new String[] {
-          "CentOS5 ( id= 00105) contained-in operatingSystem",
-          "centOS6 ( id = 0000106) contained-in OperatingSystem",
-          "operatingSystem contains centos7 ( id = 107 )"
-      };
-      runs = new Run[] {
-          new ExactRun("nodes", is("centos5:105,centos6:106,centos7:107,operatingsystem")),
-          new NoOutputRun("quit")
-      };
-      sessionTest(runs, Input.getFile(file));
-    }
 
 	/**
 	 * Asserts correct results for simple one line input files.
@@ -93,14 +87,14 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 		oneLineTest(addQuit("nodes"), "a,b:0,c:1", Input.getFile(ZERO_ID_INPUT_FILE));
 	}
 
-private void testAgainstTaskSheet(String[] input) {
-	// the following queries/matchers are taken directly from the task sheet
-	runs = new Run[] {
-			new ExactRun(
-					"nodes",
-					is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201")),
-			new NoOutputRun("quit")
-	};
-	sessionTest(runs, Input.getFile(input));
-}
+	private void testAgainstTaskSheet(String[] input) {
+		// the following queries/matchers are taken directly from the task sheet
+		runs = new Run[] {
+				new ExactRun(
+						"nodes",
+						is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201")),
+				new NoOutputRun("quit")
+		};
+		sessionTest(runs, Input.getFile(input));
+	}
 }
