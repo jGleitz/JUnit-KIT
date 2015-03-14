@@ -19,7 +19,7 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
 	private String[] commands;
 
 	public InvalidRecommendTerms() {
-		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
+		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
 
 	@Test

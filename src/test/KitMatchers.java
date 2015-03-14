@@ -105,7 +105,11 @@ public class KitMatchers {
 
 			@Override
 			public void describeMismatch(final Object item, final Description description) {
-				description.appendText("was System.exit(" + item + ")");
+				if (item == null) {
+					description.appendText("was no call to System.exit at all");
+				} else {
+					description.appendText("was System.exit(" + item + ")");
+				}
 			}
 		};
 	}

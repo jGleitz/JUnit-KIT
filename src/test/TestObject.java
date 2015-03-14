@@ -131,7 +131,7 @@ public class TestObject {
 	private static final String CLASS_NAME = System.getProperty("className");
 
 	private static Class<?> clazz;
-	
+
 	private static String[][] groupedProgramOutput = new String[0][];
 	private static Integer lastSystemExitStatus = null;
 	private static String[] nextCallInput;
