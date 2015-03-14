@@ -1,8 +1,9 @@
 package sheet5.b_cities;
 
-import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
+
+import org.junit.Test;
 
 /**
  * A test for wrong inputs on the Interactive Console (Task B) <br>
@@ -18,7 +19,7 @@ import static org.hamcrest.CoreMatchers.startsWith;
  * <ul>
  * <li>None</li>
  * </ul>
- * 
+ *
  * @author Roman Langrehr
  * @author Joshua Gleitze
  * @since 13.01.2015
@@ -62,12 +63,12 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 				"quit"
 		};
 		// @formatter:off
-		expectedResultMatchers = getMatchers(
-				is("Hintertupfingen:3"),
-				startsWith("Error,"),
-				is("Hintertupfingen:3")
-		);
-		// @formatter:on
+        expectedResultMatchers = getMatchers(
+            is("Hintertupfingen:3"),
+            startsWith("Error,"),
+            is("Hintertupfingen:3")
+                );
+        // @formatter:on
 		multiLineTest(commands, expectedResultMatchers, "traverse=pre-order");
 	}
 
@@ -85,7 +86,7 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 		};
 		errorTest(commands, "traverse=pre-order");
 	}
-	
+
 	/**
 	 * Calls the {@code insert} command with no arguments. Asserts that:
 	 * <ul>
@@ -104,12 +105,12 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 				"quit"
 		};
 		// @formatter:off
-		expectedResultMatchers = getMatchers(
-				is("Hintertupfingen:3"),
-				startsWith("Error,"),
-				is("Hintertupfingen:3")
-		);
-		// @formatter:on
+        expectedResultMatchers = getMatchers(
+            is("Hintertupfingen:3"),
+            startsWith("Error,"),
+            is("Hintertupfingen:3")
+                );
+        // @formatter:on
 		multiLineTest(commands, expectedResultMatchers, "traverse=pre-order");
 	}
 
@@ -127,7 +128,7 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 		};
 		errorTest(commands, "traverse=pre-order");
 	}
-	
+
 	@Test
 	public void insertWrongArgRecover() {
 		commands = new String[] {
@@ -139,12 +140,12 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 				"quit"
 		};
 		// @formatter:off
-		expectedResultMatchers = getMatchers(
-				is("Hintertupfingen:3"),
-				startsWith("Error,"),
-				is("Hintertupfingen:3")
-		);
-		// @formatter:on
+        expectedResultMatchers = getMatchers(
+            is("Hintertupfingen:3"),
+            startsWith("Error,"),
+            is("Hintertupfingen:3")
+                );
+        // @formatter:on
 		multiLineTest(commands, expectedResultMatchers, "traverse=pre-order");
 	}
 
@@ -183,7 +184,7 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 		};
 		errorTest(commands, "traverse=pre-order");
 	}
-	
+
 	@Test
 	public void wrongCommandRecover() {
 		commands = new String[] {
@@ -195,12 +196,12 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 				"quit"
 		};
 		// @formatter:off
-		expectedResultMatchers = getMatchers(
-				is("Hintertupfingen:3"),
-				startsWith("Error,"),
-				is("Hintertupfingen:3")
-		);
-		// @formatter:on
+        expectedResultMatchers = getMatchers(
+            is("Hintertupfingen:3"),
+            startsWith("Error,"),
+            is("Hintertupfingen:3")
+                );
+        // @formatter:on
 		multiLineTest(commands, expectedResultMatchers, "traverse=pre-order");
 	}
 
@@ -212,7 +213,7 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 		};
 		errorTest(commands, "traverse=pre-order");
 	}
-	
+
 	@Test
 	public void multiWrongRecover() {
 		commands = new String[] {
@@ -229,17 +230,17 @@ public class OptionalCitiesInteractiveConsoleTest extends CitiesInteracitveConso
 				"quit"
 		};
 		// @formatter:off
-		expectedResultMatchers = getMatchers(
-				is("Hintertupfingen:3"),
-				startsWith("Error,"),
-				startsWith("Error,"),
-				startsWith("Error,"),
-				startsWith("Error,"),
-				startsWith("Error,"),
-				startsWith("Error,"),
-				is("Hintertupfingen:3")
-		);
-		// @formatter:on
+        expectedResultMatchers = getMatchers(
+            is("Hintertupfingen:3"),
+            startsWith("Error,"),
+            startsWith("Error,"),
+            startsWith("Error,"),
+            startsWith("Error,"),
+            startsWith("Error,"),
+            startsWith("Error,"),
+            is("Hintertupfingen:3")
+                );
+        // @formatter:on
 		multiLineTest(commands, expectedResultMatchers, "traverse=pre-order");
 	}
 }

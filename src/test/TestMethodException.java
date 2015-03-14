@@ -1,9 +1,9 @@
 package test;
 
 /**
- * Thrown if an exception that was set to be rethrown occurs while running a test method of
- * {@link TestObject}. Use {@link #getCause} to get the exception that occurred in the tested class.
- * 
+ * Thrown if an exception that was set to be rethrown occurs while running a test method of {@link TestObject}. Use
+ * {@link #getCause} to get the exception that occurred in the tested class.
+ *
  * @see TestObject
  * @author Joshua Gleitze
  * @version 1.0
@@ -25,6 +25,6 @@ public class TestMethodException extends RuntimeException {
 	 */
 	@Override
 	public Throwable getCause() {
-		return this.cause;
+		return cause;
 	}
 }

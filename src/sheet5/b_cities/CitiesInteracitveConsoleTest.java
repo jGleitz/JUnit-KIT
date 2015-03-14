@@ -20,7 +20,7 @@ import test.TestObject;
  * <ul>
  * <li>None</li>
  * </ul>
- * 
+ *
  * @author Roman Langrehr
  * @author Joshua Gleitze
  * @author childen
@@ -235,7 +235,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		expectedResult = "Bad Sooden-Allendorf:3";
 		oneLineTest(commands, expectedResult, "traverse=pre-order");
-		
+
 		commands = new String[] {
 				"insert Ein langer Stadtname mit vielen    Leerzeichen:3",
 				"search Ein langer Stadtname mit vielen    Leerzeichen",
@@ -243,7 +243,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		expectedResult = "Ein langer Stadtname mit vielen    Leerzeichen:3";
 		oneLineTest(commands, expectedResult, "traverse=pre-order");
-		
+
 		commands = new String[] {
 				"insert Sonderzeichen üäö#*§$%&/()=?:3",
 				"search Sonderzeichen üäö#*§$%&/()=?",
@@ -251,7 +251,7 @@ public class CitiesInteracitveConsoleTest extends InteractiveConsoleTest {
 		};
 		expectedResult = "Sonderzeichen üäö#*§$%&/()=?:3";
 		oneLineTest(commands, expectedResult, "traverse=pre-order");
-		
+
 		commands = new String[] {
 				"insert  :5",
 				"search  ",
