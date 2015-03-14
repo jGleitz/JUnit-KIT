@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import final1.subtests.BasicCommandTest;
 import final1.subtests.EdgesCommandTest;
+import final1.subtests.ExportCommandTest;
 import final1.subtests.InvalidCommandLineArgumentsTest;
 import final1.subtests.InvalidInputFileTest;
 import final1.subtests.InvalidRecommendTerms;
@@ -28,7 +29,8 @@ import final1.subtests.ValidRecommendCommandTest;
 		ValidNodesCommandTest.class,
 		ValidRecommendCommandTest.class,
 		InvalidRecommendTerms.class,
-		EdgesCommandTest.class
+		EdgesCommandTest.class,
+		ExportCommandTest.class
 })
 public class RecommendationTest {
 }
