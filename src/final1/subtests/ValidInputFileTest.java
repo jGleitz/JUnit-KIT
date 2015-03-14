@@ -48,7 +48,7 @@ public class ValidInputFileTest extends RecommendationSubtest {
 	 */
 	@Test
 	public void pseudoCirclesTest() {
-		for (int r = 0; r < 8; r++) {
+		for (int r = 0; r < 6; r++) {
 			input = new String[] {
 					relation(r, 1, 2),
 					reverse(r, 2, 3),
@@ -73,7 +73,6 @@ public class ValidInputFileTest extends RecommendationSubtest {
 					relation(r, 1, 2)
 			};
 			noOutputTest("quit", Input.getFile(input));
-			System.out.println(Arrays.toString(input));
 
 			input = new String[] {
 					relation(r, 2, 3),
@@ -81,6 +80,60 @@ public class ValidInputFileTest extends RecommendationSubtest {
 					relation(r, 3, 5),
 					reverse(r, 5, 4),
 					relation(r, 1, 2)
+			};
+			noOutputTest("quit", Input.getFile(input));
+		}
+
+		for (int r = 0; r < 4; r++) {
+			// circle by different relations
+			input = new String[] {
+					relation(r + 2, 1, 2),
+					relation(r + 2, 2, 3),
+					relation(r + 2, 3, 4),
+					relation(((r + 2) % 4) + 2, 4, 5), // different relation
+					relation(r + 2, 5, 6),
+					relation(r + 2, 6, 7),
+					relation(r + 2, 7, 8),
+					relation(r + 2, 8, 1)
+			};
+			noOutputTest("quit", Input.getFile(input));
+
+			// different order
+			input = new String[] {
+					relation(r + 2, 1, 2),
+					relation(((r + 2) % 4) + 2, 2, 3), // different relation
+					relation(r + 2, 3, 4),
+					relation(r + 2, 8, 1),
+					relation(r + 2, 4, 5),
+					relation(r + 2, 5, 6),
+					relation(r + 2, 6, 7),
+					relation(r + 2, 7, 8),
+			};
+			noOutputTest("quit", Input.getFile(input));
+
+			input = new String[] {
+					relation(((r + 2) % 4) + 2, 1, 2), // different relation
+					relation(r + 2, 2, 3),
+					relation(((r + 1) % 4) + 2, 3, 4), // reverse
+					relation(((r + 3) % 4) + 2, 4, 5), // different's reverse
+					relation(((r + 2) % 4) + 2, 5, 6), // different relation
+					relation(r + 2, 6, 7),
+					relation(r + 2, 7, 8),
+					reverse(r + 2, 1, 8)
+			};
+			noOutputTest("quit", Input.getFile(input));
+			System.out.println(Arrays.toString(input));
+
+			// different order
+			input = new String[] {
+					relation(r + 2, 4, 5),
+					relation(r + 2, 1, 2),
+					relation(r + 2, 2, 3),
+					relation(r + 2, 7, 8),
+					relation(r + 2, 3, 4),
+					reverse(r + 2, 1, 8),
+					relation(r + 2, 5, 6),
+					relation(((r + 2) % 4) + 2, 6, 7), // different relation
 			};
 			noOutputTest("quit", Input.getFile(input));
 		}

@@ -34,12 +34,44 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 			}
 	};
 
+	/**
+	 * @param number
+	 *            Indicates which relation to use. {@code number % 6} is assigned as followed:
+	 *            <p>
+	 *            {@code 0  =>  contains}, <br>
+	 *            {@code 1  =>  contained-in}, <br>
+	 *            {@code 2  =>  successor-of}, <br>
+	 *            {@code 3  =>  predecessor-of}, <br>
+	 *            {@code 4  =>  has-part}, <br>
+	 *            {@code 5  =>  part-of}
+	 * @param from
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes from.
+	 * @param to
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes goes to.
+	 * @return A valid relation as described above.
+	 */
 	protected String relation(int number, int from, int to) {
-		return relate(relations[(number / 2)][number % 2], from, to);
+		return relate(relations[(number / 2) % 6][number % 2], from, to);
 	}
 
+	/**
+	 * @param number
+	 *            Indicates which relation to use. {@code number % 6} is assigned as followed:
+	 *            <p>
+	 *            {@code 1  =>  contains}, <br>
+	 *            {@code 0  =>  contained-in}, <br>
+	 *            {@code 3  =>  successor-of}, <br>
+	 *            {@code 2  =>  predecessor-of}, <br>
+	 *            {@code 5  =>  has-part}, <br>
+	 *            {@code 4  =>  part-of}
+	 * @param from
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes from.
+	 * @param to
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes goes to.
+	 * @return A valid relation as described above.
+	 */
 	protected String reverse(int number, int from, int to) {
-		return relate(relations[(number / 2)][(number + 1) % 2], from, to);
+		return relate(relations[(number / 2) % 6][(number + 1) % 2], from, to);
 	}
 
 	private String relate(String relationName, int from, int to) {
