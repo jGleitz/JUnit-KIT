@@ -10,7 +10,7 @@ import org.hamcrest.Matcher;
 
 /**
  * Contains Matchers that are not provided {@code #org.hamcrest.CoreMatchers} but needed by a test.
- *
+ * 
  * @author Joshua Gleitze
  * @version 1.0
  * @since 02.02.2015
@@ -20,7 +20,7 @@ public class KitMatchers {
 	/**
 	 * Creates a matcher that matches if the examined String contains exactly the elements in the specified String
 	 * Array, separated exactly by {@code divider}.
-	 *
+	 * 
 	 * @param substrings
 	 *            the substrings that the returned matcher will expect to be contained by any examined string
 	 * @param divider
@@ -118,7 +118,7 @@ public class KitMatchers {
 	 * Creates a matcher that matches if the examined String array contains exactly as much elements as specified by
 	 * {@code outputLines}. This matcher is meant to assert a tested class' output. It provides a appropriate error
 	 * message.
-	 *
+	 * 
 	 * @param outputLines
 	 *            How many lines the tested class should print.
 	 * @param outputDescription
@@ -141,8 +141,11 @@ public class KitMatchers {
 
 			@Override
 			public void describeMismatch(final Object item, final Description description) {
-				description.appendText("found ").appendText((providedLines.length == 1) ? " call" : " calls")
-						.appendText(" to Terminal.printLine");
+				description
+						.appendText("found " + providedLines.length)
+						.appendText((providedLines.length == 1) ? " call" : " calls")
+						.appendText(
+							" to Terminal.printLine or (depending on the test) lines that were printed using (possibly multiple) calls to Terminal.printLine");
 			}
 
 		};
@@ -175,4 +178,13 @@ public class KitMatchers {
 
 		};
 	}
+
+	public static List<Matcher<String>> inAnyOrder(List<Matcher<String>> expectedOutput) {
+		List<Matcher<String>> result = new LinkedList<>();
+		for (int i = 0; i < expectedOutput.size(); i++) {
+			result.add(KitMatchers.anyOfRemaining(expectedOutput));
+		}
+		return result;
+	}
+
 }

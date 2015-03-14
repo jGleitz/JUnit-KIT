@@ -85,7 +85,6 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 	protected String[] ONE_LINE_INPUT_FILE1 = new String[] {
 		"B(id=1) successor-of A(id=2)"
 	};
-	// edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
 
 	protected String[] ONE_LINE_INPUT_FILE2 = new String[] {
 		"A contains B(id=2)"

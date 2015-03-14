@@ -41,8 +41,8 @@ public class ValidInputFileTest extends RecommendationSubtest {
 	}
 
 	/**
-	 * Asserts that the tested class is able to read in input files that define relations that may easily be confused
-	 * with circles.
+	 * Asserts that the tested class is able to read input files that define relations that may easily be confused with
+	 * circles.
 	 */
 	@Test
 	public void pseudoCirclesTest() {

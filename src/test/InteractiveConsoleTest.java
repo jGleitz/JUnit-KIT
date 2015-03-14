@@ -44,12 +44,12 @@ import test.runs.Run;
  * To use the new way, call {@link #setAllowedSystemExitStatus(SystemExitStatus)} or
  * {@link #setExpectedSystemStatus(SystemExitStatus)} before running one of the test methods. Typically, a test class
  * does this once in its constructor.
- *
+ * 
  * @author Roman Langrehr
  * @author Joshua Gleitze
  * @since 05.01.2015
  * @version 1.3
- *
+ * 
  */
 public abstract class InteractiveConsoleTest {
 	/**
@@ -95,7 +95,7 @@ public abstract class InteractiveConsoleTest {
 
 	/**
 	 * Adds the "quit" command to the given {@code commands}.
-	 *
+	 * 
 	 * @param commands
 	 *            The commands to add {@code quit} to.
 	 * @return A copy of {@code commands} with {@code "quit"} added to its end
@@ -171,7 +171,7 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * The message that should be printed at the start of an error message. Override this method to print your own
 	 * message.
-	 *
+	 * 
 	 * @param commands
 	 *            the commands that were run on the interactive console
 	 * @param commandLineArguments
@@ -191,7 +191,7 @@ public abstract class InteractiveConsoleTest {
 	 * called {@code Terminal.printLine} at least once and the output starts with {@code "Error,"}. <br>
 	 * NOTE: This method does <b>not</b> allow to call {@code System.exit(1)}. If you expect the implemented class to do
 	 * so, call {@code TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);} before.
-	 *
+	 * 
 	 * @param command
 	 *            The command to run on the console.
 	 * @param args0
@@ -207,7 +207,7 @@ public abstract class InteractiveConsoleTest {
 	 * tested class called {@code Terminal.printLine} at least once and the output starts with {@code "Error,"}.<br>
 	 * NOTE: This method does <b>not</b> allow to call {@code System.exit(1)}. If you expect the implemented class to do
 	 * so, call {@code TestObject.allowSystemExit(SystemExitStatus.WITH_GREATER_THAN_0);} before.
-	 *
+	 * 
 	 * @param commands
 	 *            The commands to run on the console
 	 * @param args0
@@ -232,7 +232,7 @@ public abstract class InteractiveConsoleTest {
 	 * A representation of command line arguments. Returns {@code that has been called with the command line arguments},
 	 * concatenated with a list representation of {@code commandLineArguments}. Returns an empty String if
 	 * {@code commandLineArguments} is {@code null} or empty.
-	 *
+	 * 
 	 * @param commandLineArguments
 	 *            the cli arguments to process
 	 * @return a String represention {@code commandLineArguments}
@@ -247,7 +247,7 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * Constructs a List of matchers to be used for the {@link #multiLineTest} methods. This method can be used to write
 	 * down expected output nicely, one Matcher per line. For example:
-	 *
+	 * 
 	 * <pre>
 	 * <code>
 	 * 	// @formatter:off
@@ -259,7 +259,7 @@ public abstract class InteractiveConsoleTest {
 	 * 	// @formatter:on
 	 * </code>
 	 * </pre>
-	 *
+	 * 
 	 * @param matchers
 	 *            the matchers to construct the list.
 	 * @return a list containing {@code matchers}
@@ -272,7 +272,7 @@ public abstract class InteractiveConsoleTest {
 	/**
 	 * Initiates the new way of system exit status checking. Has to be called before the first call to a
 	 * {@link TestObject} run method.
-	 *
+	 * 
 	 * @throws IllegalStateException
 	 *             If this method has already been called without a subsequent call to
 	 *             {@link #checkSystemExitStatus(String[], String[])}.
@@ -298,7 +298,7 @@ public abstract class InteractiveConsoleTest {
 	 * Example:<br>
 	 * Say we expect the main method to output three times {@code "Success!"} and then a line starting with
 	 * {@code "Error,"}. The call would work like this: <br>
-	 *
+	 * 
 	 * <pre>
 	 * <code>
 	 * {@code
@@ -311,7 +311,7 @@ public abstract class InteractiveConsoleTest {
 	 * }
 	 * </code>
 	 * </pre>
-	 *
+	 * 
 	 * @param command
 	 *            The command to run on the console.
 	 * @param expectedResults
@@ -329,7 +329,7 @@ public abstract class InteractiveConsoleTest {
 	 * with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that each output line
 	 * matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output line you
 	 * expect.
-	 *
+	 * 
 	 * @param command
 	 *            The command to run on the console.
 	 * @param expectedResults
@@ -405,7 +405,7 @@ public abstract class InteractiveConsoleTest {
 	 * method with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that each
 	 * output line matches the {@code expectedResults}. Make sure to provide exactly one {@link Matcher} for each output
 	 * line you expect.
-	 *
+	 * 
 	 * @param commands
 	 *            The commands to run on the console.
 	 * @param expectedResults
@@ -422,7 +422,7 @@ public abstract class InteractiveConsoleTest {
 	 * Tests an interactive console program with one command that should not output anything. Calls the main method with
 	 * optional {@code args0} on the test object and runs {@code command} on it. Asserts that the tested class never
 	 * called {@code Terminal.printLine}.
-	 *
+	 * 
 	 * @param command
 	 *            The command to run on the test object.
 	 * @param args0
@@ -436,7 +436,7 @@ public abstract class InteractiveConsoleTest {
 	 * Tests an interactive console program with multiple commands that should not output anything. Calls the main
 	 * method with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that the
 	 * tested class never called {@code Terminal.printLine}.
-	 *
+	 * 
 	 * @param commands
 	 *            The commands to run on the test object.
 	 * @param args0
@@ -461,7 +461,7 @@ public abstract class InteractiveConsoleTest {
 	 * Tests an interactive console program with one command that should output one line. Calls the main method with
 	 * optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that the tested class only
 	 * called {@code Terminal.printLine} once and the output matches the {@code expectedOutputMatcher}.
-	 *
+	 * 
 	 * @param command
 	 *            The command to run on the console.
 	 * @param expectedOutputMatcher
@@ -477,7 +477,7 @@ public abstract class InteractiveConsoleTest {
 	 * Test an interactive console program with one command that should output one line. Calls the main method with
 	 * optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that the tested class
 	 * called {@code Terminal.printLine} only once and the output was exactly {@code expectedOutput}.
-	 *
+	 * 
 	 * @param command
 	 *            The command to run on the console.
 	 * @param expectedOutput
@@ -493,7 +493,7 @@ public abstract class InteractiveConsoleTest {
 	 * Tests an interactive console program with multiple commands that should output one line. Calls the main method
 	 * with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that the tested class
 	 * called {@code Terminal.printLine} only once and the output matches the {@code expectedOutputMatcher}.
-	 *
+	 * 
 	 * @param commands
 	 *            The commands to run on the test object.
 	 * @param expectedOutputMatcher
@@ -581,7 +581,7 @@ public abstract class InteractiveConsoleTest {
 	 * Tests an interactive console program with multiple commands that should output one line. Calls the main method
 	 * with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that the tested class
 	 * called {@code Terminal.printLine} only once and the output was exactly {@code expectedOutput}.
-	 *
+	 * 
 	 * @param commands
 	 *            The commands to run on the test object.
 	 * @param expectedOutput
@@ -601,7 +601,7 @@ public abstract class InteractiveConsoleTest {
 	 * <p>
 	 * NOTE: This setting only takes effect if {@link #setExpectedSystemStatus(SystemExitStatus)} was called with
 	 * {@code null}!
-	 *
+	 * 
 	 * @param status
 	 *            The {@code x} the tested class may {@code System.exit} with. {@code null} to disable the new way of
 	 *            system exit status checking.
@@ -617,7 +617,7 @@ public abstract class InteractiveConsoleTest {
 	 * <p>
 	 * NOTE: This setting overrides {@link #setAllowedSystemExitStatus(SystemExitStatus)}: The allowed system exit
 	 * status is ignored as long as the expected status is not {@code null}.
-	 *
+	 * 
 	 * @param status
 	 *            The {@code x} the tested class has to call {@code System.exit} with. Set to {@code null} if the tested
 	 *            class does not necessary have to call {@code System.exit}.
@@ -637,7 +637,7 @@ public abstract class InteractiveConsoleTest {
 		};
 	}
 
-	private List<Matcher<String>> joinAsIsMatchers(String[] strings) {
+	protected List<Matcher<String>> joinAsIsMatchers(String[] strings) {
 		List<Matcher<String>> result = new Vector<Matcher<String>>();
 		for (String s : strings) {
 			result.add(is(s));
