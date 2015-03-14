@@ -68,19 +68,19 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 	}
 
 	@Test
-    public void leadingZerosTest() {
-      String[] file = new String[] {
-          "CentOS5 ( id= 00105) contained-in operatingSystem",
-          "centOS6 ( id = 0000106) contained-in OperatingSystem",
-          "operatingSystem contains centos7 ( id = 107 )"
-      };
-      runs = new Run[] {
-          new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
-          new ExactRun("recommend UNION(S1 105,S1 107)", is("centos5:105,centos6:106,centos7:107")),
-          new NoOutputRun("quit")
-      };
-      sessionTest(runs, Input.getFile(file));
-    }
+	public void leadingZerosTest() {
+		String[] file = new String[] {
+				"CentOS5 ( id= 00105) contained-in operatingSystem",
+				"centOS6 ( id = 0000106) contained-in OperatingSystem",
+				"operatingSystem contains centos7 ( id = 107 )"
+		};
+		runs = new Run[] {
+				new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
+				new ExactRun("recommend UNION(S1 105,S1 107)", is("centos5:105,centos6:106,centos7:107")),
+				new NoOutputRun("quit")
+		};
+		sessionTest(runs, Input.getFile(file));
+	}
 
 	/**
 	 * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
@@ -163,17 +163,17 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 		}, Input.getFile(ZERO_ID_INPUT_FILE));
 	}
 
-  private void testAgainstTaskSheet(String[] input) {
-	// the following queries/matchers are taken directly from the task sheet
-	runs = new Run[] {
-			new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
-			new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
-			new ExactRun("recommend UNION(S1 105,S3 107)", is("centos5:105,centos6:106,centos7:107")),
-			new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
-			new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
-					is("calc:202,centos6:106,impress:203,libreoffice:200")),
-			new NoOutputRun("quit")
-	};
-	sessionTest(runs, Input.getFile(input));
-}
+	private void testAgainstTaskSheet(String[] input) {
+		// the following queries/matchers are taken directly from the task sheet
+		runs = new Run[] {
+				new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
+				new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
+				new ExactRun("recommend UNION(S1 105,S3 107)", is("centos5:105,centos6:106,centos7:107")),
+				new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
+				new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+						is("calc:202,centos6:106,impress:203,libreoffice:200")),
+				new NoOutputRun("quit")
+		};
+		sessionTest(runs, Input.getFile(input));
+	}
 }

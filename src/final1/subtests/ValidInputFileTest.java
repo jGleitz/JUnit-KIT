@@ -156,7 +156,6 @@ public class ValidInputFileTest extends RecommendationSubtest {
 					reverse(r + 2, 1, 8)
 			};
 			noOutputTest("quit", Input.getFile(input));
-			System.out.println(Arrays.toString(input));
 
 			// different order
 			input = new String[] {
