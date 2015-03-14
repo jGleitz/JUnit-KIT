@@ -143,4 +143,32 @@ public class KitMatchers {
 
 		};
 	}
+
+	public static Matcher<String> anyOfRemaining(final List<Matcher<String>> matchers) {
+		return new BaseMatcher<String>() {
+
+			@Override
+			public boolean matches(Object item) {
+				for (Matcher<String> matcher : matchers) {
+					if (matcher.matches(item)) {
+						matchers.remove(matcher);
+						return true;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("any of the following: ");
+				description.appendList("<", ">, <", ">", matchers);
+			}
+
+			@Override
+			public void describeMismatch(final Object item, final Description description) {
+				description.appendText("matched none of the above: ").appendValue(item);
+			}
+
+		};
+	}
 }
