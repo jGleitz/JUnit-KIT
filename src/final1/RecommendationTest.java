@@ -5,11 +5,14 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import final1.subtests.BasicCommandTest;
+import final1.subtests.EdgesCommandTest;
+import final1.subtests.ExportCommandTest;
 import final1.subtests.InvalidCommandLineArgumentsTest;
 import final1.subtests.InvalidInputFileTest;
 import final1.subtests.InvalidRecommendTerms;
 import final1.subtests.ValidInputFileTest;
 import final1.subtests.ValidNodesCommandTest;
+import final1.subtests.ValidRecommendCommandTest;
 
 /**
  * Test suite for the programming lecture's first final test.
@@ -24,7 +27,10 @@ import final1.subtests.ValidNodesCommandTest;
 		ValidInputFileTest.class,
 		InvalidInputFileTest.class,
 		ValidNodesCommandTest.class,
-		InvalidRecommendTerms.class
+		ValidRecommendCommandTest.class,
+		InvalidRecommendTerms.class,
+		EdgesCommandTest.class,
+		ExportCommandTest.class
 })
 public class RecommendationTest {
 }

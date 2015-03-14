@@ -81,7 +81,7 @@ public class LineRun implements Run {
 	}
 
 	private String lineCountMessage() {
-		return "exactly " + ((expectedResults.size() == 1) ? "line" : "lines");
+		return "exactly " + expectedResults.size() + " " + ((expectedResults.size() == 1) ? "line" : "lines");
 	}
 
 	/*

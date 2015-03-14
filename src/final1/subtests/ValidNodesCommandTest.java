@@ -7,14 +7,13 @@ import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
-import test.runs.ErrorRun;
 import test.runs.ExactRun;
 import test.runs.NoOutputRun;
 import test.runs.Run;
 
 /**
  * Performs valid calls to the {@code nodes} command and checks the results.
- *
+ * 
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @version 1.1
@@ -42,7 +41,7 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	}
 
 	/**
-	 * Asserts correct results if the input file contains semantically dublicates.
+	 * Asserts correct results if the input file contains semantical duplicates.
 	 */
 	@Test
 	public void duplicatesTest() {
@@ -50,52 +49,39 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	}
 
 	/**
-	 * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
-	 * errors.
+	 * Asserts correct results for simple one line input files.
 	 */
 	@Test
 	public void oneLineTest() {
-		// @formatter:off
 		runs = new Run[] {
-			new ExactRun("nodes", is("a:2,b:1")),
-			new ExactRun("recommend S1 1", is("")),
-			new ErrorRun("recommend S1 3"),
-			new ErrorRun("recommend S4 1"),
-			new ExactRun("recommend S2 1", is("")),
-			new ExactRun("recommend S2 2", is("b:1")),
-			new ErrorRun("redbutton"),
-			new ExactRun("recommend S3 1", is("a:2")),
-			new ExactRun("recommend S3 2", is("")),
-			new NoOutputRun("quit")
+				new ExactRun("nodes", is("a:2,b:1")),
+				new NoOutputRun("quit")
 		};
-		// edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
 
 		runs = new Run[] {
 				new ExactRun("nodes", is("a,b:2")),
-				new ErrorRun("recommend S1 1"),
-				new ExactRun("recommend S1 2", is("")),
-				new ExactRun("recommend S2 1", is("")),
-				new ExactRun("recommend S3 1", is("")),
 				new NoOutputRun("quit")
 		};
 		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
 	}
 
-	private void testAgainstTaskSheet(String[] input) {
-		//@formatter:off
+	/**
+	 * Asserts that product ID 0 can be handled correctly.
+	 */
+	@Test
+	public void zeroIdTest() {
+		oneLineTest(addQuit("nodes"), "a,b:0,c:1", Input.getFile(ZERO_ID_INPUT_FILE));
+	}
 
-        // the following queries/matchers are taken directly from the task sheet
+	private void testAgainstTaskSheet(String[] input) {
+		// the following queries/matchers are taken directly from the task sheet
 		runs = new Run[] {
-			new ExactRun("nodes", is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201")),
-			new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
-			new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
-			new ExactRun("recommend UNION(S1 105,S3 107)", is("centos5:105,centos6:106,centos7:107")),
-			new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
-			new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))", is("calc:202,centos6:106,impress:203,libreoffice:200")),
-			new NoOutputRun("quit")
+				new ExactRun(
+						"nodes",
+						is("calc:202,centos5:105,centos6:106,centos7:107,impress:203,libreoffice:200,officesuite,operatingsystem,software,writer:201")),
+				new NoOutputRun("quit")
 		};
-		//@formatter:on
 		sessionTest(runs, Input.getFile(input));
 	}
 
@@ -103,4 +89,5 @@ public class ValidNodesCommandTest extends RecommendationSubtest {
 	public void incomplete() {
 		fail("This test is still in the development state and therefore incomplete!");
 	}
+
 }
