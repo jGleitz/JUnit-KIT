@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
 import static test.KitMatchers.suits;
 
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
 
+import test.framework.FrameworkException;
 import test.runs.NoOutputRun;
 import test.runs.Run;
 
@@ -53,11 +53,12 @@ import test.runs.Run;
  */
 public abstract class InteractiveConsoleTest {
 	/**
-	 * A test is terminated after 5 seconds. This assures that a test fails if the tested class fails to terminate. Some
-	 * users may mistake a non terminating test as being successful.
+	 * A test is terminated after a certain timeout (default: 5s). This assures that a test fails if the tested class
+	 * fails to terminate. Some users may mistake a non terminating test as being successful. Override
+	 * {@link #getDefaultTimeoutMs()} to change the value for your test, don't touch this property!
 	 */
 	@Rule
-	public Timeout globalTimeout = new Timeout(5000); // 5 seconds max per method tested
+	public final Timeout globalTimeout = getTimeout(); // default: 5 seconds max per method tested
 	/**
 	 * You can use this field to put one command in it.
 	 */
@@ -643,5 +644,37 @@ public abstract class InteractiveConsoleTest {
 			result.add(is(s));
 		}
 		return result;
+	}
+
+	/**
+	 * Returns either the timeout set in the configuration or the default timeout returned by
+	 * {@link #getDefaultTimeoutMs()}.
+	 * 
+	 * @return
+	 */
+	private final Timeout getTimeout() {
+		String systemProperty = System.getProperty("timeout");
+		if (systemProperty != null) {
+			int sysTimeout = 0;
+			try {
+				sysTimeout = Integer.parseInt(systemProperty);
+			} catch (NumberFormatException e) {
+				throw new FrameworkException("The timeout set in the configuration cannot be parsed into an integer!");
+			}
+			if (sysTimeout < 0) {
+				throw new FrameworkException("How exactly do you think a negative timeout should work?");
+			}
+			return new Timeout(sysTimeout);
+		}
+		return new Timeout(getDefaultTimeoutMs());
+	}
+
+	/**
+	 * The default timeout for a test. This implementation returns 5000. Override this method to adapt your own timeout!
+	 * 
+	 * @return 5000
+	 */
+	protected int getDefaultTimeoutMs() {
+		return 5000;
 	}
 }
