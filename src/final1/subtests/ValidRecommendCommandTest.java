@@ -21,109 +21,6 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
 
-	/**
-	 * Asserts correct results for the example given on the task sheet.
-	 */
-	@Test
-	public void taskSheetExampleTest() {
-		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
-		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES); // Not sure if this is really needed
-	}
-
-	/**
-	 * Asserts correct results if the input file contains semantical duplicates.
-	 */
-	@Test
-	public void duplicatesTest() {
-		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
-	}
-
-	/**
-	 * Asserts correct results for different variations of spaces in the recommend command.
-	 */
-	@Test
-	public void spacesTest() {
-		String[] variants = {
-				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
-				"recommend  UNION  (S1 201,INTERSECTION(S1 105,S3 107))",
-				"recommend UNION  (S1 201,INTERSECTION(S1 105,S3 107))",
-				"recommend UNION(S1  201,INTERSECTION(S1 105,S3 107))",
-				"recommend UNION(S1 201  ,INTERSECTION(S1 105,S3 107))",
-				"recommend UNION(S1 201,  INTERSECTION(S1 105,S3 107))",
-				"recommend UNION(S1 201,INTERSECTION  (S1 105,S3 107))",
-				"recommend UNION(S1 201,INTERSECTION(  S1 105,S3 107))",
-				"recommend UNION(S1 201,INTERSECTION(S1 105   ,S3 107))",
-				"recommend UNION(S1 201,INTERSECTION(S1   105,  S3 107))",
-				"recommend UNION(S1 201,INTERSECTION(S1 105,S3  107))",
-				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107  ))",
-				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107)  )",
-				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))  ",
-				"recommend        UNION      (     S1     201    ,    INTERSECTION    (    S1    105   ,   S3    107    )    )     "
-		};
-		for (String variant : variants) {
-			oneLineTest(addQuit(variant), "calc:202,centos6:106,impress:203,libreoffice:200",
-				Input.getFile(TASK_SHEET_INPUT_FILE));
-		}
-	}
-
-	/**
-	 * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
-	 * errors.
-	 */
-	@Test
-	public void oneLineTest() {
-		runs = new Run[] {
-				new ExactRun("recommend S1 1", is("")),
-				new ErrorRun("recommend S1 3"),
-				new ErrorRun("recommend S4 1"),
-				new ExactRun("recommend S2 1", is("")),
-				new ExactRun("recommend S2 2", is("b:1")),
-				new ExactRun("recommend S3 1", is("a:2")),
-				new ExactRun("recommend S3 2", is("")),
-				new NoOutputRun("quit")
-		};
-		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
-
-		runs = new Run[] {
-				new ErrorRun("recommend S1 1"),
-				new ExactRun("recommend S1 2", is("")),
-				new ExactRun("recommend S2 2", is("")),
-				new ExactRun("recommend S3 2", is("")),
-				new NoOutputRun("quit")
-		};
-		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
-	}
-
-	private void testAgainstTaskSheet(String[] input) {
-		// the following queries/matchers are taken directly from the task sheet
-		runs = new Run[] {
-				new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
-				new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
-				new ExactRun("recommend UNION(S1 105,S3 107)", is("centos5:105,centos6:106,centos7:107")),
-				new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
-				new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
-						is("calc:202,centos6:106,impress:203,libreoffice:200")),
-				new NoOutputRun("quit")
-		};
-		sessionTest(runs, Input.getFile(input));
-	}
-
-	/**
-	 * Asserts that product ID 0 can be handled correctly.
-	 */
-	@Test
-	public void zeroIdTest() {
-		multiLineTest(addQuit(new String[] {
-				"recommend S1 0",
-				"recommend S1 1",
-				"recommend S2 0"
-		}), new String[] {
-				"c:1",
-				"b:0",
-				""
-		}, Input.getFile(ZERO_ID_INPUT_FILE));
-	}
-
 	@Test
 	public void complexTest() {
 		runs = new Run[] {
@@ -161,4 +58,122 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 		};
 		sessionTest(runs, Input.getFile(COMPLEX_INPUT_FILE));
 	}
+
+	/**
+	 * Asserts correct results if the input file contains semantical duplicates.
+	 */
+	@Test
+	public void duplicatesTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
+	}
+
+	@Test
+    public void leadingZerosTest() {
+      String[] file = new String[] {
+          "CentOS5 ( id= 00105) contained-in operatingSystem",
+          "centOS6 ( id = 0000106) contained-in OperatingSystem",
+          "operatingSystem contains centos7 ( id = 107 )"
+      };
+      runs = new Run[] {
+          new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
+          new ExactRun("recommend UNION(S1 105,S1 107)", is("centos5:105,centos6:106,centos7:107")),
+          new NoOutputRun("quit")
+      };
+      sessionTest(runs, Input.getFile(file));
+    }
+
+	/**
+	 * Asserts overall correct behaviour of the implementation. This includes several error detection and recovery after
+	 * errors.
+	 */
+	@Test
+	public void oneLineTest() {
+		runs = new Run[] {
+				new ExactRun("recommend S1 1", is("")),
+				new ErrorRun("recommend S1 3"),
+				new ErrorRun("recommend S4 1"),
+				new ExactRun("recommend S2 1", is("")),
+				new ExactRun("recommend S2 2", is("b:1")),
+				new ExactRun("recommend S3 1", is("a:2")),
+				new ExactRun("recommend S3 2", is("")),
+				new NoOutputRun("quit")
+		};
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
+
+		runs = new Run[] {
+				new ErrorRun("recommend S1 1"),
+				new ExactRun("recommend S1 2", is("")),
+				new ExactRun("recommend S2 2", is("")),
+				new ExactRun("recommend S3 2", is("")),
+				new NoOutputRun("quit")
+		};
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
+	}
+
+	/**
+	 * Asserts correct results for different variations of spaces in the recommend command.
+	 */
+	@Test
+	public void spacesTest() {
+		String[] variants = {
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend  UNION  (S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION  (S1 201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1  201,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201  ,INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201,  INTERSECTION(S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION  (S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(  S1 105,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105   ,S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1   105,  S3 107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3  107))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107  ))",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107)  )",
+				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))  ",
+				"recommend        UNION      (     S1     201    ,    INTERSECTION    (    S1    105   ,   S3    107    )    )     "
+		};
+		for (String variant : variants) {
+			oneLineTest(addQuit(variant), "calc:202,centos6:106,impress:203,libreoffice:200",
+				Input.getFile(TASK_SHEET_INPUT_FILE));
+		}
+	}
+
+	/**
+	 * Asserts correct results for the example given on the task sheet.
+	 */
+	@Test
+	public void taskSheetExampleTest() {
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE);
+		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_SPACES); // Not sure if this is really needed
+	}
+
+	/**
+	 * Asserts that product ID 0 can be handled correctly.
+	 */
+	@Test
+	public void zeroIdTest() {
+		multiLineTest(addQuit(new String[] {
+				"recommend S1 0",
+				"recommend S1 1",
+				"recommend S2 0"
+		}), new String[] {
+				"c:1",
+				"b:0",
+				""
+		}, Input.getFile(ZERO_ID_INPUT_FILE));
+	}
+
+  private void testAgainstTaskSheet(String[] input) {
+	// the following queries/matchers are taken directly from the task sheet
+	runs = new Run[] {
+			new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
+			new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
+			new ExactRun("recommend UNION(S1 105,S3 107)", is("centos5:105,centos6:106,centos7:107")),
+			new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
+			new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+					is("calc:202,centos6:106,impress:203,libreoffice:200")),
+			new NoOutputRun("quit")
+	};
+	sessionTest(runs, Input.getFile(input));
+}
 }
