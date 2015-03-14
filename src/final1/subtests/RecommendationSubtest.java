@@ -1,7 +1,6 @@
 package final1.subtests;
 
 import static test.KitMatchers.suits;
-
 import static org.junit.Assert.assertThat;
 import test.Input;
 import test.InteractiveConsoleTest;
@@ -17,6 +16,82 @@ import test.TestObject;
  * @version 1.1
  */
 public abstract class RecommendationSubtest extends InteractiveConsoleTest {
+	/**
+	 * Relations and their reverse counterparts.
+	 */
+	private String[][] relations = new String[][] {
+			{
+					"contains",
+					"contained-in"
+			},
+			{
+					"successor-of",
+					"predecessor-of"
+			},
+			{
+					"has-part",
+					"part-of"
+			}
+	};
+
+	/**
+	 * @param number
+	 *            Indicates which relation to use. {@code number % 6} is assigned as followed:
+	 *            <p>
+	 *            {@code 0  =>  contains}, <br>
+	 *            {@code 1  =>  contained-in}, <br>
+	 *            {@code 2  =>  successor-of}, <br>
+	 *            {@code 3  =>  predecessor-of}, <br>
+	 *            {@code 4  =>  has-part}, <br>
+	 *            {@code 5  =>  part-of}
+	 * @param from
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes from.
+	 * @param to
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes goes to.
+	 * @return A valid relation as described above.
+	 */
+	protected String relation(int number, int from, int to) {
+		return relate(relations[(number / 2) % 6][number % 2], from, to);
+	}
+
+	/**
+	 * @param number
+	 *            Indicates which relation to use. {@code number % 6} is assigned as followed:
+	 *            <p>
+	 *            {@code 1  =>  contains}, <br>
+	 *            {@code 0  =>  contained-in}, <br>
+	 *            {@code 3  =>  successor-of}, <br>
+	 *            {@code 2  =>  predecessor-of}, <br>
+	 *            {@code 5  =>  has-part}, <br>
+	 *            {@code 4  =>  part-of}
+	 * @param from
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes from.
+	 * @param to
+	 *            An int between {@code 0} and {@code 26} indicating the element the relation comes goes to.
+	 * @return A valid relation as described above.
+	 */
+	protected String reverse(int number, int from, int to) {
+		return relate(relations[(number / 2) % 6][(number + 1) % 2], from, to);
+	}
+
+	private String relate(String relationName, int from, int to) {
+		switch (relationName) {
+		case "contains":
+		case "contained-in":
+			return category(from) + " " + relationName + " " + category(to);
+		default:
+			return product(from) + " " + relationName + " " + product(to);
+		}
+	}
+
+	private String product(int number) {
+		return String.valueOf((char) (number + 64)) + " (id=" + number + ")";
+	}
+
+	private String category(int number) {
+		return String.valueOf((char) (number + 64));
+	}
+
 	/**
 	 * The input file as given on the task sheet.
 	 */
@@ -93,19 +168,6 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 	protected String[] ZERO_ID_INPUT_FILE = new String[] {
 			"A contains B(id=0)",
 			"A contains C(id=1)"
-	};
-
-	protected String[] PSEUDO_CIRCLE_INPUT_FILE1 = new String[] {
-			"A(id=1) successor-of B(id=2)",
-			"B(id=2) predecessor-of C(id=3)",
-			"C(id=3) predecessor-of A(id=1)"
-	};
-
-	protected String[] PSEUDO_CIRCLE_INPUT_FILE2 = new String[] {
-			"A (id=1) successor-of B (id=2)",
-			"C (id=3) predecessor-of B (id=2)",
-			"C (id=3) successor-of D (id=5)",
-			"D (id=5) predecessor-of A (id=1)"
 	};
 
 	protected String[] COMPLEX_INPUT_FILE = new String[] {
