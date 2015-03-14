@@ -217,78 +217,61 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 	 */
 	@Test
 	public void circleTest() {
-		String[][] relations = new String[][] {
-				{
-						"contains",
-						"contained-in"
-				},
-				{
-						"successor-of",
-						"predecessor-of"
-				},
-				{
-						"has-part",
-						"part-of"
-				}
-		};
+		for (int r = 0; r < 6; r++) {
+			input = new String[] {
+				relation(r, 1, 1)
+			};
+			errorTest("quit", Input.getFile(input));
 
-		for (String[] relation : relations) {
-			for (int i = 0; i < 2; i++) {
-				input = new String[] {
-					"A " + relation[i] + " A"
-				};
-				errorTest("quit", Input.getFile(input));
+			input = new String[] {
+					relation(r, 1, 2),
+					relation(r, 2, 3),
+					relation(r, 3, 4),
+					relation(r, 4, 5),
+					relation(r, 5, 6),
+					relation(r, 6, 7),
+					relation(r, 7, 8),
+					relation(r, 8, 1)
+			};
+			errorTest("quit", Input.getFile(input));
 
-				input = new String[] {
-						"A (id=1) " + relation[i] + " B (id=2)",
-						"B (id=2) " + relation[i] + " C (id=3)",
-						"C (id=3) " + relation[i] + " D (id=4)",
-						"D (id=4) " + relation[i] + " E (id=5)",
-						"E (id=5) " + relation[i] + " F (id=6)",
-						"F (id=6) " + relation[i] + " G (id=7)",
-						"G (id=7) " + relation[i] + " H (id=8)",
-						"H (id=8) " + relation[i] + " A (id=1)"
-				};
-				errorTest("quit", Input.getFile(input));
+			// different order
+			input = new String[] {
+					relation(r, 1, 2),
+					relation(r, 2, 3),
+					relation(r, 3, 4),
+					relation(r, 8, 1),
+					relation(r, 4, 5),
+					relation(r, 5, 6),
+					relation(r, 6, 7),
+					relation(r, 7, 8),
+			};
+			errorTest("quit", Input.getFile(input));
 
-				// different order
-				input = new String[] {
-						"A (id=1) " + relation[i] + " B (id=2)",
-						"B (id=2) " + relation[i] + " C (id=3)",
-						"C (id=3) " + relation[i] + " D (id=4)",
-						"H (id=8) " + relation[i] + " A (id=1)",
-						"D (id=4) " + relation[i] + " E (id=5)",
-						"E (id=5) " + relation[i] + " F (id=6)",
-						"F (id=6) " + relation[i] + " G (id=7)",
-						"G (id=7) " + relation[i] + " H (id=8)"
-				};
-				errorTest("quit", Input.getFile(input));
+			input = new String[] {
+					relation(r, 1, 2),
+					relation(r, 2, 3),
+					relation(r, 3, 4),
+					relation(r, 4, 5),
+					relation(r, 5, 6),
+					relation(r, 6, 7),
+					relation(r, 7, 8),
+					reverse(r, 1, 8)
+			};
+			errorTest("quit", Input.getFile(input));
 
-				input = new String[] {
-						"A (id=1) " + relation[i] + " B (id=2)",
-						"B (id=2) " + relation[i] + " C (id=3)",
-						"C (id=3) " + relation[i] + " D (id=4)",
-						"D (id=4) " + relation[i] + " E (id=5)",
-						"E (id=5) " + relation[i] + " F (id=6)",
-						"F (id=6) " + relation[i] + " G (id=7)",
-						"G (id=7) " + relation[i] + " H (id=8)",
-						"A (id=1) " + relation[(i + 1) % 2] + " H (id=8)"
-				};
-				errorTest("quit", Input.getFile(input));
-
-				// different order
-				input = new String[] {
-						"A (id=1) " + relation[i] + " B (id=2)",
-						"B (id=2) " + relation[i] + " C (id=3)",
-						"C (id=3) " + relation[i] + " D (id=4)",
-						"A (id=1) " + relation[(i + 1) % 2] + " H (id=8)",
-						"D (id=4) " + relation[i] + " E (id=5)",
-						"E (id=5) " + relation[i] + " F (id=6)",
-						"F (id=6) " + relation[i] + " G (id=7)",
-						"G (id=7) " + relation[i] + " H (id=8)"
-				};
-				errorTest("quit", Input.getFile(input));
-			}
+			// different order
+			input = new String[] {
+					relation(r, 4, 5),
+					relation(r, 1, 2),
+					relation(r, 2, 3),
+					relation(r, 7, 8),
+					relation(r, 3, 4),
+					reverse(r, 1, 8),
+					relation(r, 5, 6),
+					relation(r, 6, 7),
+			};
+			errorTest("quit", Input.getFile(input));
 		}
 	}
 

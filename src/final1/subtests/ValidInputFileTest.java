@@ -2,6 +2,8 @@ package final1.subtests;
 
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import test.Input;
@@ -46,17 +48,42 @@ public class ValidInputFileTest extends RecommendationSubtest {
 	 */
 	@Test
 	public void pseudoCirclesTest() {
-		noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE1));
-		noOutputTest("quit", Input.getFile(PSEUDO_CIRCLE_INPUT_FILE2));
+		for (int r = 0; r < 8; r++) {
+			input = new String[] {
+					relation(r, 1, 2),
+					reverse(r, 2, 3),
+					reverse(r, 3, 1)
+			};
+			noOutputTest("quit", Input.getFile(input));
 
-		input = new String[] {
-				"B (id=2) predecessor-of C (id=3)",
-				"B (id=2) predecessor-of D (id=4)",
-				"C (id=3) predecessor-of E (id=5)",
-				"D (id=4) predecessor-of E (id=5)",
-				"A (id=1) predecessor-of B (id=2)"
-		};
-		noOutputTest("quit", Input.getFile(input));
+			input = new String[] {
+					relation(r, 1, 2),
+					reverse(r, 3, 2),
+					relation(r, 3, 4),
+					reverse(r, 4, 1)
+			};
+			noOutputTest("quit", Input.getFile(input));
+
+			// diamond
+			input = new String[] {
+					relation(r, 2, 3),
+					relation(r, 2, 4),
+					relation(r, 3, 5),
+					relation(r, 4, 5),
+					relation(r, 1, 2)
+			};
+			noOutputTest("quit", Input.getFile(input));
+			System.out.println(Arrays.toString(input));
+
+			input = new String[] {
+					relation(r, 2, 3),
+					reverse(r, 4, 2),
+					relation(r, 3, 5),
+					reverse(r, 5, 4),
+					relation(r, 1, 2)
+			};
+			noOutputTest("quit", Input.getFile(input));
+		}
 	}
 
 	/**
