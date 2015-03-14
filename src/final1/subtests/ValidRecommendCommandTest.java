@@ -1,16 +1,15 @@
 package final1.subtests;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
+import test.runs.ErrorRun;
+import test.runs.ExactRun;
+import test.runs.NoOutputRun;
+import test.runs.Run;
 
 /**
  * Performs valid calls to the {@code recommend} command and checks the results.
@@ -37,27 +36,6 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 	@Test
 	public void duplicatesTest() {
 		testAgainstTaskSheet(TASK_SHEET_INPUT_FILE_DUPLICATES);
-	}
-
-	private void testAgainstTaskSheet(String[] input) {
-		// the following queries/matchers are taken directly from the task sheet
-		String[] queries = new String[] {
-				"recommend S1 105",
-				"recommend S3 107",
-				"recommend UNION(S1 105,S3 107)",
-				"recommend S1 201",
-				"recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
-		};
-		// @formatter:off
-        List<Matcher<String>> matchers = getMatchers(
-            is("centos6:106,centos7:107"),
-            is("centos5:105,centos6:106"),
-            is("centos5:105,centos6:106,centos7:107"),
-            is("calc:202,impress:203,libreoffice:200"),
-            is("calc:202,centos6:106,impress:203,libreoffice:200")
-        );
-        // @formatter:on
-		multiLineTest(addQuit(queries), matchers, Input.getFile(input));
 	}
 
 	/**
@@ -94,46 +72,40 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 	 */
 	@Test
 	public void oneLineTest() {
-		String[] queries = new String[] {
-				"recommend S1 1",
-				"recommend S1 3",
-				"recommend S4 1",
-				"recommend S2 1",
-				"recommend S2 2",
-				"redbutton",
-				"recommend S3 1",
-				"recommend S3 2"
+		runs = new Run[] {
+				new ExactRun("recommend S1 1", is("")),
+				new ErrorRun("recommend S1 3"),
+				new ErrorRun("recommend S4 1"),
+				new ExactRun("recommend S2 1", is("")),
+				new ExactRun("recommend S2 2", is("b:1")),
+				new ExactRun("recommend S3 1", is("a:2")),
+				new ExactRun("recommend S3 2", is("")),
+				new NoOutputRun("quit")
 		};
-		// @formatter:off
-		List<Matcher<String>> matchers = getMatchers(
-			is(""),
-			startsWith("Error,"),
-			startsWith("Error,"),
-			is(""),
-			is("b:1"),
-			startsWith("Error,"),
-			is("a:2"),
-			is("")
-		);
-		// @formatter:on
-		// edges: new String[] { "b:1-[successor-of]->a", "a-[predecessor-of]->b" }
-		multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE1));
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE1));
 
-		queries = new String[] {
-				"recommend S1 1",
-				"recommend S1 2",
-				"recommend S2 2",
-				"recommend S3 2",
+		runs = new Run[] {
+				new ErrorRun("recommend S1 1"),
+				new ExactRun("recommend S1 2", is("")),
+				new ExactRun("recommend S2 2", is("")),
+				new ExactRun("recommend S3 2", is("")),
+				new NoOutputRun("quit")
 		};
-		// @formatter:off
-        matchers = getMatchers(
-            startsWith("Error,"),
-            is(""),
-            is(""),
-            is("")
-        );
-        // @formatter:on
-		multiLineTest(addQuit(queries), matchers, Input.getFile(ONE_LINE_INPUT_FILE2));
+		sessionTest(runs, Input.getFile(ONE_LINE_INPUT_FILE2));
+	}
+
+	private void testAgainstTaskSheet(String[] input) {
+		// the following queries/matchers are taken directly from the task sheet
+		runs = new Run[] {
+				new ExactRun("recommend S1 105", is("centos6:106,centos7:107")),
+				new ExactRun("recommend S3 107", is("centos5:105,centos6:106")),
+				new ExactRun("recommend UNION(S1 105,S3 107)", is("centos5:105,centos6:106,centos7:107")),
+				new ExactRun("recommend S1 201", is("calc:202,impress:203,libreoffice:200")),
+				new ExactRun("recommend UNION(S1 201,INTERSECTION(S1 105,S3 107))",
+						is("calc:202,centos6:106,impress:203,libreoffice:200")),
+				new NoOutputRun("quit")
+		};
+		sessionTest(runs, Input.getFile(input));
 	}
 
 	/**
@@ -154,108 +126,39 @@ public class ValidRecommendCommandTest extends RecommendationSubtest {
 
 	@Test
 	public void complexTest() {
-		String[][] commandResultArray = new String[][] {
-				{
-						"S1 7",
-						"chromium:41,debian:78,ub1204lts:1204,ub1210:1210,ub1304:1304,ub1310:1310,ub1404lts:1404,vim:6"
-				},
-				{
-						"S1 333",
-						"mso:666666"
-				},
-				{
-						"S2 222",
-						"aoo:444,libreoffice:333,oracleoo:555"
-				},
-				{
-						"S2 111",
-						"aoo:444,libreoffice:333,ooo:222,oracleoo:555"
-				},
-				{
-						"S2 555",
-						""
-				},
-				{
-						"S3 222",
-						"staroffice:111"
-				},
-				{
-						"S3 555",
-						"ooo:222,staroffice:111"
-				},
-				{
-						"S2 4",
-						"blink:5,webkit:1,webkit2:2"
-				},
-				{
-						"S3 333",
-						"ooo:222,staroffice:111"
-				},
-				{
-						"S3 5",
-						"khtml:4,kjs:3,webkit:1"
-				},
-				{
-						"S3 4",
-						""
-				},
-				{
-						"S3 3",
-						""
-				},
-				{
-						"INTERSECTION(S3 4, S3 3)",
-						""
-				},
-				{
-						"UNION(S3 4, S3 3)",
-						""
-				},
-				{
-						"UNION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3))",
-						""
-				},
-				{
-						"INTERSECTION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3))",
-						""
-				},
-				{
-						"S2 69",
-						"chucknorris:42,evil:666,god:0,hurd:1337"
-				},
-				{
-						"S2 1337",
-						""
-				},
-				{
-						"S3 1337",
-						"chucknorris:42,evil:666,god:0,microsoft:69"
-				},
-				{
-						"INTERSECTION(S2 69, S3 1337)",
-						"chucknorris:42,evil:666,god:0"
-				},
-				{
-						"UNION(S2 69, S3 1337)",
-						"chucknorris:42,evil:666,god:0,hurd:1337,microsoft:69"
-				},
-				{
-						"UNION(UNION(S2 69, S3 1337), UNION(INTERSECTION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3)), UNION(S2 111, UNION(S3 222, UNION(S1 1404, S2 1310)))))",
-						"aoo:444,apt:7,chucknorris:42,debian:78,evil:666,god:0,hurd:1337,libreoffice:333,microsoft:69,ooo:222,oracleoo:555,staroffice:111,ub1204lts:1204,ub1210:1210,ub1304:1304,ub1310:1310,ub1404lts:1404"
-				},
-				{
-						"INTERSECTION(UNION(S2 69, S3 1337), UNION(INTERSECTION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3)), UNION(S2 111, UNION(S3 222, UNION(S1 1404, S2 1310)))))",
-						""
-				}
+		runs = new Run[] {
+				new ExactRun(
+						"recommend S1 7",
+						is("chromium:41,debian:78,ub1204lts:1204,ub1210:1210,ub1304:1304,ub1310:1310,ub1404lts:1404,vim:6")),
+				new ExactRun("recommend S1 333", is("mso:666666")),
+				new ExactRun("recommend S2 222", is("aoo:444,libreoffice:333,oracleoo:555")),
+				new ExactRun("recommend S2 111", is("aoo:444,libreoffice:333,ooo:222,oracleoo:555")),
+				new ExactRun("recommend S2 555", is("")),
+				new ExactRun("recommend S3 222", is("staroffice:111")),
+				new ExactRun("recommend S3 555", is("ooo:222,staroffice:111")),
+				new ExactRun("recommend S2 4", is("blink:5,webkit:1,webkit2:2")),
+				new ExactRun("recommend S3 333", is("ooo:222,staroffice:111")),
+				new ExactRun("recommend S3 5", is("khtml:4,kjs:3,webkit:1")),
+				new ExactRun("recommend S3 4", is("")),
+				new ExactRun("recommend S3 3", is("")),
+				new ExactRun("recommend INTERSECTION(S3 4, S3 3)", is("")),
+				new ExactRun("recommend UNION(S3 4, S3 3)", is("")),
+				new ExactRun("recommend UNION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3))", is("")),
+				new ExactRun("recommend INTERSECTION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3))", is("")),
+				new ExactRun("recommend S2 69", is("chucknorris:42,evil:666,god:0,hurd:1337")),
+				new ExactRun("recommend S2 1337", is("")),
+				new ExactRun("recommend S3 1337", is("chucknorris:42,evil:666,god:0,microsoft:69")),
+				new ExactRun("recommend INTERSECTION(S2 69, S3 1337)", is("chucknorris:42,evil:666,god:0")),
+				new ExactRun("recommend UNION(S2 69, S3 1337)",
+						is("chucknorris:42,evil:666,god:0,hurd:1337,microsoft:69")),
+				new ExactRun(
+						"recommend UNION(UNION(S2 69, S3 1337), UNION(INTERSECTION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3)), UNION(S2 111, UNION(S3 222, UNION(S1 1404, S2 1310)))))",
+						is("aoo:444,apt:7,chucknorris:42,debian:78,evil:666,god:0,hurd:1337,libreoffice:333,microsoft:69,ooo:222,oracleoo:555,staroffice:111,ub1204lts:1204,ub1210:1210,ub1304:1304,ub1310:1310,ub1404lts:1404")),
+				new ExactRun(
+						"recommend INTERSECTION(UNION(S2 69, S3 1337), UNION(INTERSECTION(INTERSECTION(S3 4, S3 3), UNION(S3 4, S3 3)), UNION(S2 111, UNION(S3 222, UNION(S1 1404, S2 1310)))))",
+						is("")),
+				new NoOutputRun("quit")
 		};
-
-		String queries[] = new String[commandResultArray.length];
-		List<Matcher<String>> matchers = new ArrayList<>();
-		for (int i = 0; i < commandResultArray.length; i++) {
-			queries[i] = "recommend " + commandResultArray[i][0];
-			matchers.add(is(commandResultArray[i][1]));
-		}
-		multiLineTest(addQuit(queries), matchers, Input.getFile(COMPLEX_INPUT_FILE));
+		sessionTest(runs, Input.getFile(COMPLEX_INPUT_FILE));
 	}
-
 }
