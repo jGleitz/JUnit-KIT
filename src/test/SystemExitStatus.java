@@ -24,7 +24,7 @@ public enum SystemExitStatus {
 	 */
 	WITH_GREATER_THAN_0,
 	/**
-	 * {@code System.exit(x)} with a x that has to be specified through {@link #setExactStatus()}.
+	 * {@code System.exit(x)} with a {@code x} that has to be specified through {@link #status(int)}.
 	 */
 	EXACTLY;
 
@@ -80,7 +80,7 @@ public enum SystemExitStatus {
 	/**
 	 * @return If this is {@link #EXACTLY}, the exact status implied by the enum.
 	 * @throws IllegalStateException
-	 *             If {@code this} is not {@link #EXACTLY} or {@link #setExactStatus(int)} has not been called yet.
+	 *             If {@code this} is not {@link #EXACTLY} or {@link #status(int)} has not been called yet.
 	 */
 	public int getExactStatus() {
 		if (this != EXACTLY) {

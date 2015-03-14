@@ -650,7 +650,7 @@ public abstract class InteractiveConsoleTest {
 	 * Returns either the timeout set in the configuration or the default timeout returned by
 	 * {@link #getDefaultTimeoutMs()}.
 	 * 
-	 * @return
+	 * @return The timeout to use for this test class.
 	 */
 	private final Timeout getTimeout() {
 		String systemProperty = System.getProperty("timeout");
