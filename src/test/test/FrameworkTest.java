@@ -1,8 +1,13 @@
 package test.test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
+import static test.KitMatchers.anyOfRemaining;
 
+import java.util.LinkedList;
+
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Test;
 
@@ -13,7 +18,7 @@ import test.mocking.MockerJavaClassFile;
 import test.mocking.MockerJavaSourceFile;
 
 /**
- * Run this test to check the funcionality of the test framework. Help is appreciated! Set up this class to test
+ * Run this test to check the functionality of the test framework. Help is appreciated! Set up this class to test
  * {@code test.test.TestClass}.
  *
  * @author Joshua Gleitze
@@ -128,6 +133,27 @@ public class FrameworkTest {
 
 		result = TestObject.runStatic(int.class, "delegatedStaticAddition");
 		assertThat(result, is(1));
+	}
+
+	@Test
+	public void testRemainingAnyOf() {
+		String[] tests = new String[] {
+				"ABC",
+				"BCA",
+				"C",
+				"D",
+				"E"
+		};
+		LinkedList<Matcher<String>> allowed = new LinkedList<>();
+		allowed.add(is("C"));
+		allowed.add(startsWith("AB"));
+		allowed.add(is("E"));
+		allowed.add(startsWith("B"));
+		allowed.add(is("D"));
+
+		for (String s : tests) {
+			assertThat(s, anyOfRemaining(allowed));
+		}
 	}
 
 	@After
