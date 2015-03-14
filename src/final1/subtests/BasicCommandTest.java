@@ -31,7 +31,9 @@ public class BasicCommandTest extends RecommendationSubtest {
 			" recommend S1 105",
 			"quit ",
 			"quit test",
-			" quit"
+			" quit",
+			"",
+			" "
 	};
 
 	public BasicCommandTest() {
