@@ -19,7 +19,7 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 	/**
 	 * Relations and their reverse counterparts.
 	 */
-	private String[][] relations = new String[][] {
+	protected static final String[][] RELATIONS = new String[][] {
 			{
 					"contains",
 					"contained-in"
@@ -51,7 +51,7 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 	 * @return A valid relation as described above.
 	 */
 	protected String relation(int number, int from, int to) {
-		return relate(relations[(number / 2) % 6][number % 2], from, to);
+		return relate(RELATIONS[(number / 2) % 6][number % 2], from, to);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public abstract class RecommendationSubtest extends InteractiveConsoleTest {
 	 * @return A valid relation as described above.
 	 */
 	protected String reverse(int number, int from, int to) {
-		return relate(relations[(number / 2) % 6][(number + 1) % 2], from, to);
+		return relate(RELATIONS[(number / 2) % 6][(number + 1) % 2], from, to);
 	}
 
 	private String relate(String relationName, int from, int to) {
