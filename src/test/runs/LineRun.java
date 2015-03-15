@@ -107,7 +107,7 @@ public class LineRun implements Run {
 	 * @return One array element per line found in any of {@code output}'s elements.
 	 */
 	protected String[] mergedOutputLines(String[] output) {
-		Scanner outputScanner = new Scanner(mergedOutput(output));
+		Scanner outputScanner = new Scanner("\n" + mergedOutput(output));
 		outputScanner.useDelimiter("\n");
 		List<String> outputList = new ArrayList<>();
 		while (outputScanner.hasNext()) {
