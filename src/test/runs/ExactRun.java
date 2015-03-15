@@ -1,6 +1,6 @@
 package test.runs;
 
-import static test.KitMatchers.hasExcactlyThatMuchLines;
+import static test.KitMatchers.hasExcactlyThatMuch;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
@@ -88,10 +88,13 @@ public class ExactRun implements Run {
 	 */
 	@Override
 	public void check(String[] testedClassOutput, String errorMessage) {
-		String numberDescription = (outputDescription == null) ? getExpectedDescription() : callCountMessage();
-		Matcher<String[]> hasCorrectLineNumber = hasExcactlyThatMuchLines(expectedOutputMatchers.size(),
-			numberDescription);
-		assertThat(errorMessage, testedClassOutput, hasCorrectLineNumber);
+		Matcher<String[]> hasCorrectCallNumber = hasExcactlyThatMuch(expectedOutputMatchers.size(), new String[] {
+				"calls to Terminal.printLine() at all",
+				"call to Terminal.printLine()",
+				"calls to Terminal.printLine()"
+		}, outputDescription);
+		String overallErrorMessage = errorMessage + "\nYour output:\n" + join(testedClassOutput);
+		assertThat(overallErrorMessage, testedClassOutput, hasCorrectCallNumber);
 		Iterator<Matcher<String>> matcherIterator = expectedOutputMatchers.iterator();
 		for (int i = 0; i < testedClassOutput.length; i++) {
 			assertThat(errorMessage, testedClassOutput[i], matcherIterator.next());
@@ -129,7 +132,13 @@ public class ExactRun implements Run {
 		}
 	}
 
-	private String callCountMessage() {
-		return "exactly " + ((expectedOutputMatchers.size() == 1) ? "call" : "calls") + " to Terminal.printLine()";
+	protected String join(String[] stringArray) {
+		StringBuilder resultBuilder = new StringBuilder();
+		for (String s : stringArray) {
+			resultBuilder.append("[");
+			resultBuilder.append(s);
+			resultBuilder.append("]\n");
+		}
+		return resultBuilder.toString();
 	}
 }
