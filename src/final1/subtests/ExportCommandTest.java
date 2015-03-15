@@ -164,14 +164,18 @@ public class ExportCommandTest extends RecommendationSubtest {
 		public void check(String[] testedClassOutput, String errorMessage) {
 			String[] outputLines = mergedOutputLines(testedClassOutput);
 
-			assertThat("First error at line 0: ", outputLines[0], is("digraph {"));
-			for (int i = 1; i < outputLines.length - 1; i++) {
-				String appendix = "\n First error at line " + i + ":";
-				assertThat(errorMessage + appendix, outputLines[i], anyOf(expectedMatcher, optionalMatcher));
-			}
-			assertThat("First error at last line: ", outputLines[outputLines.length - 1], is("}"));
-			if (!expectedResults.isEmpty()) {
-				fail("Did not contain these obligatory lines: " + expectedResults);
+			if (outputLines.length != 0) {
+				assertThat("First error at line 0: ", outputLines[0], is("digraph {"));
+				for (int i = 1; i < outputLines.length - 1; i++) {
+					String appendix = "\n First error at line " + i + ":";
+					assertThat(errorMessage + appendix, outputLines[i], anyOf(expectedMatcher, optionalMatcher));
+				}
+				assertThat("First error at last line: ", outputLines[outputLines.length - 1], is("}"));
+				if (!expectedResults.isEmpty()) {
+					fail("Did not contain these obligatory lines: " + expectedResults);
+				}
+			} else {
+				fail(errorMessage + "No calls to Terminal.printLine() were made!");
 			}
 		}
 
