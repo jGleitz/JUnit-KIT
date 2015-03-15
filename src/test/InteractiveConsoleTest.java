@@ -669,6 +669,10 @@ public abstract class InteractiveConsoleTest {
 		return new Timeout(getDefaultTimeoutMs());
 	}
 
+	protected static final Run quit() {
+		return new NoOutputRun("quit");
+	}
+
 	/**
 	 * The default timeout for a test. This implementation returns 5000. Override this method to adapt your own timeout!
 	 * 
