@@ -17,6 +17,7 @@ import org.junit.Test;
 import test.Input;
 import test.KitMatchers;
 import test.SystemExitStatus;
+import test.runs.LineRun;
 import test.runs.NoOutputRun;
 import test.runs.Run;
 
@@ -104,7 +105,7 @@ public class ExportCommandTest extends RecommendationSubtest {
 		}
 
 		runs = new Run[] {
-				new ExportRun("export", expectedResults, optionalResults),
+				new ExportRun(expectedResults, optionalResults),
 				new NoOutputRun("quit")
 		};
 		sessionTest(runs, Input.getFile(input));
@@ -136,8 +137,7 @@ public class ExportCommandTest extends RecommendationSubtest {
 		};
 	}
 
-	class ExportRun implements Run {
-		private String command;
+	class ExportRun extends LineRun {
 		private List<Matcher<String>> expectedResults;
 		private Matcher<String> expectedMatcher;
 		private List<Matcher<String>> optionalResults;
@@ -152,8 +152,8 @@ public class ExportCommandTest extends RecommendationSubtest {
 		 * @param expectedResults
 		 *            The matchers describing the desired output
 		 */
-		public ExportRun(String command, List<Matcher<String>> expectedResults, List<Matcher<String>> optionalResults) {
-			this.command = command;
+		public ExportRun(List<Matcher<String>> expectedResults, List<Matcher<String>> optionalResults) {
+			super("export");
 			this.expectedResults = expectedResults;
 			this.optionalResults = optionalResults;
 			this.expectedMatcher = KitMatchers.anyOfRemaining(expectedResults);
@@ -161,18 +161,8 @@ public class ExportCommandTest extends RecommendationSubtest {
 		}
 
 		@Override
-		public String getCommand() {
-			return command;
-		}
-
-		@Override
 		public void check(String[] testedClassOutput, String errorMessage) {
-			StringBuilder mergedOutputBuilder = new StringBuilder();
-			for (String output : testedClassOutput) {
-				mergedOutputBuilder.append(output.replace("\r", ""));
-				mergedOutputBuilder.append("\n");
-			}
-			String[] outputLines = mergedOutputBuilder.toString().split("\n");
+			String[] outputLines = mergedOutputLines(testedClassOutput);
 
 			assertThat("First error at line 0: ", outputLines[0], is("digraph {"));
 			for (int i = 1; i < outputLines.length - 1; i++) {
