@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
+import test.runs.ErrorRun;
+import test.runs.Run;
 
 /**
  * Launches the program with a valid input file and then tests some illegal recommend commands.
@@ -177,6 +179,41 @@ public class InvalidRecommendTerms extends RecommendationSubtest {
 			"recommend S1 999999999999999999999999999999999999999999999999999999999999999999999999999999999"
 		};
 		errorTest(addQuit(commands), Input.getFile(TASK_SHEET_INPUT_FILE));
+	}
+
+	@Test
+	public void lowercaseTest() {
+		runs = new Run[] {
+				new ErrorRun("recommend s1 105"),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE));
+
+		runs = new Run[] {
+				new ErrorRun("recommend s3 105"),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE));
+
+		runs = new Run[] {
+				new ErrorRun("recommend union(S1 105, S3 105)"),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE));
+
+		runs = new Run[] {
+				new ErrorRun("recommend intersection(S1 105, S3 105)"),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE));
+
+		runs = new Run[] {
+				new ErrorRun("recommend s3 105"),
+				new ErrorRun("recommend union(S1 105, S3 105)"),
+				new ErrorRun("recommend intersection(S1 105, S3 105)"),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE));
 	}
 
 	/**

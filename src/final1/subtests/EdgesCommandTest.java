@@ -47,6 +47,37 @@ public class EdgesCommandTest extends RecommendationSubtest {
 	}
 
 	/**
+	 * Asserts correct results for multiple edges from one node to another
+	 */
+	@Test
+	public void multipleEdgesTest() {
+		// r = 1: omit contains/contained-in for simplicity
+		for (int r = 1; r < 3; r++) {
+			for (int s = r * 2 + 2; s < 6; s++) {
+				testEdges(new String[] {
+						relation(r * 2, 1, 2),
+						relation(s, 1, 2),
+				}, new String[] {
+						"a:1-[" + RELATIONS[(r) % 6][(r + 1) % 2] + "]->b:2",
+						"b:2-[" + RELATIONS[(r) % 6][(r) % 2] + "]->a:1",
+						"a:1-[" + RELATIONS[(s / 2) % 6][s % 2] + "]->b:2",
+						"b:2-[" + RELATIONS[(s / 2) % 6][(s + 1) % 2] + "]->a:1",
+				});
+
+				testEdges(new String[] {
+						reverse(r * 2, 1, 2),
+						relation(s, 1, 2),
+				}, new String[] {
+						"a:1-[" + RELATIONS[(r) % 6][r % 2] + "]->b:2",
+						"b:2-[" + RELATIONS[(r) % 6][(r + 1) % 2] + "]->a:1",
+						"a:1-[" + RELATIONS[(s / 2) % 6][s % 2] + "]->b:2",
+						"b:2-[" + RELATIONS[(s / 2) % 6][(s + 1) % 2] + "]->a:1",
+				});
+			}
+		}
+	}
+
+	/**
 	 * Asserts correct results for simple one line input files.
 	 */
 	@Test
