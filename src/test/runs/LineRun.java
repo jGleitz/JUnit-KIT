@@ -1,11 +1,13 @@
 package test.runs;
 
-import static test.KitMatchers.hasExcactlyThatMuchLines;
+import static test.KitMatchers.hasExcactlyThatMuch;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import org.hamcrest.Matcher;
 
@@ -66,22 +68,53 @@ public class LineRun implements Run {
 	 */
 	@Override
 	public void check(String[] testedClassOutput, String errorMessage) {
-		StringBuilder mergedOutputBuilder = new StringBuilder();
-		for (String output : testedClassOutput) {
-			mergedOutputBuilder.append(output.replace("\r", ""));
-			mergedOutputBuilder.append("\n");
-		}
 		Iterator<Matcher<String>> expectedIterator = expectedResults.iterator();
-		String[] outputLines = mergedOutputBuilder.toString().split("\n");
-		assertThat(errorMessage, outputLines, hasExcactlyThatMuchLines(expectedResults.size(), lineCountMessage()));
-		for (int i = 0; i < outputLines.length; i++) {
-			String appendix = "\n First error at line " + i + ":";
-			assertThat(errorMessage + appendix, outputLines[i], expectedIterator.next());
+		String[] outputLines = mergedOutputLines(testedClassOutput);
+		String overallErrorMessage = errorMessage + "\nYour output:\n" + mergedOutput(testedClassOutput);
+		assertThat(overallErrorMessage, outputLines, hasExcactlyThatMuch(expectedResults.size(), new String[] {
+				"lines",
+				"line",
+				"lines"
+		}));
+		for (int count = 0; count < outputLines.length; count++) {
+			String appendix = "\n First error at line " + count + ":";
+			assertThat(errorMessage + appendix, outputLines[count], expectedIterator.next());
 		}
 	}
 
-	private String lineCountMessage() {
-		return "exactly " + expectedResults.size() + " " + ((expectedResults.size() == 1) ? "line" : "lines");
+	/**
+	 * @param output
+	 *            The output to merge.
+	 * @return All output joined with {@code \n}. Explicitly uses {@code \n} for concatenation and removes potentially
+	 *         contained {@code \r}.
+	 */
+	protected String mergedOutput(String[] output) {
+
+		StringBuilder mergedOutputBuilder = new StringBuilder();
+		for (String call : output) {
+			mergedOutputBuilder.append(call.replace("\r", ""));
+			mergedOutputBuilder.append("\n");
+		}
+		return mergedOutputBuilder.toString();
+	}
+
+	/**
+	 * The joined output merged by {@link #mergedOutput(String[])} split at {@code \n}. Unlike
+	 * {@link String#split(String)}, this method guarantees one array element per occurrence of {@code \n}.
+	 * 
+	 * @param output
+	 *            The output to process
+	 * @return One array element per line found in any of {@code output}'s elements.
+	 */
+	protected String[] mergedOutputLines(String[] output) {
+		Scanner outputScanner = new Scanner("\n" + mergedOutput(output));
+		outputScanner.useDelimiter("\n");
+		List<String> outputList = new ArrayList<>();
+		while (outputScanner.hasNext()) {
+			outputList.add(outputScanner.next());
+		}
+		outputScanner.close();
+		return outputList.toArray(new String[outputList.size()]);
 	}
 
 	/*

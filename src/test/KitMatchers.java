@@ -116,36 +116,63 @@ public class KitMatchers {
 
 	/**
 	 * Creates a matcher that matches if the examined String array contains exactly as much elements as specified by
-	 * {@code outputLines}. This matcher is meant to assert a tested class' output. It provides a appropriate error
-	 * message.
+	 * {@code count}. This matcher is meant to assert a tested class' output. It provides a appropriate error message.
 	 * 
-	 * @param outputLines
-	 *            How many lines the tested class should print.
+	 * @param count
+	 *            How many elements the examined array shall have.
 	 * @param outputDescription
-	 *            A description of the output that was expected from the tested class.
+	 *            A description of what was counted here (e.g. lines, calls to a function…). The {@code i}th element of
+	 *            the array corresponds to {@code i} instances of the counted. If {@code n} array elements are provided,
+	 *            {@code n-1} will be selected for all {@code i≥n-1} <br>
+	 *            Example: <code>new String[]{"lines", "line", "lines"}</code>
 	 */
-	public static Matcher<String[]> hasExcactlyThatMuchLines(final int outputLines, final String outputDescription) {
+	public static Matcher<String[]> hasExcactlyThatMuch(final int count, final String[] outputDescription) {
+		return hasExcactlyThatMuch(count, outputDescription, null);
+	}
+
+	/**
+	 * Creates a matcher that matches if the examined String array contains exactly as much elements as specified by
+	 * {@code count}. This matcher is meant to assert a tested class' output. It provides a appropriate error message.
+	 * 
+	 * @param count
+	 *            How many elements the examined array shall have.
+	 * @param outputDescription
+	 *            A description of what was counted here (e.g. lines, calls to a function…). The {@code i}th element of
+	 *            the array corresponds to {@code i} instances of the counted. If {@code n} array elements are provided,
+	 *            {@code n-1} will be selected for all {@code i≥n-1} <br>
+	 *            Example: <code>new String[]{"lines", "line", "lines"}</code>
+	 * @param expectedOverride
+	 *            If not {@code null}, this String will used to describe the expected output instead of a generated
+	 *            message based on {@code outputDescription}. The actual count will still be generated.
+	 */
+	public static Matcher<String[]> hasExcactlyThatMuch(final int count, final String[] outputDescription,
+			final String expectedOverride) {
 		return new BaseMatcher<String[]>() {
 			private String[] providedLines;
+
+			private String description(int count) {
+				return outputDescription[Math.min(count, outputDescription.length - 1)];
+			}
 
 			@Override
 			public boolean matches(final Object testObject) {
 				providedLines = (String[]) testObject;
-				return providedLines.length == outputLines;
+				return providedLines.length == count;
 			}
 
 			@Override
 			public void describeTo(Description description) {
-				description.appendText(outputDescription);
+				if (expectedOverride != null) {
+					description.appendText(expectedOverride);
+				} else {
+					description.appendValue(count).appendText(" ").appendText(description(count));
+				}
 			}
 
 			@Override
 			public void describeMismatch(final Object item, final Description description) {
-				description
-						.appendText("found " + providedLines.length)
-						.appendText((providedLines.length == 1) ? " call" : " calls")
-						.appendText(
-							" to Terminal.printLine or (depending on the test) lines that were printed using (possibly multiple) calls to Terminal.printLine");
+				description.appendText("found ").appendValue(providedLines.length).appendText(" ")
+						.appendText(description(providedLines.length));
 			}
 
 		};
