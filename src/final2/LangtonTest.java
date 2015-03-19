@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import final2.subtests.InvalidCommandLineArgumentsTest;
+import final2.subtests.PraktomatPublicTest;
 
 /**
  * Test suite for the programming lecture's first second test.
@@ -14,7 +15,8 @@ import final2.subtests.InvalidCommandLineArgumentsTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-		InvalidCommandLineArgumentsTest.class
+		InvalidCommandLineArgumentsTest.class,
+		PraktomatPublicTest.class
 })
 public class LangtonTest {
 }
