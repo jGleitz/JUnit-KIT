@@ -9,11 +9,14 @@ import test.SystemExitStatus;
  * Calls the tested class' main method with legal arguments. Checks if the tested class does not print an error
  * exits with system exit status 1.
  * 
- * @author Joshua Gleitze
  * @author Christian Hilden
  * @version 1.0
  */
 public class ValidCommandLineArgumentsTest extends LangtonSubtest {
+    
+    public ValidCommandLineArgumentsTest() {
+        setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
+    }
 
 	/**
      * Asserts that the tested class works when passing a well formed rule argument
