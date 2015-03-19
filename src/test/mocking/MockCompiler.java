@@ -144,7 +144,6 @@ public abstract class MockCompiler {
 				if (javaProgramFolder32bit.exists()) {
 					jdkFolders.addAll(Arrays.asList(javaProgramFolder32bit.listFiles(jdkFilter)));
 				}
-				jdkFolders.addAll(Arrays.asList(javaProgramFolder32bit.listFiles(jdkFilter)));
 				for (final File f : jdkFolders) {
 					System.setProperty("java.home", f.getAbsolutePath());
 					comp = ToolProvider.getSystemJavaCompiler();
