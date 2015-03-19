@@ -32,9 +32,9 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
      */
     @Test
     public void invalidArgumentFormatTest() {
-        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule:{45,45,45,45,45}");
-        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule={45,45,45,45,45}", "speedup:5");
-        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup:5", "rule={45,45,45,45,45}");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule:45-45-45-45-45");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "speedup:5");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup:5", "rule=45-45-45-45-45");
     }
 	
 	/**
@@ -43,11 +43,31 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 	@Test
 	public void duplicateArgumentsTest() {
 		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), Input.getFile(TASK_SHEET_INPUT_FILE_1));
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule={45,45,45,45,45}", "rule={45,45,45,45,45}");
+		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "rule=45-45-45-45-45");
 		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule={45,45,45,45,45}", "rule={45,90,270,315,90}");
 		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "speedup=1");
 		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "speedup=5");
 	}
+	
+	/**
+     * Asserts that the tested class prints an error message if an invalid rule command is passed.
+     */
+    @Test
+    public void invalidRuleArgumentsTest() {
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-315-45-90-270");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-315-45");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-320-45-90");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=135-90-315-45-90");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-315-45.5-90");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90--315-45-90");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-315-45-90-");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-315-45-90--");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-315-45-90---");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=-270-90-315-45-90");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=--270-90-315-45-90");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=-270-90--315-45-90");
+        errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule={270,90,315,45,90}");
+    }
 
 	/**
 	 * Asserts that the tested class prints an error message if a non-existent file is provided as command line
