@@ -15,10 +15,6 @@ import test.SystemExitStatus;
  */
 public class ValidCommandLineArgumentsTest extends LangtonSubtest {
 
-	public ValidCommandLineArgumentsTest() {
-		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(0));
-	}
-
 	/**
      * Asserts that the tested class works when passing a well formed rule argument
      */
