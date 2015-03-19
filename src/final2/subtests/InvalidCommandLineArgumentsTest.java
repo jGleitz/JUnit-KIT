@@ -70,6 +70,8 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
         errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=-270-90--315-45-90");
         errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule={270,90,315,45,90}");
         
+        errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-9999999999999999999999999999999999999-45-90");
+        
         errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "Rule=90-315-45-90-270");
         errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "ruLe=90-315-45-90-270");
     }

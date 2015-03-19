@@ -38,7 +38,7 @@ public class ValidCommandLineArgumentsTest extends LangtonSubtest {
     }
     
     /**
-     * Asserts that the tested class works when passing well formed arguments in different orders
+     * Asserts that the tested class works when passing well formed arguments in different order
      */
     @Test
     public void orderArgumentTest() {
