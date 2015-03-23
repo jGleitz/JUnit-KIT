@@ -20,6 +20,19 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
         setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see final2.subtests.LangtonSubtest#consoleMessage(java.lang.String[], java.lang.String[])
+     */
+    @Override
+    protected String consoleMessage(String[] commands, String[] commandLineArguments) {
+        String result = "";
+        result += "We ran a session on your interactive console" + getArguments(commandLineArguments)
+                + ", running the commands \n\n" + joinOnePerLine(commands) + "\n\nbut got unexpected output:\n";
+        return result;
+    }
+
     /**
      * Asserts that the tested class prints an error message if no command line arguments are provided.
      */
