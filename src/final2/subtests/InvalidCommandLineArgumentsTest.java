@@ -28,9 +28,22 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
     @Override
     protected String consoleMessage(String[] commands, String[] commandLineArguments) {
         String result = "";
-        result += "We ran a session on your interactive console" + getArguments(commandLineArguments)
-                + ", running the commands \n\n" + joinOnePerLine(commands) + "\n\nbut got unexpected output:\n";
+        result += "We ran a session on your interactive console, \n" + getArguments(commandLineArguments)
+                + "\n\nbut got unexpected output:\n";
         return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see test.InteractiveConsoleTest#getArguments(java.lang.String[])
+     */
+    @Override
+    protected String getArguments(String[] commandLineArguments) {
+        if (commandLineArguments.length > 0) {
+            commandLineArguments[0] = "inputFile";
+        }
+        return super.getArguments(commandLineArguments);
     }
 
     /**
