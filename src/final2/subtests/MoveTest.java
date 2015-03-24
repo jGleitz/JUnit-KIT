@@ -38,17 +38,17 @@ public class MoveTest extends LangtonSubtest {
 				checkPitch(inputFile),
 				move(1),
 				checkPitch(new String[] {
-						"03",
+						"00",
 						"0a"
 				}),
 				move(1),
 				checkPitch(new String[] {
-						"03",
+						"00",
 						"a3"
 				}),
 				move(1),
 				checkPitch(new String[] {
-						"a3",
+						"a0",
 						"33"
 				}),
 				move(1),
