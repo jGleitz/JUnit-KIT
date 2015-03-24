@@ -20,13 +20,19 @@ import test.runs.Run;
  */
 public abstract class LangtonSubtest extends InteractiveConsoleTest {
 
-	protected String[] TASK_SHEET_INPUT_FILE_1 = new String[] {
+	/**
+	 * The first input file provided on the task sheet (page 6)
+	 */
+	protected static final String[] TASK_SHEET_INPUT_FILE_1 = new String[] {
 			"000",
 			"000",
 			"0F0"
 	};
 
-	protected String[] TASK_SHEET_INPUT_FILE_2 = new String[] {
+	/**
+	 * The second input file provided on the task sheet (page 7).
+	 */
+	protected static final String[] TASK_SHEET_INPUT_FILE_2 = new String[] {
 			"1*0",
 			"3e4",
 			"12*"
@@ -35,7 +41,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The first board.txt Praktomat test file. ("Fundamental tests with ordinary ant")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_1 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_1 = new String[] {
 			"0000",
 			"0*00",
 			"0A00",
@@ -45,7 +51,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The second board.txt Praktomat test file. ("Sporty ant movement")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_2 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_2 = new String[] {
 			"0000",
 			"0*00",
 			"0I00",
@@ -55,7 +61,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The third board.txt Praktomat test file. ("Lazy ant movement")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_3 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_3 = new String[] {
 			"0000",
 			"0*00",
 			"0R00",
@@ -65,7 +71,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The fourth board.txt Praktomat test file. ("Ordinary ant movement ")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_4 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_4 = new String[] {
 			"0000",
 			"0000",
 			"A000",
