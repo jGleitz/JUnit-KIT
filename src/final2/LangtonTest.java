@@ -16,7 +16,7 @@ import final2.subtests.ValidCommandLineArgumentsTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-        ValidCommandLineArgumentsTest.class,
+		ValidCommandLineArgumentsTest.class,
 		InvalidCommandLineArgumentsTest.class,
 		PraktomatPublicTest.class
 })
