@@ -29,7 +29,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 		String[] expectedOutput = pitchToLowercase(PUBLIC_PRAKTOMAT_TEST_FILE_1);
 
 		runs = new Run[] {
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_1, expectedOutput),
+				checkPitch(expectedOutput),
 
 				new LineRun("position A", is("2,1")),
 				new LineRun("position a", is("2,1")),
@@ -61,9 +61,9 @@ public class PraktomatPublicTest extends LangtonSubtest {
 		};
 
 		runs = new Run[] {
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_2, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_2, expectedOutput2),
+				checkPitch(expectedOutput2),
 				new LineRun("direction i", is("O")),
 				new NoOutputRun("quit")
 		};
@@ -85,16 +85,16 @@ public class PraktomatPublicTest extends LangtonSubtest {
 		};
 
 		runs = new Run[] {
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new LineRun("direction r", is("W")),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput2),
+				checkPitch(expectedOutput2),
 				new NoOutputRun("quit")
 		};
 
@@ -115,7 +115,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 
 		runs = new Run[] {
 				new NoOutputRun("move 8"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_4, expectedOutput),
+				checkPitch(expectedOutput),
 				new NoOutputRun("quit")
 		};
 

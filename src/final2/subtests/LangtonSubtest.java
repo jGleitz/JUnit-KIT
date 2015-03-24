@@ -89,13 +89,11 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * Checks if the given expected pitch matches the program output.
 	 * 
-	 * @param input
-	 *            the input file
 	 * @param pExpectedPitch
 	 *            the lines of the expected pitch
 	 * @return the run which checks the pitch
 	 */
-	protected Run checkPitch(String[] input, String[] pExpectedPitch) {
+	protected Run checkPitch(String[] pExpectedPitch) {
 		List<Matcher<String>> matchers = joinAsIsMatchers(pExpectedPitch);
 		return new LineRun("print", matchers);
 	}
@@ -112,7 +110,6 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 		for (int i = 0; i < pPitchLines.length; i++) {
 			out[i] = pPitchLines[i].toLowerCase();
 		}
-
 		return out;
 	}
 }
