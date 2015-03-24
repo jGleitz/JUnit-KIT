@@ -7,6 +7,7 @@ import org.hamcrest.Matcher;
 import test.Input;
 import test.InteractiveConsoleTest;
 import test.runs.LineRun;
+import test.runs.NoOutputRun;
 import test.runs.Run;
 
 /**
@@ -82,7 +83,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 		String result = "";
 		String fileMessage = (commandLineArguments.length > 0) ? Input.fileMessage(commandLineArguments[0]) : "";
 		result += "We ran a session on your interactive console" + fileMessage + " running the commands \n\n"
-				+ joinOnePerLine(commands) + "\n\nbut got unexpected output:\n";
+				+ joinAsNumberdLines(commands) + "\n\nbut got unexpected output:\n";
 		return result;
 	}
 
@@ -111,5 +112,14 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 			out[i] = pPitchLines[i].toLowerCase();
 		}
 		return out;
+	}
+
+	/**
+	 * @param count
+	 *            How many moves the tested class shall perform.
+	 * @return A run for {@code move count}.
+	 */
+	protected Run move(int count) {
+		return new NoOutputRun("move " + count);
 	}
 }
