@@ -26,7 +26,6 @@ public class ValidCommandLineArgumentsTest extends LangtonSubtest {
 	public void ruleArgumentTest() {
 		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-90-315-45-90");
 		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45");
-		noOutputTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=0-0-0-0-0");
 	}
 
 	/**
