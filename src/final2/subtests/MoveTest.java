@@ -9,7 +9,6 @@ import test.runs.Run;
  * Checks the {@code move} command.
  * 
  * @author Joshua Gleitze
- * @version 1.0
  */
 public class MoveTest extends LangtonSubtest {
 

@@ -12,8 +12,7 @@ import test.runs.Run;
 /**
  * Simulates the Praktomat's public test.
  * 
- * @author Martin L�per
- * @version 1.0
+ * @author Martin Löper
  */
 public class PraktomatPublicTest extends LangtonSubtest {
 

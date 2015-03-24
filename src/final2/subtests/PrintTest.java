@@ -10,7 +10,6 @@ import test.runs.Run;
  * crucial for other tests to work.
  * 
  * @author Joshua Gleitze
- * @version 1.0
  */
 public class PrintTest extends LangtonSubtest {
 

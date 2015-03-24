@@ -17,7 +17,6 @@ import test.runs.Run;
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @author Christian Hilden
- * @version 1.0
  */
 public abstract class LangtonSubtest extends InteractiveConsoleTest {
 
