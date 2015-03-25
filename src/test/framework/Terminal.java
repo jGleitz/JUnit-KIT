@@ -27,13 +27,11 @@ public class Terminal {
 			"import java.util.ArrayList;",
 			"import java.util.Iterator;",
 			"import java.util.List;",
-			"import java.util.concurrent.BlockingQueue;",
-			"import java.util.concurrent.LinkedBlockingQueue;",
 
 			"public final class Terminal {",
 				"private static List<List<String>> printLists;",
 				"private static List<String> globalPrintList;",
-				"private static BlockingQueue<String> readList = new LinkedBlockingQueue<>();",
+				"private static List<String> readList = new ArrayList<>();",
 				"private static int commandCounter = 0;",
 				
 				"static {",
@@ -47,12 +45,10 @@ public class Terminal {
 
 				"public static String readLine() {",
 					"String result = \"\";",
-					"try {",
-						"result = readList.take();",
-					"} catch (InterruptedException e) {",
-						"throw new RuntimeException(\"the tested class got stuck because it tried to get "
-						+ "more input from Terminal.readLine while there was no more available!\");",
+					"if (commandCounter >= readList.size() + 1) {",
+						"throw new RuntimeException(\"The tested class tried to get more input than there actually was!\");",
 					"}",
+					"result = readList.get(commandCounter);",
 					"commandCounter++;",
 					"return result;",
 				"}",
@@ -69,7 +65,7 @@ public class Terminal {
 
 				"public static void appendInput(String[] input) {",
 					"for (String i : input) {",
-						"readList.offer(i);",
+						"readList.add(i);",
 						"printLists.add(new ArrayList<String>());",
 					"}",
 				"}",
@@ -83,8 +79,12 @@ public class Terminal {
 				"}",
 
 				"public static void setInput(String[] input) {",
-					"readList = new LinkedBlockingQueue<String>();",
+					"readList = new ArrayList<String>();",
 					"appendInput(input);",
+				"}",
+				
+				"public static String[] getInput() {",
+					"return readList.toArray(new String[readList.size()]);",
 				"}",
 
 			"}"
@@ -134,6 +134,15 @@ public class Terminal {
 	 */
 	public String[] getOutput() {
 		return invokeUnchecked(String[].class, Method.GET_OUTPUT, null);
+	}
+
+	/**
+	 * Returns all input provided for the tested class through {@link #provideInput(String[])}.
+	 * 
+	 * @return the tested class' input.
+	 */
+	public String[] getInput() {
+		return invokeUnchecked(String[].class, Method.GET_INPUT, null);
 	}
 
 	/**
@@ -197,7 +206,7 @@ public class Terminal {
 
 	private static enum Method {
 		APPEND_INPUT("appendInput"), GET_OUTPUT("getAllOutput"), GET_OUTPUT_PER_COMMAND("getOutputPerCommand"), RESET_OUTPUT(
-				"resetOutput"), SET_INPUT("setInput");
+				"resetOutput"), SET_INPUT("setInput"), GET_INPUT("getInput");
 
 		private String name;
 
