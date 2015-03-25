@@ -21,7 +21,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 	}
 
 	/**
-	 * "Fundamental tests with ordinary ant" Asserts that tested program fulfills the first public Praktomat test.
+	 * "Fundamental tests with ordinary ant" Asserts that tested program fulfils the first public Praktomat test.
 	 */
 	@Test
 	public void fundamentalTestsWithOrdinaryAnt() {
@@ -101,7 +101,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 	}
 
 	/**
-	 * "Ordinary ant movement" Asserts that tested program fulfills the fourth public Praktomat test.
+	 * "Ordinary ant movement" Asserts that tested program fulfils the fourth public Praktomat test.
 	 */
 	@Test
 	public void ordinaryAntMovement() {

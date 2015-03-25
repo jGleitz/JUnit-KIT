@@ -88,7 +88,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 		String result = "";
 		String fileMessage = (commandLineArguments.length > 0) ? Input.fileMessage(commandLineArguments[0]) : "";
 		result += "We ran a session on your interactive console" + fileMessage + " running the commands \n\n"
-				+ joinAsNumberdLines(commands) + "\n\nbut got unexpected output:\n";
+				+ joinAsNumberedLines(commands) + "\n\nbut got unexpected output:\n";
 		return result;
 	}
 
