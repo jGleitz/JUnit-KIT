@@ -246,9 +246,9 @@ public abstract class InteractiveConsoleTest {
 	}
 
 	/**
-	 * A representation of command line arguments. Returns {@code that has been called with the command line arguments},
-	 * concatenated with a list representation of {@code commandLineArguments}. Returns an empty String if
-	 * {@code commandLineArguments} is {@code null} or empty.
+	 * A representation of command line arguments. Returns
+	 * {@code "that has been called with the command line arguments"}, concatenated with a list representation of
+	 * {@code commandLineArguments}. Returns an empty String if {@code commandLineArguments} is {@code null} or empty.
 	 * 
 	 * @param commandLineArguments
 	 *            the cli arguments to process
