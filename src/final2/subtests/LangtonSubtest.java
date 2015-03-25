@@ -104,7 +104,6 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 		return new LineRun("print", matchers);
 	}
 
-
 	/**
 	 * Returns the given pitch description in lowercase as expected by the print command.
 	 * 
