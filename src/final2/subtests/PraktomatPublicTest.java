@@ -12,8 +12,7 @@ import test.runs.Run;
 /**
  * Simulates the Praktomat's public test.
  * 
- * @author Martin L�per
- * @version 1.0
+ * @author Martin Löper
  */
 public class PraktomatPublicTest extends LangtonSubtest {
 
@@ -22,14 +21,14 @@ public class PraktomatPublicTest extends LangtonSubtest {
 	}
 
 	/**
-	 * "Fundamental tests with ordinary ant" Asserts that tested program fulfills the first public Praktomat test.
+	 * "Fundamental tests with ordinary ant" Asserts that tested program fulfils the first public Praktomat test.
 	 */
 	@Test
 	public void fundamentalTestsWithOrdinaryAnt() {
 		String[] expectedOutput = pitchToLowercase(PUBLIC_PRAKTOMAT_TEST_FILE_1);
 
 		runs = new Run[] {
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_1, expectedOutput),
+				checkPitch(expectedOutput),
 
 				new LineRun("position A", is("2,1")),
 				new LineRun("position a", is("2,1")),
@@ -48,7 +47,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 	}
 
 	/**
-	 * "Sporty ant movement" Asserts that tested program fulfills the second public Praktomat test.
+	 * "Sporty ant movement" Asserts that tested program fulfils the second public Praktomat test.
 	 */
 	@Test
 	public void sportyAntMovement() {
@@ -61,9 +60,9 @@ public class PraktomatPublicTest extends LangtonSubtest {
 		};
 
 		runs = new Run[] {
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_2, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_2, expectedOutput2),
+				checkPitch(expectedOutput2),
 				new LineRun("direction i", is("O")),
 				new NoOutputRun("quit")
 		};
@@ -72,7 +71,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 	}
 
 	/**
-	 * "Lazy ant movement" Asserts that tested program fulfills the thrid public Praktomat test.
+	 * "Lazy ant movement" Asserts that tested program fulfils the third public Praktomat test.
 	 */
 	@Test
 	public void lazyAntMovement() {
@@ -85,16 +84,16 @@ public class PraktomatPublicTest extends LangtonSubtest {
 		};
 
 		runs = new Run[] {
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new LineRun("direction r", is("W")),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput1),
+				checkPitch(expectedOutput1),
 				new NoOutputRun("move 1"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_3, expectedOutput2),
+				checkPitch(expectedOutput2),
 				new NoOutputRun("quit")
 		};
 
@@ -102,7 +101,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 	}
 
 	/**
-	 * "Ordinary ant movement" Asserts that tested program fulfills the fourth public Praktomat test.
+	 * "Ordinary ant movement" Asserts that tested program fulfils the fourth public Praktomat test.
 	 */
 	@Test
 	public void ordinaryAntMovement() {
@@ -115,7 +114,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 
 		runs = new Run[] {
 				new NoOutputRun("move 8"),
-				checkPitch(PUBLIC_PRAKTOMAT_TEST_FILE_4, expectedOutput),
+				checkPitch(expectedOutput),
 				new NoOutputRun("quit")
 		};
 

@@ -7,6 +7,7 @@ import org.hamcrest.Matcher;
 import test.Input;
 import test.InteractiveConsoleTest;
 import test.runs.LineRun;
+import test.runs.NoOutputRun;
 import test.runs.Run;
 
 /**
@@ -16,17 +17,22 @@ import test.runs.Run;
  * @author Joshua Gleitze
  * @author Martin Loeper
  * @author Christian Hilden
- * @version 1.0
  */
 public abstract class LangtonSubtest extends InteractiveConsoleTest {
 
-	protected String[] TASK_SHEET_INPUT_FILE_1 = new String[] {
+	/**
+	 * The first input file provided on the task sheet (page 6)
+	 */
+	protected static final String[] TASK_SHEET_INPUT_FILE_1 = new String[] {
 			"000",
 			"000",
 			"0F0"
 	};
 
-	protected String[] TASK_SHEET_INPUT_FILE_2 = new String[] {
+	/**
+	 * The second input file provided on the task sheet (page 7).
+	 */
+	protected static final String[] TASK_SHEET_INPUT_FILE_2 = new String[] {
 			"1*0",
 			"3e4",
 			"12*"
@@ -35,7 +41,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The first board.txt Praktomat test file. ("Fundamental tests with ordinary ant")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_1 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_1 = new String[] {
 			"0000",
 			"0*00",
 			"0A00",
@@ -45,7 +51,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The second board.txt Praktomat test file. ("Sporty ant movement")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_2 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_2 = new String[] {
 			"0000",
 			"0*00",
 			"0I00",
@@ -55,7 +61,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The third board.txt Praktomat test file. ("Lazy ant movement")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_3 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_3 = new String[] {
 			"0000",
 			"0*00",
 			"0R00",
@@ -65,7 +71,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	/**
 	 * The fourth board.txt Praktomat test file. ("Ordinary ant movement ")
 	 */
-	protected String[] PUBLIC_PRAKTOMAT_TEST_FILE_4 = new String[] {
+	protected static final String[] PUBLIC_PRAKTOMAT_TEST_FILE_4 = new String[] {
 			"0000",
 			"0000",
 			"A000",
@@ -82,23 +88,22 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 		String result = "";
 		String fileMessage = (commandLineArguments.length > 0) ? Input.fileMessage(commandLineArguments[0]) : "";
 		result += "We ran a session on your interactive console" + fileMessage + " running the commands \n\n"
-				+ joinOnePerLine(commands) + "\n\nbut got unexpected output:\n";
+				+ joinAsNumberedLines(commands) + "\n\nbut got unexpected output:\n";
 		return result;
 	}
 
 	/**
 	 * Checks if the given expected pitch matches the program output.
 	 * 
-	 * @param input
-	 *            the input file
 	 * @param pExpectedPitch
 	 *            the lines of the expected pitch
 	 * @return the run which checks the pitch
 	 */
-	protected Run checkPitch(String[] input, String[] pExpectedPitch) {
+	protected Run checkPitch(String[] pExpectedPitch) {
 		List<Matcher<String>> matchers = joinAsIsMatchers(pExpectedPitch);
 		return new LineRun("print", matchers);
 	}
+
 
 	/**
 	 * Returns the given pitch description in lowercase as expected by the print command.
@@ -112,7 +117,15 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 		for (int i = 0; i < pPitchLines.length; i++) {
 			out[i] = pPitchLines[i].toLowerCase();
 		}
-
 		return out;
+	}
+
+	/**
+	 * @param count
+	 *            How many moves the tested class shall perform.
+	 * @return A run for {@code move count}.
+	 */
+	protected Run move(int count) {
+		return new NoOutputRun("move " + count);
 	}
 }

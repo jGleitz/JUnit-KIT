@@ -12,7 +12,6 @@ import test.SystemExitStatus;
  * @author Joshua Gleitze
  * @author Christian Hilden
  * @author Martin Löper
- * @version 1.2
  */
 public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 
@@ -20,12 +19,38 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see final2.subtests.LangtonSubtest#consoleMessage(java.lang.String[], java.lang.String[])
+	 */
+	@Override
+	protected String consoleMessage(String[] commands, String[] commandLineArguments) {
+		String result = "";
+		result += "We ran a session on your interactive console, \n" + getArguments(commandLineArguments)
+				+ "\n\nbut got unexpected output:\n";
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see test.InteractiveConsoleTest#getArguments(java.lang.String[])
+	 */
+	@Override
+	protected String getArguments(String[] commandLineArguments) {
+		if (commandLineArguments.length > 0) {
+			commandLineArguments[0] = "inputFile";
+		}
+		return super.getArguments(commandLineArguments);
+	}
+
 	/**
 	 * Asserts that the tested class prints an error message if no command line arguments are provided.
 	 */
 	@Test
 	public void noArgumentTest() {
-		errorTest("");
+		errorTest("quit");
 	}
 
 	/**
@@ -44,11 +69,11 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 	 */
 	@Test
 	public void duplicateArgumentsTest() {
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), Input.getFile(TASK_SHEET_INPUT_FILE_1));
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "rule=45-45-45-45-45");
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "rule=45-90-270-315-90");
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "speedup=1");
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "speedup=5");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), Input.getFile(TASK_SHEET_INPUT_FILE_1));
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "rule=45-45-45-45-45");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "rule=45-90-270-315-90");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "speedup=1");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "speedup=5");
 	}
 
 	/**
@@ -69,6 +94,8 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=--270-90-315-45-90");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=-270-90--315-45-90");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule={270,90,315,45,90}");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-0-315-45-90");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-180-315-45-90");
 
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1),
 			"rule=270-90-9999999999999999999999999999999999999-45-90");
@@ -98,6 +125,6 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 	 */
 	@Test
 	public void noSuchFileTest() {
-		errorTest("", "IHopefullyDontExistsOnAnyMachine.unusualFileExtension");
+		errorTest("quit", "IHopefullyDontExistsOnAnyMachine.unusualFileExtension");
 	}
 }

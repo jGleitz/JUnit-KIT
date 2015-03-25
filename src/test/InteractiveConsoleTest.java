@@ -110,13 +110,29 @@ public abstract class InteractiveConsoleTest {
 		return allCommands;
 	}
 
-	protected static String joinOnePerLine(String[] strings) {
-		String result = "";
-		for (String string : strings) {
-			result += (result != "") ? System.lineSeparator() : "";
-			result += string;
+	protected static String joinAsNumberedLines(String[] strings) {
+		StringBuilder resultBuilder = new StringBuilder();
+		for (int i = 0; i < strings.length; i++) {
+			if (resultBuilder.length() > 0) {
+				resultBuilder.append(System.lineSeparator());
+			}
+			resultBuilder.append("[");
+			resultBuilder.append(i + 1);
+			resultBuilder.append("] ");
+			resultBuilder.append(strings[i]);
 		}
-		return result;
+		return resultBuilder.toString();
+	}
+
+	protected static String joinOnePerLine(String[] strings) {
+		StringBuilder resultBuilder = new StringBuilder();
+		for (String string : strings) {
+			if (resultBuilder.length() > 0) {
+				resultBuilder.append(System.lineSeparator());
+			}
+			resultBuilder.append(string);
+		}
+		return resultBuilder.toString();
 	}
 
 	protected static final Run quit() {
@@ -235,9 +251,9 @@ public abstract class InteractiveConsoleTest {
 	}
 
 	/**
-	 * A representation of command line arguments. Returns {@code that has been called with the command line arguments},
-	 * concatenated with a list representation of {@code commandLineArguments}. Returns an empty String if
-	 * {@code commandLineArguments} is {@code null} or empty.
+	 * A representation of command line arguments. Returns
+	 * {@code "that has been called with the command line arguments"}, concatenated with a list representation of
+	 * {@code commandLineArguments}. Returns an empty String if {@code commandLineArguments} is {@code null} or empty.
 	 * 
 	 * @param commandLineArguments
 	 *            the cli arguments to process
@@ -596,6 +612,9 @@ public abstract class InteractiveConsoleTest {
 			errorMessageBuilder = new StringBuilder();
 			errorMessageBuilder.append(consoleMessage(commands, args0));
 			errorMessageBuilder.append("the first error occurred for command\n");
+			errorMessageBuilder.append("[");
+			errorMessageBuilder.append(j);
+			errorMessageBuilder.append("] ");
 			errorMessageBuilder.append(run.getCommand());
 			errorMessageBuilder.append("\n");
 			run.check(result[j], errorMessageBuilder.toString());
