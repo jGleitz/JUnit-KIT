@@ -5,7 +5,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import final2.subtests.InvalidCommandLineArgumentsTest;
+import final2.subtests.MoveTest;
 import final2.subtests.PraktomatPublicTest;
+import final2.subtests.PrintTest;
 import final2.subtests.ValidCommandLineArgumentsTest;
 
 /**
@@ -16,8 +18,10 @@ import final2.subtests.ValidCommandLineArgumentsTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-        ValidCommandLineArgumentsTest.class,
+		ValidCommandLineArgumentsTest.class,
 		InvalidCommandLineArgumentsTest.class,
+		PrintTest.class,
+		MoveTest.class,
 		PraktomatPublicTest.class
 })
 public class LangtonTest {
