@@ -58,10 +58,12 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 	 */
 	@Test
 	public void invalidArgumentFormatTest() {
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule:45-45-45-45-45");
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "speedup:5");
-		errorTest("", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup:5", "rule=45-45-45-45-45");
-
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule:45-45-45-45-45");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "speedup:5");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup:5", "rule=45-45-45-45-45");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup5");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule45-45-45-45-45");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule-45-45-45-45-45");
 	}
 
 	/**
