@@ -12,6 +12,7 @@ import test.SystemExitStatus;
  * @author Joshua Gleitze
  * @author Christian Hilden
  * @author Martin Löper
+ * @author Roman Langrehr
  */
 public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 
@@ -61,7 +62,9 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule:45-45-45-45-45");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "speedup:5");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup:5", "rule=45-45-45-45-45");
-
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup5");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule45-45-45-45-45");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule-45-45-45-45-45");
 	}
 
 	/**
@@ -126,5 +129,20 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 	@Test
 	public void noSuchFileTest() {
 		errorTest("quit", "IHopefullyDontExistsOnAnyMachine.unusualFileExtension");
+	}
+
+	@Test
+	public void tooManyArgumentsTest() {
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), Input.getFile(TASK_SHEET_INPUT_FILE_1),
+			"rule=45-45-45-45-45");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), Input.getFile(TASK_SHEET_INPUT_FILE_1),
+			"rule=45-45-45-45-45", "speedup=1");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "rule=45-45-45-45-45",
+			"rule=45-45-45-45-45");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=45-45-45-45-45", "speedup=1",
+			"rule=45-90-270-315-90");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "rule=45-45-45-45-45", "speedup=1");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=1", "speedup=5", "rule=45-45-45-45-45");
 	}
 }

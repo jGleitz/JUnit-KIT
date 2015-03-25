@@ -14,15 +14,15 @@ import final2.subtests.ValidCommandLineArgumentsTest;
  * Test suite for the programming lecture's first second test.
  * 
  * @author Joshua Gleitze
- * @version 1.0
+ * @author Roman Langrehr
  */
 @RunWith(Suite.class)
 @SuiteClasses({
 		ValidCommandLineArgumentsTest.class,
 		InvalidCommandLineArgumentsTest.class,
-		PrintTest.class,
+		PraktomatPublicTest.class,
 		MoveTest.class,
-		PraktomatPublicTest.class
+		PrintTest.class
 })
 public class LangtonTest {
 }
