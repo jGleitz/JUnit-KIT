@@ -71,7 +71,7 @@ public class PraktomatPublicTest extends LangtonSubtest {
 	}
 
 	/**
-	 * "Lazy ant movement" Asserts that tested program fulfills the thrid public Praktomat test.
+	 * "Lazy ant movement" Asserts that tested program fulfils the third public Praktomat test.
 	 */
 	@Test
 	public void lazyAntMovement() {
