@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
+import test.runs.ErrorOrNoOutputRun;
 import test.runs.ErrorRun;
 import test.runs.Run;
 
@@ -125,24 +126,26 @@ public class BadInputFileTest extends LangtonSubtest {
 	 */
 	@Test
 	public void noAntTest() {
+		setExpectedSystemStatus(null);
 		inputFile = new String[] {
 				"000",
 				"000",
 				"000"
 		};
-		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+		sessionTest(new ErrorOrNoOutputRun(true), new Run[0], Input.getFile(inputFile));
 		inputFile = new String[] {
 				"000",
 				"0*0",
 				"000"
 		};
-		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+		sessionTest(new ErrorOrNoOutputRun(true), new Run[0], Input.getFile(inputFile));
 		inputFile = new String[] {
 				"0000",
 				"0000",
 				"0000"
 		};
-		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+		sessionTest(new ErrorOrNoOutputRun(true), new Run[0], Input.getFile(inputFile));
+		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
 	/**
