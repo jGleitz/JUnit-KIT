@@ -13,7 +13,7 @@ import final2.subtests.PrintTest;
 import final2.subtests.ValidCommandLineArgumentsTest;
 
 /**
- * Test suite for the programming lecture's first second test.
+ * Test suite for the programming lecture's second final task.
  * 
  * @author Joshua Gleitze
  * @author Roman Langrehr
