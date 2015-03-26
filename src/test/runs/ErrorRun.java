@@ -28,7 +28,7 @@ public class ErrorRun extends ExactRun {
 	 * first command.
 	 */
 	public ErrorRun() {
-		this("");
+		this(null);
 	}
 
 }
