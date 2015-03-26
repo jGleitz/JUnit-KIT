@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import final2.subtests.BadInputFileTest;
 import final2.subtests.InvalidCommandLineArgumentsTest;
 import final2.subtests.MoveTest;
+import final2.subtests.PositionTest;
 import final2.subtests.PraktomatPublicTest;
 import final2.subtests.PrintTest;
 import final2.subtests.ValidCommandLineArgumentsTest;
@@ -24,7 +25,8 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 		PraktomatPublicTest.class,
 		MoveTest.class,
 		PrintTest.class,
-		BadInputFileTest.class
+		BadInputFileTest.class,
+		PositionTest.class
 })
 public class LangtonTest {
 }
