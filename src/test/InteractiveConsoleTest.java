@@ -87,6 +87,10 @@ public abstract class InteractiveConsoleTest {
 	 * You can use this field to put the test runs in it.
 	 */
 	protected Run[] runs;
+	/**
+	 * You can use this field to put an input file in it.
+	 */
+	protected String[] inputFile;
 
 	private SystemExitStatus allowedExitStatus;
 	private SystemExitStatus expectedExitStatus;

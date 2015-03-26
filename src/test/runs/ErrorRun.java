@@ -23,4 +23,12 @@ public class ErrorRun extends ExactRun {
 		super(command, "an error message", errorMatcher);
 	}
 
+	/**
+	 * Constructs a test run without a command that shall result in an error message. Use only to test errors before the
+	 * first command.
+	 */
+	public ErrorRun() {
+		this("");
+	}
+
 }
