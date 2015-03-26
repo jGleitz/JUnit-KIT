@@ -45,8 +45,9 @@ public class Terminal {
 
 				"public static String readLine() {",
 					"String result = \"\";",
-					"if (commandCounter >= readList.size() + 1) {",
-						"throw new RuntimeException(\"The tested class tried to get more input than there actually was!\");",
+					"if (commandCounter >= readList.size()) {",
+						"throw new RuntimeException(\"The tested class tried to get more input than there actually was!\\n\" + ",
+						"\"Most likely, it was expected to terminate!\");",
 					"}",
 					"result = readList.get(commandCounter);",
 					"commandCounter++;",
