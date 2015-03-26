@@ -498,7 +498,7 @@ public class OutputFileWriter {
 	private static String escapeHTML(String s) {
 		StringBuilder out = new StringBuilder();
 		for (char c : s.toCharArray()) {
-			if (Character.toString(c).matches(HTML_SPECIALCHARS)) {
+			if (Character.toString(c).matches(HTML_SPECIALCHARS) || c > 127) {
 				out.append("&#");
 				out.append((int) c);
 				out.append(';');
