@@ -12,6 +12,7 @@ import test.SystemExitStatus;
  * @author Joshua Gleitze
  * @author Christian Hilden
  * @author Martin Löper
+ * @author Roman Langrehr
  */
 public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 
