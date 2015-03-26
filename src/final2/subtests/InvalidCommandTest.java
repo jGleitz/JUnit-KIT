@@ -22,6 +22,7 @@ public class InvalidCommandTest extends LangtonSubtest {
 			"print",
 			"quit"
 	};
+
 	private static final String[] ARGUMENT_COMMANDS = new String[] {
 			"create",
 			"position",
@@ -29,11 +30,28 @@ public class InvalidCommandTest extends LangtonSubtest {
 			"escape",
 			"move"
 	};
+
 	private static final String[] VALID_ARGUMENTS = new String[] {
 			"h,1,3",
 			"1,2",
 			"a",
+			"a",
 			"1"
+	};
+
+	private static final String[] INVALID_NUMBERS = new String[] {
+			"a",
+			"12t",
+			"three",
+			"12.5",
+			"$",
+			"9999999999999999999999999999999999999999999999999999999999999999"
+	};
+
+	private static final String[] INVALID_ANT_NAMES = new String[] {
+			"ab",
+			"§",
+			"*"
 	};
 
 	/**
@@ -535,6 +553,118 @@ public class InvalidCommandTest extends LangtonSubtest {
 			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + "," + VALID_ARGUMENTS[i]),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+		}
+	}
+
+	/**
+	 * Asserts that the program handles invalid numbers.
+	 */
+	@Test
+	public void invalidNumberTests() {
+		for (String invalidNumber : INVALID_NUMBERS) {
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("move " + invalidNumber),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("create h,1," + invalidNumber),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("create h," + invalidNumber + ",1"),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("position 1," + invalidNumber),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("position " + invalidNumber + ",1"),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+		}
+	}
+
+	/**
+	 * Asserts that the program handles invalid ant names
+	 */
+	@Test
+	public void invalidAntNameTest() {
+		for (String invalidAntName : INVALID_ANT_NAMES) {
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("create " + invalidAntName + ",1,1"),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("direction " + invalidAntName),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun("escape " + invalidAntName),
 					quit()
 			};
 			sessionTest(runs, Input.getFile(inputFile));
