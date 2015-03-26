@@ -25,7 +25,7 @@ public class CreateTest extends LangtonSubtest {
 	 * Asserts that command 'create ant,x,y' works on simple examples.
 	 */
 	@Test
-	public void SimpleCreateTest() {
+	public void simpleCreateTest() {
 		inputFile = new String[] {
 				"0000",
 				"0000",

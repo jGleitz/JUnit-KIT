@@ -25,7 +25,7 @@ public class AntTest extends LangtonSubtest {
 	 * Asserts that command ant works on simple examples.
 	 */
 	@Test
-	public void SimpleAntTest() {
+	public void simpleAntTest() {
 		inputFile = new String[] {
 				"0000",
 				"0000",

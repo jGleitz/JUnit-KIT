@@ -24,7 +24,7 @@ public class EscapeTest extends LangtonSubtest {
 	 * Asserts that command 'escape ant' works on simple examples.
 	 */
 	@Test
-	public void SimpleEscapeTest() {
+	public void simpleEscapeTest() {
 		inputFile = new String[] {
 				"b000",
 				"0000",
@@ -45,7 +45,7 @@ public class EscapeTest extends LangtonSubtest {
 	 * Asserts that command 'escape ant' works on simple examples with created ants.
 	 */
 	@Test
-	public void EscapeCreatedAntTest() {
+	public void escapeCreatedAntTest() {
 		inputFile = new String[] {
 				"0000",
 				"0000",
