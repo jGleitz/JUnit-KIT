@@ -34,6 +34,7 @@ public class OutputFileWriter {
 	private static String outputFilePath;
 	private static final OutputRunListener runListener = instance.new OutputRunListener();
 	private static final String TEST_CLASS_NAME_TAG = "%testname";
+	private static final String HTML_SPECIALCHARS = "[<>&\"]";
 	private static String testClassName;
 	private static boolean writeOutputFile;
 
@@ -157,16 +158,22 @@ public class OutputFileWriter {
 		for (String a : args) {
 			argsLineBuilder.append(" ");
 			if (Input.isFile(a)) {
-				argsLineBuilder.append("<span class=\"textFileLink\" onclick=\"showTextFile('f");
-				argsLineBuilder.append(a);
+				argsLineBuilder.append("<span class=\"textFileLink\" onclick=\"showTextFile('");
+				argsLineBuilder.append(getFileId(a));
 				argsLineBuilder.append("');\">");
-				argsLineBuilder.append(a);
+				argsLineBuilder.append(escapeHTML(a));
 				argsLineBuilder.append("</span>");
 			} else {
-				argsLineBuilder.append(a);
+				argsLineBuilder.append(escapeHTML(a));
 			}
 		}
 		return "<span class=\"args\">" + argsLineBuilder.toString() + "</span>";
+	}
+
+	private static String getFileId(String filePath) {
+		String result = escapeHTML(filePath);
+		result = result.replaceAll("[^a-z0-9\\-_:\\.]", "\\-");
+		return result;
 	}
 
 	private static String[] head() {
@@ -381,11 +388,10 @@ public class OutputFileWriter {
 				"<p class=\"textFileDescription\">Click on an input file to show it here</p>"
 		}, resultList);
 		for (String filePath : Input.getAllFilePaths()) {
-			String id = filePath.replaceAll("[^a-z0-9\\-_:\\.]", "\\-");
 			addAllElementsTo(new String[] {
-				"<pre class=\"inputFile\" id=\"f" + id + "\">"
+				"<pre class=\"inputFile\" id=\"" + getFileId(filePath) + "\">"
 			}, resultList);
-			addAllElementsTo(Input.getFileContentOf(filePath), resultList);
+			addAllElementsTo(escapeHTMLLines(Input.getFileContentOf(filePath)), resultList);
 			addAllElementsTo(new String[] {
 				"</pre>"
 			}, resultList);
@@ -395,13 +401,13 @@ public class OutputFileWriter {
 
 	private static String input(String inputCommand, String additionalClassName) {
 		String className = "input" + ((additionalClassName.length() > 0) ? " " + additionalClassName : "");
-		return "<span class=\"" + className + "\">" + inputCommand + "</span>";
+		return "<span class=\"" + className + "\">" + escapeHTML(inputCommand) + "</span>";
 	}
 
 	private static List<String> output(String[] outputLines) {
 		ArrayList<String> result = new ArrayList<>();
 		if (outputLines.length > 0) {
-			addAllElementsTo(outputLines, result);
+			addAllElementsTo(escapeHTMLLines(outputLines), result);
 			String spanclass = (outputLines[0].startsWith("Error,") ? "output error" : "output");
 			result.set(0, "<span class=\"" + spanclass + "\">" + result.get(0));
 			result.set(result.size() - 1, result.get(result.size() - 1) + "</span>");
@@ -440,9 +446,31 @@ public class OutputFileWriter {
 	private static String[] failureHTML(String failureMessage) {
 		return new String[] {
 				"<pre class=\"failure\">",
-				failureMessage,
+				escapeHTML(failureMessage),
 				"</pre>"
 		};
+	}
+
+	private static String escapeHTML(String s) {
+		StringBuilder out = new StringBuilder();
+		for (char c : s.toCharArray()) {
+			if (Character.toString(c).matches(HTML_SPECIALCHARS)) {
+				out.append("&#");
+				out.append((int) c);
+				out.append(';');
+			} else {
+				out.append(c);
+			}
+		}
+		return out.toString();
+	}
+
+	private static String[] escapeHTMLLines(String[] lines) {
+		String[] result = new String[lines.length];
+		for (int i = 0; i < lines.length; i++) {
+			result[i] = escapeHTML(lines[i]);
+		}
+		return result;
 	}
 
 	private static String simpleName(String className) {
