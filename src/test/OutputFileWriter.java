@@ -139,7 +139,7 @@ public class OutputFileWriter {
 				write(tail(), outputWriter);
 				outputWriter.close();
 			} catch (FileNotFoundException e) {
-				throw new FrameworkException("We cannot generate an output file, as we\"re unable to write the file "
+				throw new FrameworkException("We cannot generate an output file, as we're unable to write the file "
 						+ outputFilePath);
 			} catch (UnsupportedEncodingException e) {
 				throw new FrameworkException(
