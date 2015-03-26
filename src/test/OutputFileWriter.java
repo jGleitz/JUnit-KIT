@@ -112,11 +112,11 @@ public class OutputFileWriter {
 
 					for (TestMethod testMethod : classMap.values()) {
 						String indicator = "<span class=\"successIndicator "
-								+ ((testMethod.success) ? "succeeded" : "failed") + "\">⏺</span>";
+								+ ((testMethod.success) ? "succeeded" : "failed") + "\">" + escapeHTML("⏺") + "</span>";
 						write(new String[] {
 								"<div class=\"testMethod closed\" id=\"" + id + "\">",
-								"<h4 onclick=\"toggleMethod(" + id + ");\"><span class=\"opener\">⏵</span>"
-										+ testMethod.name + indicator + "</h4>",
+								"<h4 onclick=\"toggleMethod(" + id + ");\"><span class=\"opener\">" + escapeHTML("⏵")
+										+ "</span>" + testMethod.name + indicator + "</h4>",
 								"<div class=\"sessions\">"
 						}, outputWriter);
 						for (String[] session : testMethod.sessions) {
