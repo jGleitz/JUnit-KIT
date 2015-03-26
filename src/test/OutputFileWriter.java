@@ -117,7 +117,8 @@ public class OutputFileWriter {
 
 					for (TestMethod testMethod : classMap.values()) {
 						String indicator = "<span class=\"successIndicator "
-								+ ((testMethod.success) ? "succeeded" : "failed") + "\">" + CIRCLE_SVG + "</span>";
+								+ ((testMethod.success) ? "succeeded" : "failed") + "\" title=\""
+								+ ((testMethod.success) ? "success" : "fail") + "\">" + CIRCLE_SVG + "</span>";
 						write(new String[] {
 								"<div class=\"testMethod closed\" id=\"" + id + "\">",
 								"<h4 onclick=\"toggleMethod(" + id + ");\"><span class=\"opener\">" + TRIANGLE_SVG
@@ -390,7 +391,7 @@ public class OutputFileWriter {
 				"			}",
 				"		</script>",
 				"	</head>",
-					"	<body>",
+				"	<body>",
 				"		<svg style=\"display:none;\">",
 				"			<defs>",
 				"				<path d=\"M 8,8 2,14 2,2 8,8\" id=\"triangle\" />",
