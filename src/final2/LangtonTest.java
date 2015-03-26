@@ -6,6 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import final2.subtests.AntTest;
 import final2.subtests.BadInputFileTest;
+import final2.subtests.CreateTest;
+import final2.subtests.EscapeTest;
 import final2.subtests.InvalidCommandLineArgumentsTest;
 import final2.subtests.MoveTest;
 import final2.subtests.PositionTest;
@@ -28,7 +30,9 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 		PrintTest.class,
 		BadInputFileTest.class,
 		PositionTest.class,
-		AntTest.class
+		AntTest.class,
+		CreateTest.class,
+		EscapeTest.class
 })
 public class LangtonTest {
 }

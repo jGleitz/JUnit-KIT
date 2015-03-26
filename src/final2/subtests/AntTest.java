@@ -10,6 +10,11 @@ import test.runs.ExactRun;
 import test.runs.NoOutputRun;
 import test.runs.Run;
 
+/**
+ * Test command 'ant'.
+ * @author Annika Berger
+ *
+ */
 public class AntTest extends LangtonSubtest {
 	
 	public AntTest() {
