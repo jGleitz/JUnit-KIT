@@ -89,7 +89,7 @@ public class OutputFileWriter {
 			String datetime = new SimpleDateFormat(DATETIME_FORMAT).format(initDate);
 			outputFileConfig = outputFileConfig.replace(DATETIME_TAG, datetime);
 			outputFilePath = outputFileConfig;
-			if (!outputFilePath.endsWith(".html") || !outputFilePath.endsWith(".htm")) {
+			if (!outputFilePath.endsWith(".html") && !outputFilePath.endsWith(".htm")) {
 				outputFilePath += ".html";
 			}
 		}
