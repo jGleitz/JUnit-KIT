@@ -12,7 +12,6 @@ import test.runs.Run;
  * 
  * @author Roman Langrehr
  * @since 26.03.2015
- * @version 1.0
  *
  */
 public class InvalidCommandTest extends LangtonSubtest {
@@ -28,6 +27,7 @@ public class InvalidCommandTest extends LangtonSubtest {
 
 	private static final String[] INVALID_ANT_NAMES = new String[] {
 			"ab",
+			"ä",
 			"§",
 			"*"
 	};
@@ -38,7 +38,9 @@ public class InvalidCommandTest extends LangtonSubtest {
 			"three",
 			"12.5",
 			"$",
-			"9999999999999999999999999999999999999999999999999999999999999999"
+			"9999999999999999999999999999999999999999999999999999999999999999",
+			"+0",
+			"+1"
 	};
 
 	private static final String[] NO_ARGUMENT_COMMANDS = new String[] {
@@ -49,7 +51,7 @@ public class InvalidCommandTest extends LangtonSubtest {
 
 	private static final String[] OUT_OF_BOUNDS_COORDINATES_FOR_4X4 = new String[] {
 			"-1",
-			"5"
+			"4"
 	};
 
 	private static final String[] VALID_ARGUMENTS = new String[] {
@@ -86,6 +88,18 @@ public class InvalidCommandTest extends LangtonSubtest {
 		};
 		runs = new Run[] {
 				new ErrorRun("create h,1,1"),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"0000",
+				"0000",
+				"0a00",
+				"0000"
+		};
+		runs = new Run[] {
+				new ErrorRun("create a,2,1"),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile));
@@ -863,6 +877,19 @@ public class InvalidCommandTest extends LangtonSubtest {
 		}
 
 		for (int i = 0; i < ARGUMENT_COMMANDS.length; i++) {
+			sessionTest(runs, Input.getFile(inputFile));
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
+			runs = new Run[] {
+					new ErrorRun(ARGUMENT_COMMANDS[i] + "  "),
+					quit()
+			};
+			sessionTest(runs, Input.getFile(inputFile));
+
 			inputFile = new String[] {
 					"b000",
 					"0000",
