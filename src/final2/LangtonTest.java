@@ -1,9 +1,9 @@
 package final2;
 
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import test.KITSuite;
 import final2.subtests.AntTest;
 import final2.subtests.BadInputFileTest;
 import final2.subtests.CreateTest;
@@ -22,7 +22,7 @@ import final2.subtests.ValidCommandLineArgumentsTest;
  * @author Joshua Gleitze
  * @author Roman Langrehr
  */
-@RunWith(Suite.class)
+@RunWith(KITSuite.class)
 @SuiteClasses({
 		ValidCommandLineArgumentsTest.class,
 		InvalidCommandLineArgumentsTest.class,

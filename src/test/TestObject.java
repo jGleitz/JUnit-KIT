@@ -132,10 +132,9 @@ public class TestObject {
 
 	private static Class<?> clazz;
 
-	private static String[][] groupedProgramOutput = new String[0][];
 	private static Integer lastSystemExitStatus = null;
 	private static String[] nextCallInput;
-	private static String[] programOutput = new String[0];
+	private static Terminal lastTerminal;
 	private static List<Class<? extends Exception>> rethrowExceptions = new LinkedList<Class<? extends Exception>>();
 	private static final SecurityManager SYSTEM_SECURITY_MANAGER = System.getSecurityManager();
 	private final Object instance;
@@ -214,7 +213,7 @@ public class TestObject {
 	@Deprecated
 	public static String getLastMethodOutput() {
 		String result = "";
-		for (String o : programOutput) {
+		for (String o : lastTerminal.getOutput()) {
 			result += (result != "") ? System.lineSeparator() : "";
 			result += o;
 		}
@@ -235,7 +234,7 @@ public class TestObject {
 	 * @return The grouped output, as described above.
 	 */
 	public static String[][] getLastMethodsGroupedOutput() {
-		return groupedProgramOutput;
+		return lastTerminal.getOutputPerCommand();
 	}
 
 	/**
@@ -245,7 +244,14 @@ public class TestObject {
 	 * @return What the last method run printed through {@code Terminal.printLine}.
 	 */
 	public static String[] getLastMethodsOutput() {
-		return programOutput;
+		return lastTerminal.getOutput();
+	}
+
+	/**
+	 * @return The terminal used at the last terminal run.
+	 */
+	public static Terminal getLastTerminal() {
+		return lastTerminal;
 	}
 
 	/**
@@ -638,9 +644,9 @@ public class TestObject {
 		Class<?>[] types = translateAllClassesToImplemented(formalArguments);
 		NoExitSecurityManager securityManager = new NoExitSecurityManager(clazz);
 		System.setSecurityManager(securityManager); // prevent System.exit()
-		Terminal terminal = new Terminal(clazz.getClassLoader());
+		lastTerminal = new Terminal(clazz.getClassLoader());
 		if (nextCallInput != null) {
-			terminal.provideInput(nextCallInput);
+			lastTerminal.provideInput(nextCallInput);
 		}
 		try {
 			if (callConstructor) {
@@ -710,8 +716,6 @@ public class TestObject {
 		} finally {
 			lastSystemExitStatus = securityManager.lastExitStatus();
 			System.setSecurityManager(SYSTEM_SECURITY_MANAGER);
-			programOutput = terminal.getOutput();
-			groupedProgramOutput = terminal.getOutputPerCommand();
 		}
 
 		if (expectedReturnType == null) {

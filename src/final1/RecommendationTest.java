@@ -1,9 +1,9 @@
 package final1;
 
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import test.KITSuite;
 import final1.subtests.BasicCommandTest;
 import final1.subtests.EdgesCommandTest;
 import final1.subtests.ExportCommandTest;
@@ -20,7 +20,7 @@ import final1.subtests.ValidRecommendCommandTest;
  * @author Joshua Gleitze
  * @version 1.0
  */
-@RunWith(Suite.class)
+@RunWith(KITSuite.class)
 @SuiteClasses({
 		InvalidCommandLineArgumentsTest.class,
 		BasicCommandTest.class,

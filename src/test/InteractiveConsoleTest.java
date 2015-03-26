@@ -244,6 +244,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		if (result.length == 0) {
 			fail(consoleMessage(commands, args0)
@@ -420,6 +421,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		String message = "";
 		if (result.length != expectedResults.size()) {
@@ -489,7 +491,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
-
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		if (result.length != 0) {
 			fail(consoleMessage(commands, args0)
@@ -548,6 +550,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		if (result.length == 0) {
 			fail(consoleMessage(commands, args0) + "\n Your code never called Terminal.printLine!");
@@ -599,6 +602,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[][] result = TestObject.getLastMethodsGroupedOutput();
 
 		StringBuilder errorMessageBuilder = new StringBuilder();
