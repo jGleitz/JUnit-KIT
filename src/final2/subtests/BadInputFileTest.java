@@ -103,6 +103,21 @@ public class BadInputFileTest extends LangtonSubtest {
 				"",
 		};
 		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"",
+				"",
+				"",
+		};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+			"",
+		};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
+		inputFile = new String[] {};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
 	}
 
 	/**
