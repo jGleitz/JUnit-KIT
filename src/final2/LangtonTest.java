@@ -34,7 +34,8 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 		AntTest.class,
 		CreateTest.class,
 		EscapeTest.class,
-		QuitTest.class
+		QuitTest.class,
+		InvalidCommandLineArgumentsTest.class
 })
 public class LangtonTest {
 }
