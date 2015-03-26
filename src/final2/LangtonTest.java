@@ -13,6 +13,7 @@ import final2.subtests.MoveTest;
 import final2.subtests.PositionTest;
 import final2.subtests.PraktomatPublicTest;
 import final2.subtests.PrintTest;
+import final2.subtests.QuitTest;
 import final2.subtests.ValidCommandLineArgumentsTest;
 
 /**
@@ -32,7 +33,8 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 		PositionTest.class,
 		AntTest.class,
 		CreateTest.class,
-		EscapeTest.class
+		EscapeTest.class,
+		QuitTest.class
 })
 public class LangtonTest {
 }
