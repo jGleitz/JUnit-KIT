@@ -1,5 +1,10 @@
 package test.runs;
 
+import static org.junit.Assert.assertThat;
+import static test.KitMatchers.suits;
+import test.SystemExitStatus;
+import test.TestObject;
+
 /**
  * A test run that should result in either an error message or no output at all.
  * 
@@ -34,8 +39,12 @@ public class ErrorOrNoOutputRun implements Run {
 	public void check(String[] testedClassOutput, String errorMessage) {
 		if (testedClassOutput.length > 0) {
 			new ErrorRun(command).check(testedClassOutput, errorMessage);
+			assertThat(errorMessage + "\nYour class printed an error message. This requires System.exit(1)!",
+				TestObject.getLastMethodsSystemExitStatus(), suits(SystemExitStatus.EXACTLY.status(1), true));
 		} else {
 			new NoOutputRun(command).check(testedClassOutput, errorMessage);
+			assertThat(errorMessage + "\nYour class did not print an error message. It may only call System.exit(0)!",
+				TestObject.getLastMethodsSystemExitStatus(), suits(SystemExitStatus.WITH_0, false));
 		}
 	}
 
