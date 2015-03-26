@@ -115,11 +115,10 @@ public class OutputFileWriter {
 
 					for (TestMethod testMethod : classMap.values()) {
 						String indicator = "<span class=\"successIndicator "
-								+ ((testMethod.success) ? "succeeded" : "failed") + "\">" + escapeHTML("⏺") + "</span>";
+								+ ((testMethod.success) ? "succeeded" : "failed") + "\">&#9210;</span>";
 						write(new String[] {
 								"<div class=\"testMethod closed\" id=\"" + id + "\">",
-								"<h4 onclick=\"toggleMethod(" + id + ");\"><span class=\"opener\">" + escapeHTML("⏵")
-										+ "</span>" + testMethod.name + indicator + "</h4>",
+								"<h4 onclick=\"toggleMethod(" + id + ");\"><span class=\"opener\">&#9205;</span>" + testMethod.name + indicator + "</h4>",
 								"<div class=\"sessions\">"
 						}, outputWriter);
 						for (String[] session : testMethod.sessions) {
@@ -501,6 +500,9 @@ public class OutputFileWriter {
 	private static String escapeHTML(String s) {
 		StringBuilder out = new StringBuilder();
 		for (char c : s.toCharArray()) {
+			if (Character.toString(c).equals("⏺") || Character.toString(c).equals("⏵")) {
+				System.out.println(c + ": " + (int) c);
+			}
 			if (Character.toString(c).matches(HTML_SPECIALCHARS) || c > 127) {
 				out.append("&#");
 				out.append((int) c);
