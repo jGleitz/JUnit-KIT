@@ -11,6 +11,7 @@ import test.runs.Run;
  * Checks that the tested class prints error messages for malformed input files.
  * 
  * @author Annika Berger
+ * @author Roman Langrehr
  */
 public class BadInputFileTest extends LangtonSubtest {
 	private static final Run[] onlyQuit = {
@@ -52,6 +53,54 @@ public class BadInputFileTest extends LangtonSubtest {
 				"00",
 				"00a",
 				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+	}
+
+	/**
+	 * Asserts that the tested class detects input files with empty lines.
+	 */
+	@Test
+	public void emptyLinesTest() {
+		inputFile = new String[] {
+				"",
+				"0000",
+				"0a00",
+				"0000",
+		};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"0000",
+				"0a00",
+				"",
+				"0000",
+		};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"0000",
+				"0a00",
+				"",
+				"",
+				"0000",
+		};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"0000",
+				"0a00",
+				"0000",
+				"",
+		};
+		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"0000",
+				"0a00",
+				"0000",
+				"",
+				"",
 		};
 		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
 	}
