@@ -44,26 +44,28 @@ public class OutputFileWriter {
 	 *            The command line arguments the interactive console was called with.
 	 */
 	public static void documentRun(String[] args) {
-		String testMethodName = runListener.momentaryMethodName;
-		String testMethodClassName = simpleName(runListener.momentaryClassName);
+		if (writeOutputFile) {
+			String testMethodName = runListener.momentaryMethodName;
+			String testMethodClassName = simpleName(runListener.momentaryClassName);
 
-		// Generate the HTML
-		String[] input = TestObject.getLastTerminal().getInput();
-		String[][] output = TestObject.getLastTerminal().getOutputPerCommand();
-		List<String> htmlElementList = new ArrayList<>();
-		htmlElementList.add("<div class=\"session\">");
-		htmlElementList.add("<pre class=\"terminal\">");
-		htmlElementList.add(args(args));
-		htmlElementList.addAll(output(output[0]));
-		for (int i = 0; i < input.length; i++) {
-			htmlElementList.add(input(input[i], (i == 0) ? "first" : ""));
-			htmlElementList.addAll(output(output[i + 1]));
+			// Generate the HTML
+			String[] input = TestObject.getLastTerminal().getInput();
+			String[][] output = TestObject.getLastTerminal().getOutputPerCommand();
+			List<String> htmlElementList = new ArrayList<>();
+			htmlElementList.add("<div class=\"session\">");
+			htmlElementList.add("<pre class=\"terminal\">");
+			htmlElementList.add(args(args));
+			htmlElementList.addAll(output(output[0]));
+			for (int i = 0; i < input.length; i++) {
+				htmlElementList.add(input(input[i], (i == 0) ? "first" : ""));
+				htmlElementList.addAll(output(output[i + 1]));
+			}
+			htmlElementList.add("</pre>");
+			htmlElementList.add("</div>");
+			String[] htmlElement = htmlElementList.toArray(new String[htmlElementList.size()]);
+
+			getMethod(testMethodClassName, testMethodName).sessions.add(htmlElement);
 		}
-		htmlElementList.add("</pre>");
-		htmlElementList.add("</div>");
-		String[] htmlElement = htmlElementList.toArray(new String[htmlElementList.size()]);
-
-		getMethod(testMethodClassName, testMethodName).sessions.add(htmlElement);
 	}
 
 	public static RunListener getListener() {
