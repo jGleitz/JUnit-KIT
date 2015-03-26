@@ -24,7 +24,7 @@ public class LineRun implements Run {
 	private List<Matcher<String>> expectedResults;
 
 	/**
-	 * Creates a test run that merges all call to {@code Terminal.printLine}. The run succeeds if the merged output
+	 * Creates a test run that merges all calls to {@code Terminal.printLine}. The run succeeds if the merged output
 	 * matches {@code expectedResults} line by line.
 	 * 
 	 * @param command
@@ -38,7 +38,7 @@ public class LineRun implements Run {
 	}
 
 	/**
-	 * Creates a test run that merges all call to {@code Terminal.printLine}. The run succeeds if the merged output
+	 * Creates a test run that merges all calls to {@code Terminal.printLine}. The run succeeds if the merged output
 	 * matches {@code expectedResults} line by line.
 	 * 
 	 * @param command
@@ -49,6 +49,29 @@ public class LineRun implements Run {
 	@SafeVarargs
 	public LineRun(String command, Matcher<String>... expectedResults) {
 		this(command, Arrays.asList(expectedResults));
+	}
+
+	/**
+	 * Creates a test run without a command that merges all calls to {@code Terminal.printLine}. The run succeeds if the
+	 * merged output matches {@code expectedResults} line by line. Use only to test errors before the first command.
+	 * 
+	 * @param expectedResults
+	 *            The matchers describing the desired output
+	 */
+	public LineRun(List<Matcher<String>> expectedResults) {
+		this(null, expectedResults);
+	}
+
+	/**
+	 * Creates a test run without a command that merges all calls to {@code Terminal.printLine}. The run succeeds if the
+	 * merged output matches {@code expectedResults} line by line. Use only to test errors before the first command.
+	 * 
+	 * @param expectedResults
+	 *            The matchers describing the desired output
+	 */
+	@SafeVarargs
+	public LineRun(Matcher<String>... expectedResults) {
+		this(null, expectedResults);
 	}
 
 	/*
