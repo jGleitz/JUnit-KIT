@@ -27,8 +27,8 @@ public class InvalidCommandTest extends LangtonSubtest {
 
 	private static final String[] INVALID_ANT_NAMES = new String[] {
 			"ab",
-			"ä",
-			"§",
+			"\00E4", // ae
+			"$",
 			"*"
 	};
 
