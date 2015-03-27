@@ -7,6 +7,7 @@ import test.SystemExitStatus;
 
 /**
  * Asserts that all kinds of valid input files are accepted.
+ * 
  * @author Annika Berger
  *
  */
@@ -35,7 +36,7 @@ public class ValidInputFileTest extends LangtonSubtest {
 				"***",
 				"*a*",
 				"***",
-				
+
 		};
 		sessionTest(onlyQuit(), Input.getFile(inputFile));
 	}
@@ -69,6 +70,28 @@ public class ValidInputFileTest extends LangtonSubtest {
 		inputFile = new String[] {
 			"0a"
 
+		};
+		sessionTest(onlyQuit(), Input.getFile(inputFile));
+	}
+
+	/**
+	 * 
+	 */
+	@Test
+	public void allAntsTest() {
+		inputFile = new String[] {
+				"abcdefg",
+				"hijklmn",
+				"opqrstu",
+				"vwxyz00"
+		};
+		sessionTest(onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"ABCDEFG",
+				"HIJKLMN",
+				"OPQRSTU",
+				"VWXYZ00"
 		};
 		sessionTest(onlyQuit(), Input.getFile(inputFile));
 	}
