@@ -24,7 +24,7 @@ public class CreateTest extends LangtonSubtest {
 	}
 
 	/**
-	 * Asserts that nortwards looking ants are inserted correctly
+	 * Asserts that northwards looking ants are inserted correctly
 	 */
 	@Test
 	public void createNorthAnt() {
@@ -57,7 +57,7 @@ public class CreateTest extends LangtonSubtest {
 				new ExactRun("ant", is("a,b,h,z")),
 				new ExactRun("position h", is("1,3")),
 				new ExactRun("direction h", is("N")),
-				new ExactRun("field 1,3", is("b")),
+				new ExactRun("field 1,3", is("h")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile));
