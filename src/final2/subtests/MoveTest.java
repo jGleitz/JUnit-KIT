@@ -1,14 +1,18 @@
 package final2.subtests;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import org.junit.Test;
 
 import test.Input;
+import test.runs.ExactRun;
 import test.runs.Run;
 
 /**
  * Checks the {@code move} command.
  * 
  * @author Joshua Gleitze
+ * @author Annika Berger
  */
 public class MoveTest extends LangtonSubtest {
 
@@ -58,6 +62,29 @@ public class MoveTest extends LangtonSubtest {
 				}),
 				move(4),
 				checkPitch(inputFile),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-90-90");
+	}
+
+	/**
+	 * Asserts that when doing more than one move at a time all ants do one move and then start again with the next
+	 * move. When doing one step with ant a, then one with ant b they are going to move in a rectangle without
+	 * 'crashing'. If a moves first and does all 92 moves at a time it first moves to field 1,0, and then wants to go to
+	 * the field 2,0 where already b is. As it is blocked a turns on its field and then moves back to 2,0 next.
+	 * After that its direction is W and therefore leaves the board.
+	 */
+	@Test
+	public void multiMoveTest() {
+		inputFile = new String[] {
+				"000",
+				"0B0",
+				"A00"
+		};
+		runs = new Run[] {
+				move(92),
+				new ExactRun("position a", is("2,0")),
+				new ExactRun("position b", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-90-90");
