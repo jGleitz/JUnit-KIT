@@ -26,19 +26,19 @@ import final2.subtests.ValidCommandLineArgumentsTest;
  */
 @RunWith(KITSuite.class)
 @SuiteClasses({
+		QuitTest.class,
 		ValidCommandLineArgumentsTest.class,
 		InvalidCommandLineArgumentsTest.class,
 		ValidInputFileTest.class,
-		PraktomatPublicTest.class,
-		MoveTest.class,
-		PrintTest.class,
 		InvalidInputFileTest.class,
+		InvalidCommandTest.class,
+		PrintTest.class,
+		MoveTest.class,
 		PositionTest.class,
 		AntTest.class,
 		CreateTest.class,
 		EscapeTest.class,
-		QuitTest.class,
-		InvalidCommandTest.class
+		PraktomatPublicTest.class,
 })
 public class LangtonTest {
 }
