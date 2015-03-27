@@ -4,19 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 import test.KITSuite;
-import final2.subtests.ValidInputFileTest;
-import final2.subtests.AntTest;
-import final2.subtests.InvalidInputFileTest;
-import final2.subtests.CreateTest;
-import final2.subtests.EscapeTest;
-import final2.subtests.InvalidCommandLineArgumentsTest;
-import final2.subtests.InvalidCommandTest;
-import final2.subtests.MoveTest;
-import final2.subtests.PositionTest;
-import final2.subtests.PraktomatPublicTest;
-import final2.subtests.PrintTest;
-import final2.subtests.QuitTest;
-import final2.subtests.ValidCommandLineArgumentsTest;
+import final2.subtests.*;
 
 /**
  * Test suite for the programming lecture's second final task.
@@ -32,12 +20,14 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 		PrintTest.class,
 		MoveTest.class,
 		PositionTest.class,
+		DirectionTest.class,
 		AntTest.class,
 		CreateTest.class,
 		EscapeTest.class,
 		InvalidCommandLineArgumentsTest.class,
 		InvalidInputFileTest.class,
 		InvalidCommandTest.class,
+		CommandInteractionTest.class,
 		PraktomatPublicTest.class,
 })
 public class LangtonTest {

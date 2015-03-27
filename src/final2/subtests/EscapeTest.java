@@ -12,14 +12,16 @@ import test.runs.Run;
 
 /**
  * Tests command 'escape'.
+ * 
  * @author Annika Berger
+ * @author Joshua Gleitze
  *
  */
 public class EscapeTest extends LangtonSubtest {
 	public EscapeTest() {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
-	
+
 	/**
 	 * Asserts that command 'escape ant' works on simple examples.
 	 */
@@ -37,10 +39,10 @@ public class EscapeTest extends LangtonSubtest {
 				new ExactRun("ant", is("a,z")),
 				quit()
 		};
-		
+
 		sessionTest(runs, Input.getFile(inputFile));
 	}
-	
+
 	/**
 	 * Asserts that command 'escape ant' works on simple examples with created ants.
 	 */
@@ -60,8 +62,24 @@ public class EscapeTest extends LangtonSubtest {
 				new ExactRun("ant", is("a,z")),
 				quit()
 		};
-		
+
 		sessionTest(runs, Input.getFile(inputFile));
 	}
-	
+
+	/**
+	 * Asserts that escaping an ant has the desired effect on all other commands.
+	 */
+	@Test
+	public void reallyEscapedTest() {
+
+	}
+
+	/**
+	 * Asserts that the tested class terminates silently when the last ant is {@code escape}d.
+	 */
+	@Test
+	public void escapeTerminatesTest() {
+
+	}
+
 }
