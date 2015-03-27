@@ -255,5 +255,20 @@ public class InvalidInputFileTest extends LangtonSubtest {
                 "000"
         };
         sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+        inputFile = new String[] {
+                " 000",
+                "00a",
+                "000"
+        };
+        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+        
+
+        inputFile = new String[] {
+                "000",
+                "00a",
+                "000 "
+        };
+        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 	}
 }
