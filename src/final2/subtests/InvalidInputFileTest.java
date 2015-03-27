@@ -53,13 +53,13 @@ public class InvalidInputFileTest extends LangtonSubtest {
 				"000"
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
-		
+
 		inputFile = new String[] {
-                "0000",
-                "00a",
-                "000"
-        };
-        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+				"0000",
+				"00a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
 	}
 
@@ -228,33 +228,47 @@ public class InvalidInputFileTest extends LangtonSubtest {
 				">00"
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"000",
+				"0+00",
+				"a00"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"000",
+				"0+10",
+				"a00"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 	}
-	
+
 	/**
 	 * Asserts that the tested class detects input files that contain whitespaces.
 	 */
 	@Test
 	public void whitespaceTest() {
-        inputFile = new String[] {
-                "00 ",
-                "00a",
-                "000"
-        };
-        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
-        
-        inputFile = new String[] {
-                " 00",
-                "00a",
-                "000"
-        };
-        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
-        
-        inputFile = new String[] {
-                "000",
-                "0 a",
-                "000"
-        };
-        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+		inputFile = new String[] {
+				"00 ",
+				"00a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				" 00",
+				"00a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"000",
+				"0 a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
         inputFile = new String[] {
                 " 000",
@@ -277,5 +291,25 @@ public class InvalidInputFileTest extends LangtonSubtest {
                 "000"
         };
         sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+		inputFile = new String[] {
+				"00 ",
+				"00a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				" 00",
+				"00a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"000",
+				"0 a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 	}
 }
