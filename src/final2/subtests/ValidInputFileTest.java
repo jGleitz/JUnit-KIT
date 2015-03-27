@@ -27,6 +27,7 @@ public class ValidInputFileTest extends LangtonSubtest {
 		sessionTest(onlyQuit(), Input.getFile(PUBLIC_PRAKTOMAT_TEST_FILE_2));
 		sessionTest(onlyQuit(), Input.getFile(PUBLIC_PRAKTOMAT_TEST_FILE_3));
 		sessionTest(onlyQuit(), Input.getFile(PUBLIC_PRAKTOMAT_TEST_FILE_4));
+		sessionTest(onlyQuit(), Input.getFile(ALL_TYPES_BOARD));
 		inputFile = new String[] {
 			"a"
 
