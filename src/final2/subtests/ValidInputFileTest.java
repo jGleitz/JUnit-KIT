@@ -4,14 +4,16 @@ import org.junit.Test;
 
 import test.Input;
 import test.SystemExitStatus;
-import test.runs.Run;
 
+/**
+ * Asserts that all kinds of valid input files are accepted.
+ * @author Annika Berger
+ *
+ */
 public class ValidInputFileTest extends LangtonSubtest {
 	public ValidInputFileTest() {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
-
-	// langtonsubtest file prüfen
 
 	/**
 	 * Asserts that valid square Input Files are accepted by the tested class.
