@@ -78,6 +78,16 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 			"0000"
 	};
 
+	/**
+	 * A test file containing more ants and therefore more complex movement.
+	 */
+	protected static final String[] ALL_TYPES_BOARD = new String[] {
+			"abir",
+			"0041",
+			"0*00",
+			"CDJS"
+	};
+
 	/*
 	 * (non-Javadoc)
 	 * 
