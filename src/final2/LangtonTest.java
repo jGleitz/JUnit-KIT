@@ -10,6 +10,7 @@ import final2.subtests.InvalidInputFileTest;
 import final2.subtests.CreateTest;
 import final2.subtests.EscapeTest;
 import final2.subtests.InvalidCommandLineArgumentsTest;
+import final2.subtests.InvalidCommandTest;
 import final2.subtests.MoveTest;
 import final2.subtests.PositionTest;
 import final2.subtests.PraktomatPublicTest;
@@ -36,7 +37,8 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 		AntTest.class,
 		CreateTest.class,
 		EscapeTest.class,
-		QuitTest.class
+		QuitTest.class,
+		InvalidCommandTest.class
 })
 public class LangtonTest {
 }
