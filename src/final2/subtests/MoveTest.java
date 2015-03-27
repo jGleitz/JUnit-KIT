@@ -10,7 +10,6 @@ import org.junit.Test;
 import test.Input;
 import test.SystemExitStatus;
 import test.runs.ExactRun;
-import test.SystemExitStatus;
 import test.runs.Run;
 
 /**

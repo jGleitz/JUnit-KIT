@@ -67,19 +67,42 @@ public class EscapeTest extends LangtonSubtest {
 	}
 
 	/**
-	 * Asserts that escaping an ant has the desired effect on all other commands.
-	 */
-	@Test
-	public void reallyEscapedTest() {
-
-	}
-
-	/**
 	 * Asserts that the tested class terminates silently when the last ant is {@code escape}d.
 	 */
 	@Test
 	public void escapeTerminatesTest() {
-
+		runs = new Run[] {
+				new NoOutputRun("escape a"),
+				new NoOutputRun("escape c"),
+				move(2),
+				new NoOutputRun("escape i"),
+				move(3),
+				new NoOutputRun("escape b")
+		};
+		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
 	}
 
+	/**
+	 * Asserts that {@code escape} works on a test file with all ant and cell types. Please refer to
+	 * {@link LangtonSubtest#ALL_TYPES_BOARD} for a detailed description of what is supposed to happen.
+	 */
+	@Test
+	public void escapeAllTypesTest() {
+		runs = new Run[] {
+				move(2),
+				new NoOutputRun("escape i"),
+				new NoOutputRun("escape r"),
+				new NoOutputRun("escape s"),
+				new NoOutputRun("escape d"),
+				new NoOutputRun("escape c"),
+				checkPitch(new String[] {
+						"0330",
+						"b041",
+						"0*30",
+						"0330",
+				}),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
+	}
 }

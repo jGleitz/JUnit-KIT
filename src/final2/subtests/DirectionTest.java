@@ -133,5 +133,14 @@ public class DirectionTest extends LangtonSubtest {
 				quit()
 		};
 		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
+		
+		runs = new Run[] {
+				move(4),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("direction r", is("SO")),
+				new ExactRun("direction s", is("O")),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
 	}
 }
