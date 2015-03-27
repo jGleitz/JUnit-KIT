@@ -23,6 +23,10 @@ public class CreateTest extends LangtonSubtest {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
 
+	/**
+	 * Asserts that nortwards looking ants are inserted correctly
+	 */
+	@Test
 	public void createNorthAnt() {
 		inputFile = new String[] {
 				"0000",
@@ -59,6 +63,9 @@ public class CreateTest extends LangtonSubtest {
 		sessionTest(runs, Input.getFile(inputFile));
 	}
 
+	/**
+	 * Asserts that empty places, which had been used before, can be reused to create an ant.
+	 */
 	@Test
 	public void recyclePlaceTest() {
 		inputFile = new String[] {
