@@ -28,16 +28,16 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 @SuiteClasses({
 		QuitTest.class,
 		ValidCommandLineArgumentsTest.class,
-		InvalidCommandLineArgumentsTest.class,
 		ValidInputFileTest.class,
-		InvalidInputFileTest.class,
-		InvalidCommandTest.class,
 		PrintTest.class,
 		MoveTest.class,
 		PositionTest.class,
 		AntTest.class,
 		CreateTest.class,
 		EscapeTest.class,
+		InvalidCommandLineArgumentsTest.class,
+		InvalidInputFileTest.class,
+		InvalidCommandTest.class,
 		PraktomatPublicTest.class,
 })
 public class LangtonTest {
