@@ -12,7 +12,9 @@ import test.runs.Run;
 
 /**
  * Tests command 'create'.
+ * 
  * @author Annika Berger
+ * @author Roman Langrehr
  *
  */
 public class CreateTest extends LangtonSubtest {
@@ -20,7 +22,84 @@ public class CreateTest extends LangtonSubtest {
 	public CreateTest() {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
-	
+
+	/**
+	 * Asserts that the command create can reuse the name of ants, that have left the playing field.
+	 */
+	@Test
+	public void recylceAntNameTest() {
+		inputFile = new String[] {
+				"0000",
+				"0b00",
+				"0a00",
+				"0000"
+		};
+		runs = new Run[] {
+				new NoOutputRun("escape b"),
+				new NoOutputRun("create b,0,0"),
+				new ExactRun("ant", is("a,b")),
+				new ExactRun("field 0,0", is("b")),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("position b", is("0,0")),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"0B00",
+				"0000",
+				"0a00",
+				"0000"
+		};
+		runs = new Run[] {
+				new NoOutputRun("move 1"),
+				new NoOutputRun("create b,0,0"),
+				new ExactRun("ant", is("a,b")),
+				new ExactRun("field 0,0", is("b")),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("position b", is("0,0")),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile));
+	}
+
+	@Test
+	public void recyclePlaceTest() {
+		inputFile = new String[] {
+				"0000",
+				"0b00",
+				"0a00",
+				"0000"
+		};
+		runs = new Run[] {
+				new NoOutputRun("escape b"),
+				new NoOutputRun("create c,1,1"),
+				new ExactRun("ant", is("a,b")),
+				new ExactRun("field 1,1", is("b")),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("position b", is("1,1")),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"0000",
+				"0000",
+				"0a00",
+				"0000"
+		};
+		runs = new Run[] {
+				new NoOutputRun("move 1"),
+				new NoOutputRun("create b,2,1"),
+				new ExactRun("ant", is("a,b")),
+				new ExactRun("field 2,1", is("b")),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("position b", is("2,1")),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile));
+	}
+
 	/**
 	 * Asserts that command 'create ant,x,y' works on simple examples.
 	 */
@@ -38,9 +117,9 @@ public class CreateTest extends LangtonSubtest {
 				new ExactRun("ant", is("a,b")),
 				quit()
 		};
-		
+
 		sessionTest(runs, Input.getFile(inputFile));
-		
+
 		inputFile = new String[] {
 				"b000",
 				"0000",
@@ -53,7 +132,7 @@ public class CreateTest extends LangtonSubtest {
 				new ExactRun("ant", is("a,b,h,z")),
 				quit()
 		};
-		
+
 		sessionTest(runs, Input.getFile(inputFile));
 	}
 }
