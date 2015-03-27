@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
 
 import test.Input;
+import test.SystemExitStatus;
 import test.runs.ExactRun;
 import test.runs.Run;
 
@@ -15,6 +16,10 @@ import test.runs.Run;
  * @author Annika Berger
  */
 public class MoveTest extends LangtonSubtest {
+
+	public MoveTest() {
+		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
+	}
 
 	/**
 	 * Asserts that {@code move} works on a very simple, easy to understand example: The rule is set to
@@ -71,8 +76,8 @@ public class MoveTest extends LangtonSubtest {
 	 * Asserts that when doing more than one move at a time all ants do one move and then start again with the next
 	 * move. When doing one step with ant a, then one with ant b they are going to move in a rectangle without
 	 * 'crashing'. If a moves first and does all 92 moves at a time it first moves to field 1,0, and then wants to go to
-	 * the field 2,0 where already b is. As it is blocked a turns on its field and then moves back to 2,0 next.
-	 * After that its direction is W and therefore leaves the board.
+	 * the field 2,0 where already b is. As it is blocked a turns on its field and then moves back to 2,0 next. After
+	 * that its direction is W and therefore leaves the board.
 	 */
 	@Test
 	public void multiMoveTest() {

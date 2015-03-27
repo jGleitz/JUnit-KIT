@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 import test.KITSuite;
+import final2.subtests.FieldTest;
 import final2.subtests.ValidInputFileTest;
 import final2.subtests.AntTest;
 import final2.subtests.InvalidInputFileTest;
@@ -34,6 +35,7 @@ import final2.subtests.ValidCommandLineArgumentsTest;
 		PositionTest.class,
 		AntTest.class,
 		CreateTest.class,
+		FieldTest.class,
 		EscapeTest.class,
 		InvalidCommandLineArgumentsTest.class,
 		InvalidInputFileTest.class,
