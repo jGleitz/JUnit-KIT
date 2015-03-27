@@ -27,7 +27,7 @@ public class InvalidCommandTest extends LangtonSubtest {
 
 	private static final String[] INVALID_ANT_NAMES = new String[] {
 			"ab",
-			"\00E4", // ae
+			"\u00e4", // ae
 			"$",
 			"*"
 	};
@@ -55,8 +55,8 @@ public class InvalidCommandTest extends LangtonSubtest {
 	};
 
 	private static final String[] VALID_ARGUMENTS = new String[] {
-			"h,1,3",
-			"1,2",
+			"h,1,0",
+			"1,0",
 			"a",
 			"a",
 			"a",
@@ -167,41 +167,23 @@ public class InvalidCommandTest extends LangtonSubtest {
 			};
 			sessionTest(runs, Input.getFile(inputFile));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("direction " + invalidAntName),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
-					new ErrorRun("escape " + invalidAntName),
+					new ErrorRun("escape " + TASK_SHEET_INPUT_FILE_1),
 					quit()
 			};
 			sessionTest(runs, Input.getFile(inputFile));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("position " + invalidAntName),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 		}
 	}
 
@@ -210,17 +192,11 @@ public class InvalidCommandTest extends LangtonSubtest {
 	 */
 	@Test
 	public void invalidCommandNameTest() {
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("blablabla"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 	}
 
 	/**
@@ -229,65 +205,35 @@ public class InvalidCommandTest extends LangtonSubtest {
 	@Test
 	public void invalidNumberTests() {
 		for (String invalidNumber : INVALID_NUMBERS) {
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("move " + invalidNumber),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("create h,1," + invalidNumber),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("create h," + invalidNumber + ",1"),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("field 1," + invalidNumber),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("field " + invalidNumber + ",1"),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 		}
 	}
 
@@ -296,125 +242,65 @@ public class InvalidCommandTest extends LangtonSubtest {
 	 */
 	@Test
 	public void missingArgumentTest() {
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("move"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("create h,1"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("create 2,1"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("create"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("escape"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("position"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("field 1"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("field"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("direction"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("escape"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 	}
 
 	/**
@@ -491,41 +377,23 @@ public class InvalidCommandTest extends LangtonSubtest {
 	 */
 	@Test
 	public void notRequiredArgumentTest() {
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("print arg"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("ant arg"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("quit arg"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 	}
 
 	/**
@@ -589,101 +457,53 @@ public class InvalidCommandTest extends LangtonSubtest {
 	 */
 	@Test
 	public void tooManyArgumentsTest() {
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("move 1,2"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("create h,1,2,3"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("create c,d,2,1"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("escape c,d"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("position c,d"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("field 1,2,3"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("direction c,d"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"0000",
-				"0000",
-				"0a00",
-				"0000"
-		};
 		runs = new Run[] {
 				new ErrorRun("escape c,d"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 	}
 
 	/**
@@ -715,85 +535,49 @@ public class InvalidCommandTest extends LangtonSubtest {
 		};
 		sessionTest(runs, Input.getFile(inputFile));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("field 1 1"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-		inputFile = new String[] {
-				"b000",
-				"0000",
-				"0a00",
-				"Z000"
-		};
 		runs = new Run[] {
 				new ErrorRun("field,1,1"),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(inputFile));
+		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
 		for (int i = 0; i < ARGUMENT_COMMANDS.length; i++) {
-			inputFile = new String[] {
-					"b000",
-					"0000",
-					"0a00",
-					"Z000"
-			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + "," + VALID_ARGUMENTS[i]),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 		}
 	}
 
 	@Test
 	public void wrongCommaTest() {
 		for (String commandName : NO_ARGUMENT_COMMANDS) {
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun(commandName + " ,"),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 		}
 
 		for (int i = 0; i < ARGUMENT_COMMANDS.length; i++) {
-			inputFile = new String[] {
-					"b000",
-					"0000",
-					"0a00",
-					"Z000"
-			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + " ," + VALID_ARGUMENTS[i]),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"b000",
-					"0000",
-					"0a00",
-					"Z000"
-			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + " " + VALID_ARGUMENTS[i] + ","),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 		}
 
 		inputFile = new String[] {
@@ -827,7 +611,7 @@ public class InvalidCommandTest extends LangtonSubtest {
 				"Z000"
 		};
 		runs = new Run[] {
-				new ErrorRun("escape 1,,1"),
+				new ErrorRun("field 1,,1"),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile));
@@ -839,104 +623,56 @@ public class InvalidCommandTest extends LangtonSubtest {
 	@Test
 	public void wrongWhitespacesTest() {
 		for (String commandName : NO_ARGUMENT_COMMANDS) {
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun(commandName + " "),
 					quit()
 			};
 
-			sessionTest(runs, Input.getFile(inputFile));
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
+
 			runs = new Run[] {
 					new ErrorRun(commandName + "  "),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun(" " + commandName),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 		}
 
 		for (int i = 0; i < ARGUMENT_COMMANDS.length; i++) {
-			sessionTest(runs, Input.getFile(inputFile));
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + "  "),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"b000",
-					"0000",
-					"0a00",
-					"Z000"
-			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + "  " + VALID_ARGUMENTS[i]),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"b000",
-					"0000",
-					"0a00",
-					"Z000"
-			};
 			runs = new Run[] {
 					new ErrorRun(" " + ARGUMENT_COMMANDS[i] + " " + VALID_ARGUMENTS[i]),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"b000",
-					"0000",
-					"0a00",
-					"Z000"
-			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + " " + VALID_ARGUMENTS[i] + " "),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
-			inputFile = new String[] {
-					"b000",
-					"0000",
-					"0a00",
-					"Z000"
-			};
 			runs = new Run[] {
 					new ErrorRun(ARGUMENT_COMMANDS[i] + " " + VALID_ARGUMENTS[i] + "  "),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 		}
 	}
 }
