@@ -18,7 +18,7 @@ public class InvalidInputFileTest extends RecommendationSubtest {
 	private String[] input;
 
 	public InvalidInputFileTest() {
-		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
+		setExpectedSystemExitStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
 	/**

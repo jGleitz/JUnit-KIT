@@ -42,7 +42,7 @@ import test.runs.Run;
  * <li>It differentiates between an <i>expected</i> and an <i>allowed</i> system exit status.
  * </ul>
  * To use the new way, call {@link #setAllowedSystemExitStatus(SystemExitStatus)} or
- * {@link #setExpectedSystemStatus(SystemExitStatus)} before running one of the test methods. Typically, a test class
+ * {@link #setExpectedSystemExitStatus(SystemExitStatus)} before running one of the test methods. Typically, a test class
  * does this once in its constructor.
  * 
  * @author Roman Langrehr
@@ -157,7 +157,7 @@ public abstract class InteractiveConsoleTest {
 	 * Override this method if you wish to have another default system exit status.
 	 * <p>
 	 * <i>Deprecated. Please use {@link #setAllowedSystemExitStatus(SystemExitStatus)} and
-	 * {@link #setExpectedSystemStatus(SystemExitStatus)}.
+	 * {@link #setExpectedSystemExitStatus(SystemExitStatus)}.
 	 */
 	@Deprecated
 	@Before
@@ -648,7 +648,7 @@ public abstract class InteractiveConsoleTest {
 	 * the deprecated way through {@link #defaultSystemExitStatus()}. The setting stays until the next call to this
 	 * method.
 	 * <p>
-	 * NOTE: This setting only takes effect if {@link #setExpectedSystemStatus(SystemExitStatus)} was called with
+	 * NOTE: This setting only takes effect if {@link #setExpectedSystemExitStatus(SystemExitStatus)} was called with
 	 * {@code null}!
 	 * 
 	 * @param status
@@ -671,7 +671,7 @@ public abstract class InteractiveConsoleTest {
 	 *            The {@code x} the tested class has to call {@code System.exit} with. Set to {@code null} if the tested
 	 *            class does not necessary have to call {@code System.exit}.
 	 */
-	protected final void setExpectedSystemStatus(SystemExitStatus status) {
+	protected final void setExpectedSystemExitStatus(SystemExitStatus status) {
 		expectedExitStatus = status;
 	}
 
