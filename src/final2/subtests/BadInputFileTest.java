@@ -56,6 +56,14 @@ public class BadInputFileTest extends LangtonSubtest {
 				"000"
 		};
 		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+		
+		inputFile = new String[] {
+                "0000",
+                "00a",
+                "000"
+        };
+        sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+
 	}
 
 	/**
@@ -195,7 +203,7 @@ public class BadInputFileTest extends LangtonSubtest {
 
 		inputFile = new String[] {
 				"000",
-				"700",
+				"500",
 				"000"
 		};
 		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
@@ -212,16 +220,37 @@ public class BadInputFileTest extends LangtonSubtest {
 		};
 		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
 		inputFile = new String[] {
-				"0 0",
-				"000",
-				"000"
-		};
-		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
-		inputFile = new String[] {
 				"000",
 				"000",
 				">00"
 		};
 		sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+	}
+	
+	/**
+	 * Asserts that the tested class detects input files that contain whitespaces.
+	 */
+	@Test
+	public void whitespaceTest() {
+        inputFile = new String[] {
+                "00 ",
+                "00a",
+                "000"
+        };
+        sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+        
+        inputFile = new String[] {
+                " 00",
+                "00a",
+                "000"
+        };
+        sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
+        
+        inputFile = new String[] {
+                "000",
+                "0 a",
+                "000"
+        };
+        sessionTest(new ErrorRun(), onlyQuit, Input.getFile(inputFile));
 	}
 }
