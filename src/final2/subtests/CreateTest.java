@@ -182,4 +182,40 @@ public class CreateTest extends LangtonSubtest {
 		};
 		sessionTest(runs, Input.getFile(inputFile));
 	}
+
+	/**
+	 * Asserts that if {@link LangtonSubtest#ALL_TYPES_BOARD} is `create`d, it still runs as expected. For detailed
+	 * documentation about what's supposed to happen, see documentation of {@link LangtonSubtest#ALL_TYPES_BOARD}.
+	 */
+	@Test
+	public void allTypesCreatedTest() {
+		inputFile = new String[] {
+				"0b00",
+				"0041",
+				"0*00",
+				"0000"
+		};
+		runs = new Run[] {
+				new NoOutputRun("create a,0,0"),
+				new NoOutputRun("create J,3,2"),
+				new NoOutputRun("create r,0,3"),
+				new NoOutputRun("create C,3,0"),
+				new NoOutputRun("create i,0,2"),
+				new NoOutputRun("create D,3,1"),
+				new NoOutputRun("create S,3,3"),
+				checkPitch(pitchToLowercase(ALL_TYPES_BOARD)),
+				move(1),
+				checkPitch(ALL_TYPES_PITCHES[0]),
+				move(1),
+				checkPitch(ALL_TYPES_PITCHES[1]),
+				move(1),
+				checkPitch(ALL_TYPES_PITCHES[2]),
+				move(1),
+				checkPitch(ALL_TYPES_PITCHES[3]),
+				move(1),
+				checkPitch(ALL_TYPES_PITCHES[4]),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
+	}
 }
