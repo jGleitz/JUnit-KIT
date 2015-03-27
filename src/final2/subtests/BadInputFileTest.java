@@ -20,7 +20,7 @@ public class BadInputFileTest extends LangtonSubtest {
 	};
 
 	public BadInputFileTest() {
-		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
+		setExpectedSystemExitStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
 	/**
@@ -126,7 +126,9 @@ public class BadInputFileTest extends LangtonSubtest {
 	 */
 	@Test
 	public void noAntTest() {
-		setExpectedSystemStatus(null);
+		// Allow every system exit status, as ErrorOrNoOutputRun will handle the system exit status checking.
+		setExpectedSystemExitStatus(null);
+		setAllowedSystemExitStatus(SystemExitStatus.ALL);
 		inputFile = new String[] {
 				"000",
 				"000",
@@ -145,7 +147,7 @@ public class BadInputFileTest extends LangtonSubtest {
 				"0000"
 		};
 		sessionTest(new ErrorOrNoOutputRun(true), new Run[0], Input.getFile(inputFile));
-		setExpectedSystemStatus(SystemExitStatus.EXACTLY.status(1));
+		setExpectedSystemExitStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
 	/**
