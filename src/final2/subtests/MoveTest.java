@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Test;
 
 import test.Input;
+import test.SystemExitStatus;
 import test.runs.Run;
 
 /**
@@ -14,6 +15,10 @@ import test.runs.Run;
  * @author Joshua Gleitze
  */
 public class MoveTest extends LangtonSubtest {
+
+	public MoveTest() {
+		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
+	}
 
 	/**
 	 * Asserts that {@code move} works on a very simple, easy to understand example: The rule is set to
@@ -332,6 +337,54 @@ public class MoveTest extends LangtonSubtest {
 		};
 		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), "rule=90-90-315-90-270", "speedup=4");
 	};
+
+	/**
+	 * Asserts that the tested class terminates without any output after all ants have left the field.
+	 */
+	@Test
+	public void terminateAfterAllHaveLeftTest() {
+		inputFile = new String[] {
+			"a"
+		};
+		runs = new Run[] {
+			move(1)
+		};
+		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-90");
+		inputFile = new String[] {
+				"0a0l0c",
+				"303030",
+				"030303",
+				"303030",
+				"030303"
+		};
+		runs = new Run[] {
+				move(1),
+				move(1),
+				move(1),
+				move(1),
+				move(1),
+				move(1),
+				move(1),
+				move(1),
+				move(1),
+		};
+		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-90", "speedup=1");
+		runs = new Run[] {
+			move(9)
+		};
+		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-90", "speedup=1");
+		inputFile = new String[] {
+				"0i0l0k",
+				"303030",
+				"030303",
+				"303030",
+				"030303"
+		};
+		runs = new Run[] {
+			move(1)
+		};
+		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-90", "speedup=9");
+	}
 
 	private static Run[] runArray(List<Run> runs) {
 		return runs.toArray(new Run[runs.size()]);
