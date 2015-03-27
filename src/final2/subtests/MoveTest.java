@@ -386,6 +386,34 @@ public class MoveTest extends LangtonSubtest {
 		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-90", "speedup=9");
 	}
 
+	/**
+	 * Asserts that ants that have left the board are no longer recognized as obstacles.
+	 */
+	@Test
+	public void noZombieAntsTest() {
+		inputFile = new String[] {
+				"00B400",
+				"000C0d",
+				"000000"
+		};
+		runs = new Run[] {
+				move(1),
+				checkPitch(new String[] {
+						"000c00",
+						"000000",
+						"00000d"
+				}),
+				move(1),
+				checkPitch(new String[] {
+						"000400",
+						"000000",
+						"0000d3"
+				}),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-315");
+	}
+
 	private static Run[] runArray(List<Run> runs) {
 		return runs.toArray(new Run[runs.size()]);
 	}
