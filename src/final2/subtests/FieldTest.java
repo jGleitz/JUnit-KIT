@@ -90,7 +90,6 @@ public class FieldTest extends LangtonSubtest {
 				new ExactRun("field 1,2", is("4")),
 				new ExactRun("field 2,1", is("2")),
 				new ExactRun("field 2,2", is("*")),
-				
 				quit()
 		};
 		sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_2));
