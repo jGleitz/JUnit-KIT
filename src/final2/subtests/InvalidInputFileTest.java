@@ -152,6 +152,12 @@ public class InvalidInputFileTest extends LangtonSubtest {
 				"0000"
 		};
 		sessionTest(new ErrorOrNoOutputRun(true), new Run[0], Input.getFile(inputFile));
+		inputFile = new String[] {
+				"****",
+				"****",
+				"****"
+		};
+		sessionTest(new ErrorOrNoOutputRun(true), new Run[0], Input.getFile(inputFile));
 		setExpectedSystemExitStatus(SystemExitStatus.EXACTLY.status(1));
 	}
 
