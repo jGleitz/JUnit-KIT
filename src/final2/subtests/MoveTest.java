@@ -1,5 +1,8 @@
 package final2.subtests;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Test;
 
 import test.Input;
@@ -61,6 +64,117 @@ public class MoveTest extends LangtonSubtest {
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-90-90");
+	}
+
+	/**
+	 * Takes a board that repeats in its movement and asserts that the results stay the same for a high move count.
+	 */
+	@Test
+	public void testConsitensy() {
+		String[] inputFile = {
+				"0a0000",
+				"000000",
+				"000l00",
+				"000000",
+				"00000z",
+				"000000"
+		};
+		String[][] standardStates = {
+				{
+						"0a0000",
+						"000000"
+				},
+				{
+						"000000",
+						"0a0000"
+				},
+				{
+						"000000",
+						"a30000"
+				},
+				{
+						"a00000",
+						"330000"
+				},
+				{
+						"3a0000",
+						"330000"
+				},
+				{
+						"330000",
+						"3a0000"
+				},
+				{
+						"330000",
+						"a00000"
+				},
+				{
+						"a30000",
+						"000000"
+				},
+
+		};
+		String[][] athleticStates = {
+				{
+						"000l00",
+						"000000"
+				},
+				{
+						"003l00",
+						"003300"
+				},
+		};
+		String[][] lazyStates = {
+				{
+						"00000z",
+						"000000"
+				},
+				{
+						"000000",
+						"00000z"
+				},
+				{
+						"000000",
+						"0000z3"
+				},
+				{
+						"0000z0",
+						"000033"
+				},
+				{
+						"00003z",
+						"000033"
+				},
+				{
+						"000033",
+						"00003z"
+				},
+				{
+						"000033",
+						"0000z0"
+				},
+				{
+						"0000z3",
+						"000000"
+				},
+		};
+		List<Run> runList = new LinkedList<>();
+		for (int i = 1; i < 80; i++) {
+			runList.add(move(1));
+			String[] pitch = merge(standardStates[i % 8], athleticStates[i % 2], lazyStates[(((i - 1) / 4) + 1) % 8]);
+			runList.add(checkPitch(pitch));
+		}
+		runList.add(quit());
+		sessionTest(runArray(runList), Input.getFile(inputFile), "speedup=4", "rule=90-90-90-90-90");
+
+		runList = new LinkedList<>();
+		for (int i = 47; i < 6000; i += 47) {
+			runList.add(move(47));
+			String[] pitch = merge(standardStates[i % 8], athleticStates[i % 2], lazyStates[(((i - 1) / 4) + 1) % 8]);
+			runList.add(checkPitch(pitch));
+		}
+		runList.add(quit());
+		sessionTest(runArray(runList), Input.getFile(inputFile), "speedup=4", "rule=90-90-90-90-90");
 	}
 
 	/**
@@ -218,4 +332,24 @@ public class MoveTest extends LangtonSubtest {
 		};
 		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), "rule=90-90-315-90-270", "speedup=4");
 	};
+
+	private static Run[] runArray(List<Run> runs) {
+		return runs.toArray(new Run[runs.size()]);
+	}
+
+	private static String[] merge(String[]... stringArrays) {
+		int size = 0;
+		for (String[] a : stringArrays) {
+			size += a.length;
+		}
+		String[] result = new String[size];
+		int i = 0;
+		for (String[] a : stringArrays) {
+			for (int j = 0; j < a.length; j++) {
+				result[i] = a[j];
+				i++;
+			}
+		}
+		return result;
+	}
 }
