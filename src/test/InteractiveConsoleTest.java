@@ -142,6 +142,12 @@ public abstract class InteractiveConsoleTest {
 	protected static final Run quit() {
 		return new NoOutputRun("quit");
 	}
+	
+	protected static Run[] onlyQuit() {
+		return new Run[] {
+				quit()
+		};
+	}
 
 	private static String expectedAndActual(List<Matcher<String>> expected, String[] actual) {
 		String result = "Expected was:\n\n";
