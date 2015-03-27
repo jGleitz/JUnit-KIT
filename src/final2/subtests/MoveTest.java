@@ -73,7 +73,7 @@ public class MoveTest extends LangtonSubtest {
 	 * Takes a board that repeats in its movement and asserts that the results stay the same for a high move count.
 	 */
 	@Test
-	public void testConsitensy() {
+	public void testConsistency() {
 		String[] inputFile = {
 				"0a0000",
 				"000000",
