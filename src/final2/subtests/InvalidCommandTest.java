@@ -34,9 +34,9 @@ public class InvalidCommandTest extends LangtonSubtest {
 
 	private static final String[] INVALID_NUMBERS = new String[] {
 			"a",
-			"12t",
-			"three",
-			"12.5",
+			"1t",
+			"two",
+			"1.5",
 			"$",
 			"9999999999999999999999999999999999999999999999999999999999999999"
 	};
