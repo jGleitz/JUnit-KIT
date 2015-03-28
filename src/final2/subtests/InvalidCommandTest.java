@@ -12,7 +12,7 @@ import test.runs.Run;
  * 
  * @author Roman Langrehr
  * @since 26.03.2015
- *
+ * 
  */
 public class InvalidCommandTest extends LangtonSubtest {
 
@@ -38,9 +38,7 @@ public class InvalidCommandTest extends LangtonSubtest {
 			"three",
 			"12.5",
 			"$",
-			"9999999999999999999999999999999999999999999999999999999999999999",
-			"+0",
-			"+1"
+			"9999999999999999999999999999999999999999999999999999999999999999"
 	};
 
 	private static final String[] NO_ARGUMENT_COMMANDS = new String[] {
