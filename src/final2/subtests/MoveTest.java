@@ -10,7 +10,6 @@ import org.junit.Test;
 import test.Input;
 import test.SystemExitStatus;
 import test.runs.ExactRun;
-import test.SystemExitStatus;
 import test.runs.Run;
 
 /**
@@ -209,164 +208,26 @@ public class MoveTest extends LangtonSubtest {
 	}
 
 	/**
-	 * Asserts that {@code move} works on a test file with all ant and cell types. Let's take a look at what we expect
-	 * to happen:
-	 * <p>
-	 * We start with this board:
-	 * 
-	 * 
-	 * <pre>
-	 * print|colour|direction
-	 * 
-	 * abir | 0000 | ↓↓↓↓
-	 * 0041 | 0041 |     
-	 * 0*00 | 0*00 |     
-	 * CDJS | 0000 | ↑↑↑↑
-	 * </pre>
-	 * 
-	 * We then run {@code move 1}. This should first move the standard ants. The athletic ants are next. {@code speedup}
-	 * is {@code 4}, {@code rule} is {@code 90-90-315-90-270} so they perform four steps. Last, the lazy ants move. We
-	 * get the last figure as first result:
-	 * 
-	 * <pre>
-	 * 00ir | 0000 |   ↓↓ 
-	 * ab41 | 3341 | ←←  
-	 * c*00 | 3*00 | →   
-	 * 0djs | 0300 |  →↑↑
-	 * ------------------
-	 * 000r | 0000 |    ↓ 
-	 * ab42 | 3342 | ←←   
-	 * c*i3 | 3*33 | → ↑  
-	 * 0d0s | 0300 |  → ↑ 
-	 * ------------------
-	 * 0000 | 0000 |     
-	 * ab4r | 3341 | ←← ↘
-	 * c*is | 3*30 | → ↑→
-	 * 0d00 | 0300 |  →
-	 * </pre>
-	 * 
-	 * Next {@code move 1}:
-	 * 
-	 * <pre>
-	 * 0000 | 0000 |    
-	 * b34r | 0341 | ↑  ↘  
-	 * c*is | 0*30 | ↓ ↑→
-	 * 03d0 | 0330 |   ↓ 
-	 * ------------------
-	 * 03i0 | 0330 |   ↓      
-	 * b04r | 0041 | ↑  ↘ 
-	 * c*3s | 0*30 | ↓  → 
-	 * 03d0 | 0330 |   ↓  
-	 * ------------------
-	 * 03i0 | 0330 |   ↓  
-	 * b04r | 0041 | ↑  ↘ 
-	 * c*3s | 0*30 | ↓  → 
-	 * 03d0 | 0330 |   ↓
-	 * </pre>
-	 * 
-	 * Another {@code move 1}:
-	 * 
-	 * <pre>
-	 * b3i0 | 3330 | → ↓  
-	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
-	 * c330 | 3330 | ←    
-	 * ------------------
-	 * b30i | 3303 | →  ↓  
-	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
-	 * c330 | 3330 | ←    
-	 * ------------------
-	 * b30i | 3303 | →  ↓  
-	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
-	 * c330 | 3330 | ←
-	 * </pre>
-	 * 
-	 * Another {@code move 1}:
-	 * 
-	 * <pre>
-	 * 3b0i | 3003 |  ↓ ↓
-	 * 004r | 0041 |    ↘
-	 * 0*3s | 0*00 |    →
-	 * 3330 | 3330 |     
-	 * ------------------
-	 * 3b30 | 3030 |  ↓    
-	 * 004r | 0041 |    ↘  
-	 * 0*3s | 0*00 |    →  
-	 * 3330 | 3330 |       
-	 * ------------------
-	 * 3b30 | 3030 |  ↓   
-	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
-	 * 3330 | 3330 |
-	 * </pre>
-	 * 
-	 * Another {@code move 1}:
-	 * 
-	 * <pre>
-	 * 3030 | 3030 |      
-	 * 0b4r | 0341 |  ← ↘ 
-	 * 0*3s | 0*00 |    → 
-	 * 3330 | 3330 |
-	 * ------------------
-	 * 3030 | 3030 |      
-	 * 0b4r | 0341 |  ← ↘ 
-	 * 0*3s | 0*00 |    → 
-	 * 3330 | 3330 |      
-	 * ------------------
-	 * 3030 | 3030 |      
-	 * 0b41 | 0341 |  ←    
-	 * 0*30 | 0*00 |       
-	 * 3330 | 3330 |
-	 * </pre>
+	 * Asserts that {@code move} works on a test file with all ant and cell types. Please refer to
+	 * {@link LangtonSubtest#ALL_TYPES_BOARD} for a detailed description of what is supposed to happen.
 	 */
 	@Test
 	public void allTypesMoveTest() {
-		String[] afterFirstRun = new String[] {
-				"0000",
-				"ab4r",
-				"c*is",
-				"0d00"
-		};
-		String[] afterSecondRun = new String[] {
-				"03i0",
-				"b04r",
-				"c*3s",
-				"03d0"
-		};
-		String[] afterThirdRun = new String[] {
-				"b30i",
-				"004r",
-				"0*3s",
-				"c330"
-		};
-		String[] afterFourthRun = new String[] {
-				"3b30",
-				"004r",
-				"0*3s",
-				"3330"
-		};
-		String[] afterFifthRun = new String[] {
-				"3030",
-				"0b41",
-				"0*30",
-				"3330"
-		};
+
 		runs = new Run[] {
 				move(1),
-				checkPitch(afterFirstRun),
+				checkPitch(ALL_TYPES_PITCHES[0]),
 				move(1),
-				checkPitch(afterSecondRun),
+				checkPitch(ALL_TYPES_PITCHES[1]),
 				move(1),
-				checkPitch(afterThirdRun),
+				checkPitch(ALL_TYPES_PITCHES[2]),
 				move(1),
-				checkPitch(afterFourthRun),
+				checkPitch(ALL_TYPES_PITCHES[3]),
 				move(1),
-				checkPitch(afterFifthRun),
+				checkPitch(ALL_TYPES_PITCHES[4]),
 				quit()
 		};
-		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), "rule=90-90-315-90-270", "speedup=4");
+		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
 	};
 
 	/**

@@ -11,16 +11,18 @@ import test.runs.NoOutputRun;
 import test.runs.Run;
 
 /**
- * checks the {@code direction} command.
+ * Tests for the {@code direction} command.
  * 
  * @author Annika Berger
- *
+ * @author Joshua Gleitze
  */
 public class DirectionTest extends LangtonSubtest {
+
 	public DirectionTest() {
 		setAllowedSystemExitStatus(SystemExitStatus.WITH_0);
 	}
-
+	
+	
 	/**
 	 * Asserts that command {@code direction} works with simple examples.
 	 */
@@ -94,5 +96,51 @@ public class DirectionTest extends LangtonSubtest {
 				quit()
 		};
 		sessionTest(runs, Input.getFile(PUBLIC_PRAKTOMAT_TEST_FILE_1));
+	}
+
+	/**
+	 * Asserts that {@code direction} works on a test file with all ant and cell types. Please refer to
+	 * {@link LangtonSubtest#ALL_TYPES_BOARD} for a detailed description of what is supposed to happen.
+	 */
+	@Test
+	public void allTypesDirectionTest() {
+		runs = new Run[] {
+				new ExactRun("direction a", is("S")),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("direction I", is("S")),
+				new ExactRun("direction r", is("S")),
+				new ExactRun("direction c", is("N")),
+				new ExactRun("direction D", is("N")),
+				new ExactRun("direction j", is("N")),
+				new ExactRun("direction s", is("N")),
+				move(1),
+				new ExactRun("direction a", is("W")),
+				new ExactRun("direction b", is("W")),
+				new ExactRun("direction r", is("SO")),
+				new ExactRun("direction i", is("N")),
+				move(1),
+				new ExactRun("direction d", is("S")),
+				new ExactRun("direction b", is("N")),
+				new ExactRun("direction r", is("SO")),
+				move(1),
+				new ExactRun("direction c", is("W")),
+				new ExactRun("direction r", is("SO")),
+				new ExactRun("direction b", is("O")),
+				move(1),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("direction r", is("SO")),
+				new ExactRun("direction s", is("O")),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
+		
+		runs = new Run[] {
+				move(4),
+				new ExactRun("direction b", is("S")),
+				new ExactRun("direction r", is("SO")),
+				new ExactRun("direction s", is("O")),
+				quit()
+		};
+		sessionTest(runs, Input.getFile(ALL_TYPES_BOARD), ALL_TYPES_RULE, ALL_TYPES_SPEEDUP);
 	}
 }

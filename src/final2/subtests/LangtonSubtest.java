@@ -79,7 +79,116 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	};
 
 	/**
-	 * A test file containing more ants and therefore more complex movement.
+	 * A test file containing all types of ants, colours and cells. Let's take a look at what we expect to happen:
+	 * <p>
+	 * We start with this board:
+	 * 
+	 * 
+	 * <pre>
+	 * print|colour|direction
+	 * 
+	 * abir | 0000 | ↓↓↓↓
+	 * 0041 | 0041 |     
+	 * 0*00 | 0*00 |     
+	 * CDJS | 0000 | ↑↑↑↑
+	 * </pre>
+	 * 
+	 * We then run {@code move 1}. This should first move the standard ants. The athletic ants are next. {@code speedup}
+	 * is {@code 4}, {@code rule} is {@code 90-90-315-90-270} so they perform four steps. Last, the lazy ants move. We
+	 * get the last figure as first result:
+	 * 
+	 * <pre>
+	 * 00ir | 0000 |   ↓↓ 
+	 * ab41 | 3341 | ←←  
+	 * c*00 | 3*00 | →   
+	 * 0djs | 0300 |  →↑↑
+	 * ------------------
+	 * 000r | 0000 |    ↓ 
+	 * ab42 | 3342 | ←←   
+	 * c*i3 | 3*33 | → ↑  
+	 * 0d0s | 0300 |  → ↑ 
+	 * ------------------
+	 * 0000 | 0000 |     
+	 * ab4r | 3341 | ←← ↘
+	 * c*is | 3*30 | → ↑→
+	 * 0d00 | 0300 |  →
+	 * </pre>
+	 * 
+	 * Next {@code move 1}:
+	 * 
+	 * <pre>
+	 * 0000 | 0000 |    
+	 * b34r | 0341 | ↑  ↘  
+	 * c*is | 0*30 | ↓ ↑→
+	 * 03d0 | 0330 |   ↓ 
+	 * ------------------
+	 * 03i0 | 0330 |   ↓      
+	 * b04r | 0041 | ↑  ↘ 
+	 * c*3s | 0*30 | ↓  → 
+	 * 03d0 | 0330 |   ↓  
+	 * ------------------
+	 * 03i0 | 0330 |   ↓  
+	 * b04r | 0041 | ↑  ↘ 
+	 * c*3s | 0*30 | ↓  → 
+	 * 03d0 | 0330 |   ↓
+	 * </pre>
+	 * 
+	 * Another {@code move 1}:
+	 * 
+	 * <pre>
+	 * b3i0 | 3330 | → ↓  
+	 * 004r | 0041 |    ↘ 
+	 * 0*3s | 0*00 |    → 
+	 * c330 | 3330 | ←    
+	 * ------------------
+	 * b30i | 3303 | →  ↓  
+	 * 004r | 0041 |    ↘ 
+	 * 0*3s | 0*00 |    → 
+	 * c330 | 3330 | ←    
+	 * ------------------
+	 * b30i | 3303 | →  ↓  
+	 * 004r | 0041 |    ↘ 
+	 * 0*3s | 0*00 |    → 
+	 * c330 | 3330 | ←
+	 * </pre>
+	 * 
+	 * Another {@code move 1}:
+	 * 
+	 * <pre>
+	 * 3b0i | 3003 |  ↓ ↓
+	 * 004r | 0041 |    ↘
+	 * 0*3s | 0*00 |    →
+	 * 3330 | 3330 |     
+	 * ------------------
+	 * 3b30 | 3030 |  ↓    
+	 * 004r | 0041 |    ↘  
+	 * 0*3s | 0*00 |    →  
+	 * 3330 | 3330 |       
+	 * ------------------
+	 * 3b30 | 3030 |  ↓   
+	 * 004r | 0041 |    ↘ 
+	 * 0*3s | 0*00 |    → 
+	 * 3330 | 3330 |
+	 * </pre>
+	 * 
+	 * Another {@code move 1}:
+	 * 
+	 * <pre>
+	 * 3030 | 3030 |      
+	 * 0b4r | 0341 |  ← ↘ 
+	 * 0*3s | 0*00 |    → 
+	 * 3330 | 3330 |
+	 * ------------------
+	 * 3030 | 3030 |      
+	 * 0b4r | 0341 |  ← ↘ 
+	 * 0*3s | 0*00 |    → 
+	 * 3330 | 3330 |      
+	 * ------------------
+	 * 3030 | 3030 |      
+	 * 0b41 | 0341 |  ←    
+	 * 0*30 | 0*00 |       
+	 * 3330 | 3330 |
+	 * </pre>
 	 */
 	protected static final String[] ALL_TYPES_BOARD = new String[] {
 			"abir",
@@ -87,6 +196,52 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 			"0*00",
 			"CDJS"
 	};
+
+	/**
+	 * The expected pitches for {@link #ALL_TYPES_BOARD} for the first five moves, as described for
+	 * {@link #ALL_TYPES_BOARD}.
+	 */
+	protected static final String[][] ALL_TYPES_PITCHES = new String[][] {
+			{
+					"0000",
+					"ab4r",
+					"c*is",
+					"0d00"
+			},
+			{
+					"03i0",
+					"b04r",
+					"c*3s",
+					"03d0"
+			},
+			{
+					"b30i",
+					"004r",
+					"0*3s",
+					"c330"
+			},
+			{
+					"3b30",
+					"004r",
+					"0*3s",
+					"3330"
+			},
+			{
+					"3030",
+					"0b41",
+					"0*30",
+					"3330"
+			}
+	};
+
+	/**
+	 * The rule that produces the behaviour specified for {@link #ALL_TYPES_BOARD}.
+	 */
+	protected static final String ALL_TYPES_RULE = "rule=90-90-315-90-270";
+	/**
+	 * The speedup that produces the behaviour specified for {@link #ALL_TYPES_BOARD}.
+	 */
+	protected static final String ALL_TYPES_SPEEDUP = "speedup=4";
 
 	/*
 	 * (non-Javadoc)
