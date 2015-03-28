@@ -34,37 +34,37 @@ public class DirectionTest extends LangtonSubtest {
 	 * like that:<br />
 	 * (x is the cell, the ant will enter in the next move) <br />
 	 * <br />
-	 * {@code NE:}<br />
+	 * {@code NE}:<br />
 	 * {@code 00x}<br />
 	 * {@code 000}<br />
 	 * {@code 0A0}<br />
 	 * moves to the bring the ant in the starting position: {@code 1}<br />
 	 * <br />
-	 * {@code E:}<br />
+	 * {@code E}:<br />
 	 * {@code 000}<br />
 	 * {@code 01x}<br />
 	 * {@code 0A0}<br />
 	 * moves to the bring the ant in the starting position: {@code 1}<br />
 	 * <br />
-	 * {@code SE:}<br />
+	 * {@code SE}:<br />
 	 * {@code 0a0}<br />
 	 * {@code 030}<br />
 	 * {@code 00x}<br />
 	 * moves to the bring the ant in the starting position: {@code 1}<br />
 	 * <br />
-	 * {@code SW:}<br />
+	 * {@code SW}:<br />
 	 * {@code 0a0}<br />
 	 * {@code 000}<br />
 	 * {@code x00}<br />
 	 * moves to the bring the ant in the starting position: {@code 1}<br />
 	 * <br />
-	 * {@code W:}<br />
+	 * {@code W}:<br />
 	 * {@code 000}<br />
 	 * {@code x20}<br />
 	 * {@code 0A0}<br />
 	 * moves to the bring the ant in the starting position: {@code 1}<br />
 	 * <br />
-	 * {@code NW:}<br />
+	 * {@code NW}:<br />
 	 * {@code x00}<br />
 	 * {@code 030}<br />
 	 * {@code 0A0}<br />
