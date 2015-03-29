@@ -276,6 +276,7 @@ public class MoveTest extends LangtonSubtest {
 			move(1)
 		};
 		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-90", "speedup=9");
+		sessionTest(runs, Input.getFile(inputFile), "rule=90-90-90-270-90", "speedup=10");
 	}
 
 	/**

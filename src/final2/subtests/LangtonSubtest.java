@@ -90,7 +90,7 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	 * abir | 0000 | ↓↓↓↓
 	 * 0041 | 0041 |     
 	 * 0*00 | 0*00 |     
-	 * CDJS | 0000 | ↑↑↑↑
+	 * cdjs | 0000 | ↑↑↑↑
 	 * </pre>
 	 * 
 	 * We then run {@code move 1}. This should first move the standard ants. The athletic ants are next. {@code speedup}
@@ -138,17 +138,17 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	 * <pre>
 	 * b3i0 | 3330 | → ↓  
 	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
+	 * 0*3s | 0*30 |    → 
 	 * c330 | 3330 | ←    
 	 * ------------------
 	 * b30i | 3303 | →  ↓  
 	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
+	 * 0*3s | 0*30 |    → 
 	 * c330 | 3330 | ←    
 	 * ------------------
 	 * b30i | 3303 | →  ↓  
 	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
+	 * 0*3s | 0*30 |    → 
 	 * c330 | 3330 | ←
 	 * </pre>
 	 * 
@@ -157,17 +157,17 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	 * <pre>
 	 * 3b0i | 3003 |  ↓ ↓
 	 * 004r | 0041 |    ↘
-	 * 0*3s | 0*00 |    →
+	 * 0*3s | 0*30 |    →
 	 * 3330 | 3330 |     
 	 * ------------------
 	 * 3b30 | 3030 |  ↓    
 	 * 004r | 0041 |    ↘  
-	 * 0*3s | 0*00 |    →  
+	 * 0*3s | 0*30 |    →  
 	 * 3330 | 3330 |       
 	 * ------------------
 	 * 3b30 | 3030 |  ↓   
 	 * 004r | 0041 |    ↘ 
-	 * 0*3s | 0*00 |    → 
+	 * 0*3s | 0*30 |    → 
 	 * 3330 | 3330 |
 	 * </pre>
 	 * 
@@ -176,17 +176,17 @@ public abstract class LangtonSubtest extends InteractiveConsoleTest {
 	 * <pre>
 	 * 3030 | 3030 |      
 	 * 0b4r | 0341 |  ← ↘ 
-	 * 0*3s | 0*00 |    → 
+	 * 0*3s | 0*30 |    → 
 	 * 3330 | 3330 |
 	 * ------------------
 	 * 3030 | 3030 |      
 	 * 0b4r | 0341 |  ← ↘ 
-	 * 0*3s | 0*00 |    → 
+	 * 0*3s | 0*30 |    → 
 	 * 3330 | 3330 |      
 	 * ------------------
 	 * 3030 | 3030 |      
 	 * 0b41 | 0341 |  ←    
-	 * 0*30 | 0*00 |       
+	 * 0*30 | 0*30 |       
 	 * 3330 | 3330 |
 	 * </pre>
 	 */
