@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -94,6 +96,23 @@ public class Input {
 			result = "\n with the following input file:\n\n" + arrayToLines(filesMap.get(filePath)) + "\n\n";
 		}
 		return result;
+	}
+
+	/**
+	 * @return The paths to all generated input files.
+	 */
+	public static List<String> getAllFilePaths() {
+		return new LinkedList<String>(filesMap.keySet());
+	}
+
+	/**
+	 * @param filePath
+	 *            The path of a generated input file.
+	 * @return The lines of the input file that was given the path {@code filePath}, {@code null} if there is no such
+	 *         file.
+	 */
+	public static String[] getFileContentOf(String filePath) {
+		return filesMap.get(filePath);
 	}
 
 	public static boolean isFile(String fileName) {

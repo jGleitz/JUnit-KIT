@@ -3,6 +3,8 @@
 **.project
 **.settings
 **.ser
+**.classpath
+**.html
 *~
 /bin/
 /.serialization/

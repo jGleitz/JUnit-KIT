@@ -42,7 +42,7 @@ import test.runs.Run;
  * <li>It differentiates between an <i>expected</i> and an <i>allowed</i> system exit status.
  * </ul>
  * To use the new way, call {@link #setAllowedSystemExitStatus(SystemExitStatus)} or
- * {@link #setExpectedSystemStatus(SystemExitStatus)} before running one of the test methods. Typically, a test class
+ * {@link #setExpectedSystemExitStatus(SystemExitStatus)} before running one of the test methods. Typically, a test class
  * does this once in its constructor.
  * 
  * @author Roman Langrehr
@@ -87,6 +87,10 @@ public abstract class InteractiveConsoleTest {
 	 * You can use this field to put the test runs in it.
 	 */
 	protected Run[] runs;
+	/**
+	 * You can use this field to put an input file in it.
+	 */
+	protected String[] inputFile;
 
 	private SystemExitStatus allowedExitStatus;
 	private SystemExitStatus expectedExitStatus;
@@ -110,13 +114,39 @@ public abstract class InteractiveConsoleTest {
 		return allCommands;
 	}
 
-	protected static String joinOnePerLine(String[] strings) {
-		String result = "";
-		for (String string : strings) {
-			result += (result != "") ? System.lineSeparator() : "";
-			result += string;
+	protected static String joinAsNumberedLines(String[] strings) {
+		StringBuilder resultBuilder = new StringBuilder();
+		for (int i = 0; i < strings.length; i++) {
+			if (resultBuilder.length() > 0) {
+				resultBuilder.append(System.lineSeparator());
+			}
+			resultBuilder.append("[");
+			resultBuilder.append(i + 1);
+			resultBuilder.append("] ");
+			resultBuilder.append(strings[i]);
 		}
-		return result;
+		return resultBuilder.toString();
+	}
+
+	protected static String joinOnePerLine(String[] strings) {
+		StringBuilder resultBuilder = new StringBuilder();
+		for (String string : strings) {
+			if (resultBuilder.length() > 0) {
+				resultBuilder.append(System.lineSeparator());
+			}
+			resultBuilder.append(string);
+		}
+		return resultBuilder.toString();
+	}
+
+	protected static final Run quit() {
+		return new NoOutputRun("quit");
+	}
+	
+	protected static Run[] onlyQuit() {
+		return new Run[] {
+				quit()
+		};
 	}
 
 	private static String expectedAndActual(List<Matcher<String>> expected, String[] actual) {
@@ -133,7 +163,7 @@ public abstract class InteractiveConsoleTest {
 	 * Override this method if you wish to have another default system exit status.
 	 * <p>
 	 * <i>Deprecated. Please use {@link #setAllowedSystemExitStatus(SystemExitStatus)} and
-	 * {@link #setExpectedSystemStatus(SystemExitStatus)}.
+	 * {@link #setExpectedSystemExitStatus(SystemExitStatus)}.
 	 */
 	@Deprecated
 	@Before
@@ -220,6 +250,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		if (result.length == 0) {
 			fail(consoleMessage(commands, args0)
@@ -230,9 +261,9 @@ public abstract class InteractiveConsoleTest {
 	}
 
 	/**
-	 * A representation of command line arguments. Returns {@code that has been called with the command line arguments},
-	 * concatenated with a list representation of {@code commandLineArguments}. Returns an empty String if
-	 * {@code commandLineArguments} is {@code null} or empty.
+	 * A representation of command line arguments. Returns
+	 * {@code "that has been called with the command line arguments"}, concatenated with a list representation of
+	 * {@code commandLineArguments}. Returns an empty String if {@code commandLineArguments} is {@code null} or empty.
 	 * 
 	 * @param commandLineArguments
 	 *            the cli arguments to process
@@ -243,6 +274,15 @@ public abstract class InteractiveConsoleTest {
 			return "";
 		}
 		return "that has been called with the command line arguments " + Arrays.toString(commandLineArguments);
+	}
+
+	/**
+	 * The default timeout for a test. This implementation returns 5000. Override this method to adapt your own timeout!
+	 * 
+	 * @return 5000
+	 */
+	protected int getDefaultTimeoutMs() {
+		return 5000;
 	}
 
 	/**
@@ -288,6 +328,14 @@ public abstract class InteractiveConsoleTest {
 			TestObject.allowSystemExit(SystemExitStatus.ALL);
 		}
 		newSystemExitStatusCeckInited = true;
+	}
+
+	protected List<Matcher<String>> joinAsIsMatchers(String[] strings) {
+		List<Matcher<String>> result = new Vector<Matcher<String>>();
+		for (String s : strings) {
+			result.add(is(s));
+		}
+		return result;
 	}
 
 	/**
@@ -379,6 +427,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		String message = "";
 		if (result.length != expectedResults.size()) {
@@ -448,7 +497,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
-
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		if (result.length != 0) {
 			fail(consoleMessage(commands, args0)
@@ -507,6 +556,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[] result = TestObject.getLastMethodsOutput();
 		if (result.length == 0) {
 			fail(consoleMessage(commands, args0) + "\n Your code never called Terminal.printLine!");
@@ -518,19 +568,19 @@ public abstract class InteractiveConsoleTest {
 	}
 
 	/**
-	 * Tests an interactive console program with the provided {@code runs}, allowing no output before the first run.
-	 * {@code runs} define both the command to be run as well as the expected results.
-	 * <p>
-	 * This method asserts that no output was made at all before the first run.
+	 * Tests an interactive console program with multiple commands that should output one line. Calls the main method
+	 * with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that the tested class
+	 * called {@code Terminal.printLine} only once and the output was exactly {@code expectedOutput}.
 	 * 
-	 * @see Run
-	 * @param runs
-	 *            The runs to run on the interactive console.
+	 * @param commands
+	 *            The commands to run on the test object.
+	 * @param expectedOutput
+	 *            What the test object should print on the console.
 	 * @param args0
 	 *            The arguments for the {@code main}-method
 	 */
-	protected void sessionTest(Run[] runs, String... args0) {
-		sessionTest(new NoOutputRun(""), runs, args0);
+	protected void oneLineTest(String[] commands, String expectedOutput, String... args0) {
+		oneLineTest(commands, is(expectedOutput), args0);
 	}
 
 	/**
@@ -558,6 +608,7 @@ public abstract class InteractiveConsoleTest {
 		TestObject.resetClass();
 		TestObject.setNextMethodCallInput(commands);
 		TestObject.runStaticVoid("main", (Object) args0);
+		OutputFileWriter.documentRun(args0);
 		String[][] result = TestObject.getLastMethodsGroupedOutput();
 
 		StringBuilder errorMessageBuilder = new StringBuilder();
@@ -571,6 +622,9 @@ public abstract class InteractiveConsoleTest {
 			errorMessageBuilder = new StringBuilder();
 			errorMessageBuilder.append(consoleMessage(commands, args0));
 			errorMessageBuilder.append("the first error occurred for command\n");
+			errorMessageBuilder.append("[");
+			errorMessageBuilder.append(j);
+			errorMessageBuilder.append("] ");
 			errorMessageBuilder.append(run.getCommand());
 			errorMessageBuilder.append("\n");
 			run.check(result[j], errorMessageBuilder.toString());
@@ -579,19 +633,19 @@ public abstract class InteractiveConsoleTest {
 	}
 
 	/**
-	 * Tests an interactive console program with multiple commands that should output one line. Calls the main method
-	 * with optional {@code args0} on the test object and runs all {@code commands} on it. Asserts that the tested class
-	 * called {@code Terminal.printLine} only once and the output was exactly {@code expectedOutput}.
+	 * Tests an interactive console program with the provided {@code runs}, allowing no output before the first run.
+	 * {@code runs} define both the command to be run as well as the expected results.
+	 * <p>
+	 * This method asserts that no output was made at all before the first run.
 	 * 
-	 * @param commands
-	 *            The commands to run on the test object.
-	 * @param expectedOutput
-	 *            What the test object should print on the console.
+	 * @see Run
+	 * @param runs
+	 *            The runs to run on the interactive console.
 	 * @param args0
 	 *            The arguments for the {@code main}-method
 	 */
-	protected void oneLineTest(String[] commands, String expectedOutput, String... args0) {
-		oneLineTest(commands, is(expectedOutput), args0);
+	protected void sessionTest(Run[] runs, String... args0) {
+		sessionTest(new NoOutputRun(""), runs, args0);
 	}
 
 	/**
@@ -600,7 +654,7 @@ public abstract class InteractiveConsoleTest {
 	 * the deprecated way through {@link #defaultSystemExitStatus()}. The setting stays until the next call to this
 	 * method.
 	 * <p>
-	 * NOTE: This setting only takes effect if {@link #setExpectedSystemStatus(SystemExitStatus)} was called with
+	 * NOTE: This setting only takes effect if {@link #setExpectedSystemExitStatus(SystemExitStatus)} was called with
 	 * {@code null}!
 	 * 
 	 * @param status
@@ -623,7 +677,7 @@ public abstract class InteractiveConsoleTest {
 	 *            The {@code x} the tested class has to call {@code System.exit} with. Set to {@code null} if the tested
 	 *            class does not necessary have to call {@code System.exit}.
 	 */
-	protected final void setExpectedSystemStatus(SystemExitStatus status) {
+	protected final void setExpectedSystemExitStatus(SystemExitStatus status) {
 		expectedExitStatus = status;
 	}
 
@@ -636,14 +690,6 @@ public abstract class InteractiveConsoleTest {
 		return new String[] {
 			s
 		};
-	}
-
-	protected List<Matcher<String>> joinAsIsMatchers(String[] strings) {
-		List<Matcher<String>> result = new Vector<Matcher<String>>();
-		for (String s : strings) {
-			result.add(is(s));
-		}
-		return result;
 	}
 
 	/**
@@ -667,18 +713,5 @@ public abstract class InteractiveConsoleTest {
 			return new Timeout(sysTimeout);
 		}
 		return new Timeout(getDefaultTimeoutMs());
-	}
-
-	protected static final Run quit() {
-		return new NoOutputRun("quit");
-	}
-
-	/**
-	 * The default timeout for a test. This implementation returns 5000. Override this method to adapt your own timeout!
-	 * 
-	 * @return 5000
-	 */
-	protected int getDefaultTimeoutMs() {
-		return 5000;
 	}
 }

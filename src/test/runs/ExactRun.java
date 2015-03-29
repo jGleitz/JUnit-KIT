@@ -24,6 +24,18 @@ public class ExactRun implements Run {
 	private String outputDescription;
 
 	/**
+	 * Creates a run for the given parameters, without a command. A description of the expected output will
+	 * automatically be created based on {@code expectedOutputMatchers}. Use only to test errors before the first
+	 * command.
+	 * 
+	 * @param expectedOutputMatchers
+	 *            The matchers for the expected output. One matcher per expected call to {@code Terminal.printLine}.
+	 */
+	public ExactRun(List<Matcher<String>> expectedOutputMatchers) {
+		this(null, expectedOutputMatchers);
+	}
+
+	/**
 	 * Creates a run for the given parameters. A description of the expected output will automatically be created based
 	 * on {@code expectedOutputMatchers}.
 	 * 

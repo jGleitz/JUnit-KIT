@@ -19,4 +19,12 @@ public class NoOutputRun extends ExactRun {
 	public NoOutputRun(String command) {
 		super(command, "no output at all", new LinkedList<Matcher<String>>());
 	}
+
+	/**
+	 * Constructs a test run without a command that fails if {@code Terminal.printLine} is ever called by the tested
+	 * class. Use only to test errors before the first command.
+	 */
+	public NoOutputRun() {
+		this(null);
+	}
 }
