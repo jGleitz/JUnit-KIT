@@ -153,17 +153,11 @@ public class InvalidCommandTest extends LangtonSubtest {
 	@Test
 	public void invalidAntNameTest() {
 		for (String invalidAntName : INVALID_ANT_NAMES) {
-			inputFile = new String[] {
-					"0000",
-					"0000",
-					"0a00",
-					"0000"
-			};
 			runs = new Run[] {
 					new ErrorRun("create " + invalidAntName + ",1,1"),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
 			runs = new Run[] {
 					new ErrorRun("direction " + invalidAntName),
@@ -172,10 +166,10 @@ public class InvalidCommandTest extends LangtonSubtest {
 			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
 			runs = new Run[] {
-					new ErrorRun("escape " + TASK_SHEET_INPUT_FILE_1),
+					new ErrorRun("escape " + invalidAntName),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(inputFile));
+			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
 
 			runs = new Run[] {
 					new ErrorRun("position " + invalidAntName),
@@ -371,7 +365,7 @@ public class InvalidCommandTest extends LangtonSubtest {
 	}
 
 	/**
-	 * Asserts that the program recognizes arguments on commands, that don't need arguments.
+	 * Asserts that the program recognizes arguments on commands that don't need arguments.
 	 */
 	@Test
 	public void notRequiredArgumentTest() {

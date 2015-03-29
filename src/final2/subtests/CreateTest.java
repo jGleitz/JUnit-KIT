@@ -104,10 +104,10 @@ public class CreateTest extends LangtonSubtest {
 	}
 
 	/**
-	 * Asserts that the command create can reuse the name of ants, that have left the playing field.
+	 * Asserts that the command create can reuse the name of ants that have left the playing field.
 	 */
 	@Test
-	public void recylceAntNameTest() {
+	public void recycleAntNameTest() {
 		inputFile = new String[] {
 				"0000",
 				"0b00",
