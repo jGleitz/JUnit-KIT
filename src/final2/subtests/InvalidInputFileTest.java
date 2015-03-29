@@ -65,6 +65,9 @@ public class InvalidInputFileTest extends LangtonSubtest {
 
 	/**
 	 * Asserts that the tested class detects input files with empty lines.
+	 * <p>
+	 * If these tests fail for you and you're using the <code>FileInputHelper</code>, please see this post on ILIAS:
+	 * http://goo.gl/MXXkpP
 	 */
 	@Test
 	public void emptyLinesTest() {
@@ -99,6 +102,10 @@ public class InvalidInputFileTest extends LangtonSubtest {
 				"0000",
 				"",
 		};
+		/*
+		 * If these tests fail for you and you're using the FileInputHelper, please see this post on ILIAS:
+		 * http://goo.gl/MXXkpP
+		 */
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
 		inputFile = new String[] {
@@ -108,6 +115,10 @@ public class InvalidInputFileTest extends LangtonSubtest {
 				"",
 				"",
 		};
+		/*
+		 * If these tests fail for you and you're using the FileInputHelper, please see this post on ILIAS:
+		 * http://goo.gl/MXXkpP
+		 */
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
 		inputFile = new String[] {
@@ -115,11 +126,19 @@ public class InvalidInputFileTest extends LangtonSubtest {
 				"",
 				"",
 		};
+		/*
+		 * If these tests fail for you and you're using the FileInputHelper, please see this post on ILIAS:
+		 * http://goo.gl/MXXkpP
+		 */
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
 		inputFile = new String[] {
 			"",
 		};
+		/*
+		 * If these tests fail for you and you're using the FileInputHelper, please see this post on ILIAS:
+		 * http://goo.gl/MXXkpP
+		 */
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
 		inputFile = new String[] {};
@@ -277,27 +296,26 @@ public class InvalidInputFileTest extends LangtonSubtest {
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
-        inputFile = new String[] {
-                " 000",
-                "00a",
-                "000"
-        };
-        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
-        
+		inputFile = new String[] {
+				" 000",
+				"00a",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
-        inputFile = new String[] {
-                "000",
-                "00a",
-                "000 "
-        };
-        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
-        inputFile = new String[] {
-                "000",
-                "00a",
-                "000 ",
-                "000"
-        };
-        sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+		inputFile = new String[] {
+				"000",
+				"00a",
+				"000 "
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+		inputFile = new String[] {
+				"000",
+				"00a",
+				"000 ",
+				"000"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 		inputFile = new String[] {
 				"00 ",
 				"00a",
