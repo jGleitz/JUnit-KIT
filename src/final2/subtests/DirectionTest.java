@@ -123,6 +123,8 @@ public class DirectionTest extends LangtonSubtest {
 		};
 		runs = new Run[] {
 				move(1),
+				// while the task sheet specifies "SW" for northwest, this was an error, see this official statement:
+				// https://ilias.studium.kit.edu/ilias.php?ref_id=413546&cmdClass=ilobjforumgui&thr_pk=53116&pos_pk=197760&offset=0&cmd=viewThread&cmdNode=ed:5v&baseClass=ilRepositoryGUI#197760
 				new ExactRun("direction a", is("NW")),
 				new ExactRun("position a", is("1,1")),
 				quit()
@@ -167,6 +169,8 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1), // to bring the ant in the starting position
 				move(1),
+				// while the task sheet specifies "SW" for northwest, this was an error, see this official statement:
+				// https://ilias.studium.kit.edu/ilias.php?ref_id=413546&cmdClass=ilobjforumgui&thr_pk=53116&pos_pk=197760&offset=0&cmd=viewThread&cmdNode=ed:5v&baseClass=ilRepositoryGUI#197760
 				new ExactRun("direction a", is("NW")),
 				new ExactRun("position a", is("0,2")),
 				quit()
@@ -381,6 +385,8 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1), // to bring the ant in the starting position
 				move(1),
+				// while the task sheet specifies "SW" for northwest, this was an error, see this official statement:
+				// https://ilias.studium.kit.edu/ilias.php?ref_id=413546&cmdClass=ilobjforumgui&thr_pk=53116&pos_pk=197760&offset=0&cmd=viewThread&cmdNode=ed:5v&baseClass=ilRepositoryGUI#197760
 				new ExactRun("direction a", is("NW")),
 				new ExactRun("position a", is("2,0")),
 				quit()
@@ -425,6 +431,8 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1), // to bring the ant in the starting position
 				move(1),
+				// while the task sheet specifies "SW" for northwest, this was an error, see this official statement:
+				// https://ilias.studium.kit.edu/ilias.php?ref_id=413546&cmdClass=ilobjforumgui&thr_pk=53116&pos_pk=197760&offset=0&cmd=viewThread&cmdNode=ed:5v&baseClass=ilRepositoryGUI#197760
 				new ExactRun("direction a", is("NW")),
 				new ExactRun("position a", is("1,0")),
 				quit()
@@ -606,6 +614,8 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				new ExactRun("direction a", is("N")),
 				move(1),
+				// while the task sheet specifies "SW" for northwest, this was an error, see this official statement:
+				// https://ilias.studium.kit.edu/ilias.php?ref_id=413546&cmdClass=ilobjforumgui&thr_pk=53116&pos_pk=197760&offset=0&cmd=viewThread&cmdNode=ed:5v&baseClass=ilRepositoryGUI#197760
 				new ExactRun("direction a", is("NW")),
 				move(1),
 				new ExactRun("direction a", is("SW")),
