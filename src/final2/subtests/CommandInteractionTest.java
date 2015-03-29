@@ -50,7 +50,6 @@ public class CommandInteractionTest extends LangtonSubtest {
 				new ExactRun("position c", is("2,0")),
 				new ExactRun("direction c", is("S")),
 				new ErrorRun("move -1"),
-				new ErrorRun("move 0"),
 				new ErrorRun("quit now"),
 				move(1),
 				checkPitch(ALL_TYPES_PITCHES[2]),
