@@ -242,6 +242,13 @@ public class InvalidInputFileTest extends LangtonSubtest {
 				"a00"
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
+
+		inputFile = new String[] {
+				"000",
+				"\u00e400", // \u00e4 = ae
+				"b00"
+		};
+		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 	}
 
 	/**
