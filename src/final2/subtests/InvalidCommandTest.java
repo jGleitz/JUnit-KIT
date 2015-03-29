@@ -153,11 +153,17 @@ public class InvalidCommandTest extends LangtonSubtest {
 	@Test
 	public void invalidAntNameTest() {
 		for (String invalidAntName : INVALID_ANT_NAMES) {
+			inputFile = new String[] {
+					"0000",
+					"0000",
+					"0a00",
+					"0000"
+			};
 			runs = new Run[] {
 					new ErrorRun("create " + invalidAntName + ",1,1"),
 					quit()
 			};
-			sessionTest(runs, Input.getFile(TASK_SHEET_INPUT_FILE_1));
+			sessionTest(runs, Input.getFile(inputFile));
 
 			runs = new Run[] {
 					new ErrorRun("direction " + invalidAntName),
