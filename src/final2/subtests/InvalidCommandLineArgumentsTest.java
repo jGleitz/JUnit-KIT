@@ -99,6 +99,7 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule={270,90,315,45,90}");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-0-315-45-90");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=270-180-315-45-90");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "rule=");
 
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1),
 			"rule=270-90-9999999999999999999999999999999999999-45-90");
@@ -117,6 +118,7 @@ public class InvalidCommandLineArgumentsTest extends LangtonSubtest {
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=-1");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=-5");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=99999999999999999999999999999999999999999");
+		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedup=");
 
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "speedUp=12");
 		errorTest("quit", Input.getFile(TASK_SHEET_INPUT_FILE_1), "Speedup=12");
