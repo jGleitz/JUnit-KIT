@@ -198,32 +198,32 @@ public class InvalidInputFileTest extends LangtonSubtest {
 	@Test
 	public void invalidCharactersTest() {
 		inputFile = new String[] {
-				"0-0",
+				"a-0",
 				"000",
 				"000"
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 
 		inputFile = new String[] {
-				"000",
+				"a00",
 				"500",
 				"000"
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 		inputFile = new String[] {
-				"000",
+				"a00",
 				"00+",
 				"000"
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 		inputFile = new String[] {
-				"000",
+				"a00",
 				"&00",
 				"000"
 		};
 		sessionTest(new ErrorRun(), onlyQuit(), Input.getFile(inputFile));
 		inputFile = new String[] {
-				"000",
+				"a00",
 				"000",
 				">00"
 		};
