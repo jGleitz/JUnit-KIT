@@ -85,6 +85,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("NO")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -97,6 +98,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("O")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -109,6 +111,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("W")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -121,6 +124,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("NW")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -136,6 +140,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("O")),
+				new ExactRun("position a", is("0,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -149,6 +154,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("SO")),
+				new ExactRun("position a", is("0,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -162,6 +168,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("NW")),
+				new ExactRun("position a", is("0,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -175,6 +182,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("N")),
+				new ExactRun("position a", is("0,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -190,6 +198,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("SO")),
+				new ExactRun("position a", is("1,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -203,6 +212,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("S")),
+				new ExactRun("position a", is("1,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -216,6 +226,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("N")),
+				new ExactRun("position a", is("1,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -229,6 +240,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("NO")),
+				new ExactRun("position a", is("1,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -244,6 +256,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("S")),
+				new ExactRun("position a", is("2,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -257,6 +270,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("SW")),
+				new ExactRun("position a", is("2,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -270,6 +284,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("NO")),
+				new ExactRun("position a", is("2,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -283,6 +298,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("O")),
+				new ExactRun("position a", is("2,2")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -297,6 +313,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("SW")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -309,6 +326,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("W")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -321,6 +339,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("O")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -333,6 +352,7 @@ public class DirectionTest extends LangtonSubtest {
 		runs = new Run[] {
 				move(1),
 				new ExactRun("direction a", is("SO")),
+				new ExactRun("position a", is("1,1")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -348,6 +368,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("W")),
+				new ExactRun("position a", is("2,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -361,6 +382,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("NW")),
+				new ExactRun("position a", is("2,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -374,6 +396,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("SO")),
+				new ExactRun("position a", is("2,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -387,6 +410,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("S")),
+				new ExactRun("position a", is("2,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -402,6 +426,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("NW")),
+				new ExactRun("position a", is("1,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -415,6 +440,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("N")),
+				new ExactRun("position a", is("1,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -428,6 +454,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("S")),
+				new ExactRun("position a", is("1,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -441,6 +468,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("SW")),
+				new ExactRun("position a", is("1,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -456,6 +484,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("N")),
+				new ExactRun("position a", is("0,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -469,6 +498,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("NO")),
+				new ExactRun("position a", is("0,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -482,6 +512,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("SW")),
+				new ExactRun("position a", is("0,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
@@ -495,6 +526,7 @@ public class DirectionTest extends LangtonSubtest {
 				move(1), // to bring the ant in the starting position
 				move(1),
 				new ExactRun("direction a", is("W")),
+				new ExactRun("position a", is("0,0")),
 				quit()
 		};
 		sessionTest(runs, Input.getFile(inputFile), rule);
